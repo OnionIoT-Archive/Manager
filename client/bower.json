@@ -22,6 +22,7 @@
     "angular-bootstrap": "~0.10.0",
     "angular-ui-utils": "bower",
     "angular-ui-router": "~0.2.8",
-    "font-awesome": "~4.0.3"
+    "font-awesome": "~4.0.3",
+    "socket.io": "~0.9.15"
   }
 }
