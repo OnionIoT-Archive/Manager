@@ -2,7 +2,9 @@
 
 var services = angular.module('manager.services', []);
 
-services.constant('TabItems', [
+services.constant('serverUrl', 'http://bl.onion.io');
+
+services.constant('tabItems', [
 	{
 		title: 'Dashboard',
 		icon: 'dashboard',
@@ -25,31 +27,33 @@ services.constant('TabItems', [
 	}
 ]);
 
-services.constant('UserProfile', {
+services.constant('userProfile', {
 	email: 'bl@onion.io'
 });
 
-//register a service for socket
-services.factory('socket', function ($rootScope) {
-  var socket = io.connect();
-  return {
-    on: function (eventName, callback) {
-      socket.on(eventName, function () {  
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
-    }
-  };
-});
+
+services.factory('socket', ['$rootScope', 'serverUrl', function ($rootScope, serverUrl) {
+	if (angular.isDefined(window.io)) {
+		var socket = io.connect(serverUrl);
+		return {
+			on: function (eventName, callback) {
+				socket.on(eventName, function () {  
+					var args = arguments;
+					$rootScope.$apply(function () {
+						callback.apply(socket, args);
+					});
+				});
+			},
+			emit: function (eventName, data, callback) {
+				socket.emit(eventName, data, function () {
+					var args = arguments;
+					$rootScope.$apply(function () {
+						if (callback) {
+							callback.apply(socket, args);
+						}
+					});
+				})
+			}
+		};
+	}
+}]);

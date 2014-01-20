@@ -2,18 +2,18 @@
 
 var app = angular.module('manager', ['ui.router', 'ui.bootstrap', 'manager.controllers', 'manager.services', 'manager.directives', 'manager.filters']);
 
-app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function (locationProvider, stateProvider, urlRouterProvider) {
+app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function ($locationProvider, $stateProvider, $urlRouterProvider) {
     // Enable HTML5 mode
-    //locationProvider.html5Mode(true);
+    //$locationProvider.html5Mode(true);
 
 	// Login
-    stateProvider.state('login', {
+    $stateProvider.state('login', {
     	url: '/login',
     	templateUrl: './partials/login.html'
     });
 
     // Control Panel
-    stateProvider.state('cp', {
+    $stateProvider.state('cp', {
     	templateUrl: './partials/cp.html'
     }).state('cp.dashboard', {
     	url: '/dashboard',
@@ -32,7 +32,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	templateUrl: './partials/cp.profile.html'
     });
 
-	urlRouterProvider.otherwise('/dashboard');
+	$urlRouterProvider.otherwise('/dashboard');
 
 }]);
 
