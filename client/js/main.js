@@ -21,7 +21,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     }).state('cp.devices', {
     	url: '/devices',
     	templateUrl: './partials/cp.devices.html'
-    }).state('cp.services', {
+    }).state('cp.services', {   
     	url: '/services',
     	templateUrl: './partials/cp.services.html'
     }).state('cp.settings', {
