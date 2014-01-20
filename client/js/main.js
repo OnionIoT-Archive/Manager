@@ -2,7 +2,9 @@
 
 var app = angular.module('manager', ['ui.router', 'ui.bootstrap', 'manager.controllers', 'manager.services', 'manager.directives', 'manager.filters']);
 
-app.config(['$stateProvider', '$urlRouterProvider', function (stateProvider, urlRouterProvider) {
+app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function (locationProvider, stateProvider, urlRouterProvider) {
+    // Enable HTML5 mode
+    locationProvider.html5Mode(true);
 
 	// Login
     stateProvider.state('login', {
