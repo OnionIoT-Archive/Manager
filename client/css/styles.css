@@ -87,7 +87,7 @@ html, body {
 	}
 
 #content {
-	background-color: #e5e9ec;
+	background-color: #ecf0f2;
 }
 
 .navbar-onion {
@@ -224,7 +224,7 @@ html, body {
 	}
 	.table-onion.table-striped > tbody > tr:nth-child(odd) > td, 
 	.table-onion.table-striped > tbody > tr:nth-child(odd) > th {
-		background-color: #e5e9ec;
+		background-color: #ecf0f2;
 	}
 	.table-onion .listing-checkbox input[type="checkbox"] {
 		background-color: #99a4b3;
