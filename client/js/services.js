@@ -34,7 +34,7 @@ services.constant('userProfile', {
 
 services.factory('socket', ['$rootScope', 'serverUrl', function ($rootScope, serverUrl) {
 	if (angular.isDefined(window.io)) {
-		var socket = io.connect(serverUrl);
+		var socket = io.connect();
 		return {
 			on: function (eventName, callback) {
 				socket.on(eventName, function () {  
