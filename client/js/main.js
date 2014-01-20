@@ -4,7 +4,7 @@ var app = angular.module('manager', ['ui.router', 'ui.bootstrap', 'manager.contr
 
 app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function (locationProvider, stateProvider, urlRouterProvider) {
     // Enable HTML5 mode
-    locationProvider.html5Mode(true);
+    //locationProvider.html5Mode(true);
 
 	// Login
     stateProvider.state('login', {

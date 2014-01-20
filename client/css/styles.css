@@ -93,6 +93,7 @@ html, body {
 	position: absolute;
 	top: 0;
 	width: 100%;
+	border: 0;
 }
 	.navbar-onion > .navbar-brand {
 		font-size: 20px;
@@ -107,19 +108,47 @@ html, body {
 		background-color: #fff;
 	}
 
-.navbar-onion button {
+.navbar-onion .navbar-form {
+	height: 38px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+
+.navbar-onion .btn-onion {
 	color: #8b91a0;
 	background: transparent;
 	border: none;
-	font-size: 22px;
+	height: 100%;
 }
-	.navbar-onion button:hover,
-	.navbar-onion button:active,
-	.navbar-onion button:focus {
+	.navbar-onion .btn-onion:hover,
+	.navbar-onion .btn-onion:active,
+	.navbar-onion .btn-onion:focus {
 		color: #fff;
 		background: transparent;
 		border: none;
 	}
+
+.navbar-onion .form-group {
+	background-color: #fff;
+}
+
+.navbar-onion .navbar-form label {
+	padding: 0!important;
+}
+
+.navbar-onion .navbar-form label span.fa {
+	line-height: 38px;
+}
+
+.navbar-onion .navbar-form input {
+	padding-left: 0;
+}
+
+.navbar-onion .navbar-form .form-control {
+	border: none;
+	box-shadow: none;
+	background-color: transparent;
+}
 
 .container {
 	width: 100%;
