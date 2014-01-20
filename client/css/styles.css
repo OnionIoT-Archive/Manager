@@ -156,6 +156,19 @@ html, body {
 	#content .navbar-onion .fa {
 		margin-right: 10px;
 	}
+	#content .wrapper {
+		padding: 15px;
+		height: 100%;
+		overflow: auto;
+	}
+	#content .wrapper > *:last-child {
+		margin-bottom: 0;
+	}
+	#content .wrapper h3,
+	#content .wrapper h4,
+	#content .wrapper h5 {
+		margin-top: 0;
+	}
 
 .navbar-onion .navbar-form:last-child {
 	padding-right: 0;
@@ -170,9 +183,8 @@ html, body {
 }
 
 .navbar-onion .navbar-form input {
-	height: 36px;
-	margin: 7px;
-	padding-left: 0;
+	height: 100%;
+	padding: 7px 0;
 }
 
 .navbar-onion .navbar-form .form-control {
@@ -181,11 +193,71 @@ html, body {
 	background-color: transparent;
 }
 
+.nav-onion li a {
+	color: #50545A;
+}
+	.nav-onion li a:hover,
+	.nav-onion li a:active,
+	.nav-onion li a:focus {
+		background-color: transparent;
+		color: #000;
+	}
+
 .container {
 	width: 100%;
 	height: 100%;
 	padding-left: 0;
 	padding-right: 0;
+}
+
+.table-onion {
+	background: #fff;
+	font-size: 14px;
+}
+	.table-onion th {
+		font-weight: normal;
+		border: 0!important;
+		color: #000;
+	}
+	.table-onion td {
+		border: 0!important;
+	}
+	.table-onion.table-striped > tbody > tr:nth-child(odd) > td, 
+	.table-onion.table-striped > tbody > tr:nth-child(odd) > th {
+		background-color: #e5e9ec;
+	}
+	.table-onion .listing-checkbox input[type="checkbox"] {
+		background-color: #99a4b3;
+		-webkit-appearance: none;
+		color: #fff;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		height: 14px;
+		width: 14px;
+	}
+	.table-onion .listing-checkbox input[type="checkbox"]:checked:after {
+		display: inline-block;
+		font-family: FontAwesome;
+		font-style: normal;
+		font-weight: normal;
+		line-height: 1;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+		content: '\f00c';
+	}
+	.table-onion .listing-checkbox input[type="checkbox"]:focus {
+		outline: none;
+	}
+	.table-onion .listing-name .device-name {
+		font-weight: bold;
+	}
+	.table-onion .listing-description {
+		height: 2em;
+	}
+
+.table-wrapper {
+	padding: 15px;
+	background: #fff;
 }
 
 .login-container {
