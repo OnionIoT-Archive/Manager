@@ -28,6 +28,10 @@ socketServer.sockets.on('connection', function (socket) {
 expressServer.configure(function () {
 	expressServer.use(express.basicAuth('dev', 'philosophy'));
     expressServer.use('/', express.static(__dirname + '/client'));
+
+    expressServer.get('*', function (req, res) {
+		res.redirect('/');
+	});
 });
 
 httpServer.listen(80);
