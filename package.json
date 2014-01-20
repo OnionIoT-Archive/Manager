@@ -1,5 +1,5 @@
 {
-  "name": "onion-site",
+  "name": "manager",
   "version": "0.6.1",
   "description": "Web interface for Onion Cloud",
   "main": "main.js",
