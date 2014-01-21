@@ -5,7 +5,7 @@ var express = require('express');
 var socket = require('socket.io');
 var http = require('http');
 var manager = require('./server/main');
-var rpc = require('../../onion-core/system/js/amqp_rpc');
+var rpc = require('./server/amqp-rpc/amqp_rpc');
 
 // Create servers
 var expressServer = express();
@@ -17,6 +17,13 @@ expressServer.use(express.session({
 	secret : 'onion.io'
 }));
 
+rpc.call('DB_CHECK_USER', {
+	user : 'guest',
+	pass : 'guest'
+}, function(result) {
+	console.log(result);
+});
+
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
@@ -26,17 +33,31 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.emit('test', {
 		data : 'socket io works'
 	});
-	socket.on('login', function(data) {
+	socket.on('LOGIN', function(data) {
 		var emialAccount = "harry@onion.io";
 		var password = "success";
-		if (data && data.email == emialAccount && data.password == password) {
-			
-			socket.emit('LOGIN_SUCCESS', {
-			});
-		} else {
-			socket.emit('LOGIN_FAIL', {
-			});
-		}
+		
+		rpc.call('DB_CHECK_USER', {
+			user : 'guest',
+			pass : 'guest'
+		}, function(result) {
+			if (result) {
+				socket.emit('LOGIN_SUCCESS', {
+				});
+			}else{
+				socket.emit('LOGIN_FAILED', {
+				}); 
+			}
+		});
+
+		// if (data && data.email == emialAccount && data.password == password) {
+		//
+		// socket.emit('LOGIN_SUCCESS', {
+		// });
+		// } else {
+		// socket.emit('LOGIN_FAIL', {
+		// });
+		// }
 	});
 });
 
