@@ -15,7 +15,7 @@ function($state, tabItems, userProfile) {
 }]);
 
 //the controller for the socket
-controllers.controller('AppLoginCtrl', ['$scope', 'socket',
+controllers.controller('LoginCtrl', ['$scope', 'socket',
 function($scope, socket) {
 	var self = this;
 	socket.on('test', function(data) {
