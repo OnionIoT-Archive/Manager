@@ -22,10 +22,15 @@ function($scope, '$state', socket, sha3, localStorage) {
 		self.test = data.data;
 	});
 	socket.on('LOGIN_SUCCESS', function (data) {
-		//TODO create a co		// Add session token to local storage
+<<<<<<< HEAD
+		//TODO create a cookes
+=======
+		// Add session token to local storage
 		localStorage.add('OnionSessionToken', data.token);
 		$state.go('/dashboard');
-IN_FAIL', function () {
+>>>>>>> 97ba5d2ad9b2fbdc8314d8435418ee9932dd82c4
+	});
+	socket.on('LOGIN_FAIL', function () {
 		self.loginFailed = true;
 	});
 	this.authen = function (email, password) {

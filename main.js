@@ -5,6 +5,7 @@ var express = require('express');
 var socket = require('socket.io');
 var http = require('http');
 var manager = require('./server/main');
+var rpc = require('../../onion-core/system/js/amqp_rpc');
 
 // Create servers
 var expressServer = express();
