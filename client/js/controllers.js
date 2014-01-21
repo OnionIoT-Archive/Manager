@@ -15,14 +15,16 @@ function($state, tabItems, userProfile) {
 }]);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', 'socket', 'sha3', 'localStorageService',
-function($scope, socket, sha3, localStorage) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService',
+function($scope, '$state', socket, sha3, localStorage) {
 	var self = this;
 	socket.on('test', function(data) {
 		self.test = data.data;
 	});
 	socket.on('LOGIN_SUCCESS', function (data) {
-
+		// Add session token to local storage
+		localStorage.add('OnionSessionToken', data.token);
+		$state.go('/dashboard');
 	});
 	socket.on('LOGIN_FAIL', function () {
 		self.loginFailed = true;
