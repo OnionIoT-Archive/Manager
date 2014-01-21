@@ -2,7 +2,7 @@
 
 var controllers = angular.module('manager.controllers', []);
 
-controllers.controller('NavCtrl', ['$state', 'TabItems', 'UserProfile',
+controllers.controller('NavCtrl', ['$state', 'tabItems', 'userProfile',
 function($state, tabItems, userProfile) {
 	this.tabItems = angular.copy(tabItems);
 
