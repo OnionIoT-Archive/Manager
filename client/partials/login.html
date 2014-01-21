@@ -9,8 +9,8 @@
 	</div>
 	<div class="login-chevron"></div>
 	<div class="login-body" ng-controller="LoginCtrl as login">
-		<div>
-			{{login.status}}
+		<div ng-if="login.loginFailed" id="login-message">
+			Login failed, please try again!
 		</div>
 		<form role="form" class="login-form form-horizontal">
 			<div class="form-group">

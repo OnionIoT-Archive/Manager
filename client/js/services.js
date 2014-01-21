@@ -31,7 +31,6 @@ services.constant('userProfile', {
 	email: 'bl@onion.io'
 });
 
-
 services.factory('socket', ['$rootScope', 'serverUrl', function ($rootScope, serverUrl) {
 	if (angular.isDefined(window.io)) {
 		var socket = io.connect();
@@ -54,6 +53,14 @@ services.factory('socket', ['$rootScope', 'serverUrl', function ($rootScope, ser
 					});
 				})
 			}
+		};
+	}
+}]);
+
+services.factory('sha3', [function () {
+	if (angular.isDefined(window.CryptoJS.SHA3)) {
+		return function (message) {
+			return CryptoJS.SHA3(message, {outputLength: 256}).toString(CryptoJS.enc.Hex);
 		};
 	}
 }]);
