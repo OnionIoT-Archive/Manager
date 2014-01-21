@@ -4,13 +4,17 @@
 var express = require('express');
 var socket = require('socket.io');
 var http = require('http');
-
 var manager = require('./server/main');
 
 // Create servers
 var expressServer = express();
 var httpServer = http.createServer(expressServer);
 var socketServer = socket.listen(httpServer);
+
+expressServer.use(express.cookieParser());
+expressServer.use(express.session({
+	secret : 'onion.io'
+}));
 
 /***** WebSocket server *****/
 
@@ -20,15 +24,11 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 	socket.emit('test', {
 		data : 'socket io works'
-	});
-	socket.on('my other event', function(data) {
-		console.log(data);
-	});
+	});	
 	socket.on('login', function(data) {
-		console.log(data);
 		var emialAccount = "harry@onion.io";
 		var password = "success";
-		if (data.email == emialAccount && data.password == password) {
+		if (data && data.email == emialAccount && data.password == password) {
 			socket.emit('isLogin', {
 				status : true
 			});

@@ -18,6 +18,7 @@ function($state, tabItems, userProfile) {
 controllers.controller('LoginCtrl', ['$scope', 'socket',
 function($scope, socket) {
 	var self = this;
+	console.log($scope.user);
 	socket.on('test', function(data) {
 		self.test = data.data;
 	});
@@ -28,12 +29,10 @@ function($scope, socket) {
 			self.status = "fail please try again!";
 		}
 	});
-	this.authen = function(email, password) {
-		console.log(email);
-		console.log(password);
+	this.authen = function() {
 		socket.emit('login', {
-			email : email,
-			password : password
+			email : $scope.user.email,
+			password : $scope.user.password
 		});
 	}
 }]);
