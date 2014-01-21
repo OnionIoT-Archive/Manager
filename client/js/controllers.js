@@ -16,7 +16,7 @@ function($state, tabItems, userProfile) {
 
 //the controller for the socket
 controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService',
-function($scope, '$state', socket, sha3, localStorage) {
+function($scope, $state, socket, sha3, localStorage) {
 	var self = this;
 	socket.on('test', function(data) {
 		self.test = data.data;
