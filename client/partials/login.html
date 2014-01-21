@@ -9,6 +9,9 @@
 	</div>
 	<div class="login-chevron"></div>
 	<div class="login-body" ng-controller="LoginCtrl as login">
+		<div ng-if="login.loginFailed" id="login-message">
+			Login failed, please try again!
+		</div>
 		<form role="form" class="login-form form-horizontal">
 			<div class="form-group">
 				<label for="email" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-envelope"></span></label>
@@ -27,9 +30,6 @@
 					Login<span class="fa fa-lock pull-right"></span>
 				</button>
 			</div>
-			<p>
-				{{login.status}}
-			</p>
 		</form>
 		<p>
 			<a href="#">Forgot your password?</a>

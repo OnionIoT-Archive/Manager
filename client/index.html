@@ -3,19 +3,22 @@
         <meta charset="utf-8" />
         <title>Onion Manager</title>
 
-        <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" />
         <link href="./css/onion.css" rel="stylesheet" />
         <link href="./css/styles.css" rel="stylesheet" /> 
 
-        <script src="../bower_components/angular/angular.js"></script>
-        <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-        <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="../bower_components/socket.io-client/dist/socket.io.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.0/angular-ui-router.js"></script>
+        <script src="//gregpike.net/demos/angular-local-storage/angular-local-storage.js"></script>
     </head>
     <body>
         <div ui-view></div>
-		<script src="/socket.io/socket.io.js"></script>
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+        <script src="//crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/sha3.js"></script>
+
         <script src="./js/main.js"></script>
         <script src="./js/controllers.js"></script>
         <script src="./js/services.js"></script>

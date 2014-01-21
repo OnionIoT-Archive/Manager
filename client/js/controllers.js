@@ -15,24 +15,23 @@ function($state, tabItems, userProfile) {
 }]);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', 'socket',
-function($scope, socket) {
+controllers.controller('LoginCtrl', ['$scope', 'socket', 'sha3', 'localStorageService',
+function($scope, socket, sha3, localStorage) {
 	var self = this;
-	console.log($scope.user);
 	socket.on('test', function(data) {
 		self.test = data.data;
 	});
-	socket.on('isLogin', function(data) {
-		if (data.status) {
-			self.status = "succsss!";
-		} else {
-			self.status = "fail please try again!";
-		}
+	socket.on('LOGIN_SUCCESS', function (data) {
+
 	});
-	this.authen = function() {
-		socket.emit('login', {
-			email : $scope.user.email,
-			password : $scope.user.password
+	socket.on('LOGIN_FAIL', function () {
+		self.loginFailed = true;
+	});
+	this.authen = function (email, password) {
+		var pwHash = sha3(password);
+		socket.emit('LOGIN', {
+			email: email,
+			hash: pwHash
 		});
 	}
 }]);
