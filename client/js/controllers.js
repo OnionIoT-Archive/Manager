@@ -22,7 +22,7 @@ function($scope, socket, sha3, localStorage) {
 		self.test = data.data;
 	});
 	socket.on('LOGIN_SUCCESS', function (data) {
-
+		//
 	});
 	socket.on('LOGIN_FAIL', function () {
 		self.loginFailed = true;

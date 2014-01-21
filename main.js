@@ -24,17 +24,15 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 	socket.emit('test', {
 		data : 'socket io works'
-	});	
+	});
 	socket.on('login', function(data) {
 		var emialAccount = "harry@onion.io";
 		var password = "success";
 		if (data && data.email == emialAccount && data.password == password) {
-			socket.emit('isLogin', {
-				status : true
+			socket.emit('LOGIN_SUCCESS', {
 			});
 		} else {
-			socket.emit('isLogin', {
-				status : false
+			socket.emit('LOGIN_FAIL', {
 			});
 		}
 	});
