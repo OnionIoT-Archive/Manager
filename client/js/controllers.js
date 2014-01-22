@@ -54,3 +54,8 @@ function($scope, $state, socket, sha3, localStorage) {
 		});
 	};
 }]);
+
+controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', 
+function ($scope, $state, socket) {
+	
+}]);

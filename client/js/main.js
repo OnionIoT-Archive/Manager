@@ -6,48 +6,49 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     // Enable HTML5 mode
     //$locationProvider.html5Mode(true);
 
-    var virtualState = {
-        template: '<div ui-view></div>'
-    };
-
 	/*** Login ***/
     $stateProvider.state('login', {
     	url: '/login',
-    	templateUrl: './partials/login.html'
+    	templateUrl: './partials/login.html',
+        controller: 'LoginCtrl as login'
     });
 
     /*** Control Panel ***/
     $stateProvider.state('cp', {
+        abstract: true,
     	templateUrl: './partials/cp.html'
     });
 
     $stateProvider.state('cp.dashboard', {
-    	url: '/dashboard',
+    	url: '^/dashboard',
     	templateUrl: './partials/cp.dashboard.html'
     });
 
-    $stateProvider.state('cp.devices', virtualState)
-    .state('cp.devices.list', {
-        url: '/devices',
+    $stateProvider.state('cp.devices', {
+        url: '^/devices',
+        template: '<ui-view />',
+        controller: ['$state', function ($state) {
+            $state.transitionTo('cp.devices.list');
+        }]
+    }).state('cp.devices.list', {
         templateUrl: './partials/cp.devices.list.html'
-    })
-    .state('cp.devices.edit', {
-        url: '/devices/:deviceId',
+    }).state('cp.devices.edit', {
+        url: '/:deviceId',
         templateUrl: './partials/cp.devices.edit.html'
     });
 
     $stateProvider.state('cp.services', {   
-    	url: '/services',
+    	url: '^/services',
     	templateUrl: './partials/cp.services.html'
     });
 
     $stateProvider.state('cp.settings', {
-    	url: '/settings',
+    	url: '^/settings',
     	templateUrl: './partials/cp.settings.html'
     });
 
     $stateProvider.state('cp.profile', {
-    	url: '/profile',
+    	url: '^/profile',
     	templateUrl: './partials/cp.profile.html'
     });
 
