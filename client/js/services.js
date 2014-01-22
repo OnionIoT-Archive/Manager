@@ -2,8 +2,6 @@
 
 var services = angular.module('manager.services', []);
 
-services.constant('serverUrl', 'http://bl.onion.io');
-
 services.constant('tabItems', [
 	{
 		title: 'Dashboard',
@@ -13,7 +11,7 @@ services.constant('tabItems', [
 	{
 		title: 'Devices',
 		icon: 'puzzle-piece',
-		sref: 'cp.devices'
+		sref: 'cp.devices.list'
 	},
 	{
 		title: 'Services',
@@ -31,7 +29,7 @@ services.constant('userProfile', {
 	email: 'bl@onion.io'
 });
 
-services.factory('socket', ['$rootScope', 'serverUrl', function ($rootScope, serverUrl) {
+services.factory('socket', ['$rootScope', function ($rootScope) {
 	if (angular.isDefined(window.io)) {
 		var socket = io.connect();
 		return {
