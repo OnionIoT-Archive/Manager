@@ -17,29 +17,40 @@ function($state, tabItems, userProfile) {
 //the controller for the socket
 controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService',
 function($scope, $state, socket, sha3, localStorage) {
+
+	// Switching between Login, Signup and Forgot Password
+	this.mode = 'login';
+
+	this.switchMode = function ($event, mode) {
+		$event.preventDefault();
+		this.mode = mode;
+	};
+
 	var self = this;
-	socket.on('test', function(data) {
-		self.test = data.data;
-	});
+
 	socket.on('LOGIN_SUCCESS', function (data) {
-		//TODO create a co		// Add session token to local storage
+		// Add session token to local storage
 		localStorage.add('OnionSessionToken', data.token);
-		$state.go('cp.dashboard');
+		$state.go('/dashboard');
 	});
-	
-	socket.on('LOGIN_FAILED', function () {
-		console.log('fail');
+
+	socket.on('LOGIN_FAIL', function () {
 		self.loginFailed = true;
 	});
-	socket.on('LOGIN_SUCCESS', function () {
-		console.log('pass');
-		self.loginFailed = true;
-	});
-	this.authen = function (email, password) {
+
+	this.login = function (email, password) {
 		var pwHash = sha3(password);
 		socket.emit('LOGIN', {
 			email: email,
 			hash: pwHash
 		});
-	}
+	};
+
+	this.signUp = function (email, password) {
+		var pwHash = sha3(password);
+		socket.emit('SIGNUP', {
+			email: email,
+			hash: pwHash
+		});
+	};
 }]);
