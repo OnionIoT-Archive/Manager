@@ -17,12 +17,30 @@ expressServer.use(express.session({
 	secret : 'onion.io'
 }));
 
-rpc.call('DB_CHECK_USER', {
+rpc.call('DB_ADD_USER', {
 	user : 'guest',
 	pass : 'guest'
 }, function(result) {
+	console.log('DB_ADD_USER');
 	console.log(result);
 });
+
+rpc.call('DB_CHECK_SESSION', {
+	user : 'guest',
+	pass : 'guest'
+}, function(result) {
+	console.log('DB_CHECK_SESSION');
+	console.log(result);
+});
+
+rpc.call('DB_CREATE_SESSION', {
+	user : 'guest',
+	pass : 'guest'
+}, function(result) {
+	console.log('DB_CREATE_SESSION');
+	console.log(result);
+});
+
 
 /***** WebSocket server *****/
 
@@ -36,7 +54,7 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('LOGIN', function(data) {
 		var emialAccount = "harry@onion.io";
 		var password = "success";
-		
+
 		rpc.call('DB_CHECK_USER', {
 			user : 'guest',
 			pass : 'guest'
@@ -44,20 +62,11 @@ socketServer.sockets.on('connection', function(socket) {
 			if (result) {
 				socket.emit('LOGIN_SUCCESS', {
 				});
-			}else{
+			} else {
 				socket.emit('LOGIN_FAILED', {
-				}); 
+				});
 			}
 		});
-
-		// if (data && data.email == emialAccount && data.password == password) {
-		//
-		// socket.emit('LOGIN_SUCCESS', {
-		// });
-		// } else {
-		// socket.emit('LOGIN_FAIL', {
-		// });
-		// }
 	});
 });
 
