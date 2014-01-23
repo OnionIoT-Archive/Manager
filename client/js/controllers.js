@@ -33,6 +33,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 
 	// Login
 	$scope.login = function () {
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('LOGIN', {
@@ -54,6 +55,8 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 
 	// Sign Up
 	$scope.signUp = function () {
+		console.log('signing up');
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('SIGNUP', {
@@ -73,6 +76,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 
 	// Password Reset
 	$scope.forgotPassword = function () {
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		socket.emit('FORGOT_PASSWORD', {
 			email: email
