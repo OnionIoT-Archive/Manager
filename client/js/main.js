@@ -26,11 +26,10 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
 
     $stateProvider.state('cp.devices', {
         url: '^/devices',
-        template: '<ui-view />',
-        controller: ['$state', function ($state) {
-            $state.transitionTo('cp.devices.list');
-        }]
+        abstract: true,
+        template: '<ui-view />'
     }).state('cp.devices.list', {
+        url: '',
         templateUrl: './partials/cp.devices.list.html'
     }).state('cp.devices.edit', {
         url: '/:deviceId',

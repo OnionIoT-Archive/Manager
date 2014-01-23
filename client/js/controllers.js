@@ -8,6 +8,7 @@ function($state, tabItems, userProfile) {
 
 	this.userProfile = angular.copy(userProfile);
 
+	console.log($state);
 	// Determin whether the current tab is active or not
 	this.isActive = function(sref) {
 		return ($state.current.name.search(sref) !== -1) ? true : false;
@@ -57,5 +58,5 @@ function($scope, $state, socket, sha3, localStorage) {
 
 controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', 
 function ($scope, $state, socket) {
-	
+
 }]);

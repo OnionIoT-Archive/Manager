@@ -11,7 +11,7 @@ services.constant('tabItems', [
 	{
 		title: 'Devices',
 		icon: 'puzzle-piece',
-		sref: 'cp.devices'
+		sref: 'cp.devices.list'
 	},
 	{
 		title: 'Services',
