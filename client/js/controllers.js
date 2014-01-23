@@ -92,6 +92,12 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 	});
 }]);
 
+controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
+	$scope.signup = function () {
+		socket.emit('SIGNUP', {});
+	};
+}]);
+
 controllers.controller('CpCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
 
 }]);

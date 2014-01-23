@@ -58,6 +58,12 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	templateUrl: './partials/cp.profile.html'
     });
 
+    $stateProvider.state('test', {
+        url: '^/test',
+        templateUrl: './partials/test.html',
+        controller: 'TestCtrl'
+    });
+
 	$urlRouterProvider.otherwise('/dashboard');
 
 }]);
