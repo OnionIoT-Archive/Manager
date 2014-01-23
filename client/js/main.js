@@ -30,10 +30,12 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
         template: '<ui-view />'
     }).state('cp.devices.list', {
         url: '',
-        templateUrl: './partials/cp.devices.list.html'
+        templateUrl: './partials/cp.devices.list.html',
+        controller: 'DevicesListCtrl'
     }).state('cp.devices.edit', {
         url: '/:deviceId',
-        templateUrl: './partials/cp.devices.edit.html'
+        templateUrl: './partials/cp.devices.edit.html',
+        controller: 'DevicesEditCtrl'
     });
 
     $stateProvider.state('cp.services', {   
