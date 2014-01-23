@@ -139,8 +139,13 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
+	socket.on('LOGOUT',function(data){
+		rpc.call('DB_DELETE_SESSION',data,function(data){
+			
+		});
+	});
+	
 	socket.on('SIGNUP', function(data) {
-
 		rpc.call('DB_GET_USER', {
 			email : data.email
 		}, function(result) {
@@ -153,7 +158,6 @@ socketServer.sockets.on('connection', function(socket) {
 					passHash : data.hash
 				}, function(result) {
 					socket.emit('SIGNUP_SUCCESS', {
-
 					});
 				});
 			}
@@ -161,7 +165,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('FORGOT_PASSWORD', function(data) {
-
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
 			from : "Onion ✔ <harry@onion.io>", // sender address
@@ -178,6 +181,27 @@ socketServer.sockets.on('connection', function(socket) {
 			} else {
 				console.log("Message sent: " + response.message);
 			}
+		});
+	});
+
+	
+	socket.on('GET_DEVICE',function(data){
+		rpc.call('DB_GET_DEVICE',data,function(devicLists){
+			socket.emit('DEVICE_LIST',{
+				devices:devicLists
+			})
+		});
+	});
+	
+	socket.on('ADD_DEVICE',function(data){
+		rpc.call('DB_ADD_DEVICE',data,function(data){
+			
+		});
+	});
+	
+	socket.on('REMOVE_DEVICE',function(data){
+		rpc.call('DB_DELETE_DEVICE',data,function(data){
+			
 		});
 	});
 });
