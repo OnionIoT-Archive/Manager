@@ -23,6 +23,8 @@ function($scope, $state, socket, sha3, localStorage) {
 
 	$scope.switchMode = function ($event, mode) {
 		$event.preventDefault();
+		$scope.email = '';
+		$scope.password = '';
 		$scope.mode = mode;
 	};
 
@@ -52,7 +54,7 @@ function($scope, $state, socket, sha3, localStorage) {
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('LOGIN', {
-			email: $scope.login.email,
+			email: email,
 			hash: pwHash
 		});
 	};
@@ -61,7 +63,7 @@ function($scope, $state, socket, sha3, localStorage) {
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('SIGNUP', {
-			email: $scope.email,
+			email: email,
 			hash: pwHash
 		});
 	};
@@ -69,7 +71,7 @@ function($scope, $state, socket, sha3, localStorage) {
 	$scope.forgotPassword = function () {
 		var email = $scope.email.toLowerCase();
 		socket.emit('FORGOT_PASSWORD', {
-			email: $scope.email
+			email: email
 		});
 	};
 }]);
