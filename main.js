@@ -123,16 +123,20 @@ socketServer.sockets.on('connection', function(socket) {
 			email : data.email,
 			passHash : data.hash
 		}, function(result) {
-			if (result) {
+			console.log('login harry after rpc');
+			console.log(result);
+			if (result==null) {
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
 					token : _token
 				}, function(data) {
+					console.log('LOGIN_SUCCESS');
 					socket.emit('LOGIN_SUCCESS', {
 						token : data.token
 					});
 				});
 			} else {
+				console.log('LOGIN_FAILED');
 				socket.emit('LOGIN_FAILED', {
 				});
 			}
