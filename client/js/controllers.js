@@ -18,6 +18,8 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 	if (loggedIn) $state.go('cp.dashboard');
 
 	var clearFields = function () {
+		$scope.loginFailed = false;
+		$scope.signupFailed = false;
 		$scope.email = '';
 		$scope.password = '';
 	};
@@ -43,7 +45,6 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 	};
 	socket.on('LOGIN_SUCCESS', function (data) {
 		clearFields();
-		$scope.loginFailed = false;
 		// Add session token to local storage
 		localStorage.add('OnionSessionToken', data.token);
 		$state.go('cp.dashboard');
@@ -65,7 +66,6 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 		});
 	};
 	socket.on('SIGNUP_SUCCESS', function () {
-		$scope.signupFailed = false;
 		clearFields();
 		$scope.switchMode(null, 'login');
 	});
