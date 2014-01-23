@@ -35,7 +35,9 @@ var mailOptions = {
 	subject : "Onion:Reset Passwrd", // Subject line
 	text : "Http://www.onion.io/changethis", // plaintext body
 	html : "<b>Click <a href='#'>here</a> to reset your password</b>" // html body
-}
+};
+
+var userInfo = {};
 
 function testEmail() {
 	smtpTransport.sendMail(mailOptions, function(error, response) {
@@ -167,7 +169,13 @@ socketServer.sockets.on('connection', function(socket) {
 			}
 		});
 	});
-
+	
+	socket.on('CHECK_SESSION',function(data){
+		if(data&&data.token){
+			
+		}
+	});
+	
 	socket.on('FORGOT_PASSWORD', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
@@ -188,7 +196,6 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	
 	socket.on('GET_DEVICE',function(data){
 		rpc.call('DB_GET_DEVICE',data,function(devicLists){
 			socket.emit('DEVICE_LIST',{
@@ -218,6 +225,7 @@ expressServer.configure(function() {
 	expressServer.use('/', express.static(__dirname + '/client'));
 
 	expressServer.get('*', function(req, res) {
+		
 		res.redirect('/');
 	});
 });
