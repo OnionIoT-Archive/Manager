@@ -39,18 +39,6 @@ var mailOptions = {
 
 var userInfo = {};
 
-function testEmail() {
-	smtpTransport.sendMail(mailOptions, function(error, response) {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log("Message sent: " + response.message);
-		}
-	});
-};
-
-testEmail();
-
 rpc.call('DB_CHECK_TEST', {
 }, function(result) {
 	console.log('DB_CHECK_TEST');
@@ -112,6 +100,9 @@ rpc.call('DB_UPDATE_DEVICE', {
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
+	socket.emit('CONNECTED',{});
+	userInfo.socketId = socket.id;
+
 	socket.emit('news', {
 		hello : 'world'
 	});
@@ -172,7 +163,25 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('CHECK_SESSION', function(data) {
 		if (data && data.token) {
-
+			rpc.call('', {
+				token : data.token
+			}, function(session) {
+				if (session == 'null') {
+					socket.emit('NO_SESSION', {
+					});
+				} else {
+					//user already login
+					userInfo.token = data.token;
+					userInfo.userId = session.userId;
+					// rpc.call('DB_GET_USER', {
+						// _id : userInfo.userId
+					// }, function(user) {
+						// userInfo.email = user.email;
+						// socket.emit('HAS_SESSION', {
+					// });
+					// });
+				}
+			})
 		} else {
 
 		}
