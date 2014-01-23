@@ -80,3 +80,8 @@ controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket',
 function ($scope, $state, socket) {
 
 }]);
+
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket',
+function ($scope, $state, socket) {
+
+}]);
