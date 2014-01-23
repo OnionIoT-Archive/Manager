@@ -1,0 +1,107 @@
+<div class="navbar navbar-onion">
+	<ul class="nav navbar-nav nav-onion">
+    	<li><a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a></li>
+    	<li><a href="#"><span class="fa fa-plus"></span>New</a></li>
+    	<li><a href="#"><span class="fa fa-minus"></span>Delete</a></li>
+    </ul>
+</div>
+
+<div class="wrapper">
+	<h4>Device Name</h4>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="panel panel-dark" id="summary">
+				<div class="panel-heading">
+					<h4 class="panel-title">Device Information</h4>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<table class="table table-onion">
+								<tbody>
+									<tr>
+										<td><a data-toggle="tooltip" data-placement="right" title="Unique identifier"><strong>Device ID</strong></a></td>
+										<td>device001</td>
+									</tr>
+									<tr>
+										<td><a data-toggle="tooltip" data-placement="right" title="Secret key for authentication"><strong>Device Key</strong></a></td>
+										<td>asdfaljkhagkegu34513jhkg6jh123</td>
+									</tr>
+									<tr>
+										<td><strong>Description</strong></td>
+										<td>Dummy Description for this testing device</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+							<table class="table table-onion">
+								<tbody>
+									<tr>
+										<td><strong>Status</strong></td>
+										<td>
+											Online
+										</td>
+									</tr>
+									<tr>
+										<td><a data-toggle="tooltip" data-placement="right" title="URL to access the API"><strong>API Endpoint</strong></a></td>
+										<td><a href="http://dev.onion.io/api/{{currentDevice.id}}">http://dev.onion.io/api/device001</a></td>
+									</tr>
+									<tr>
+										<td><strong>Device Type</strong></td>
+										<td>Public</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<div class="panel panel-blue" id="remote-functions">
+				<div class="panel-heading">
+					<h3 class="panel-title">Remote Functions</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-onion">
+						<tbody>
+							<tr>
+								<td>
+									<span class="verb"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<div class="panel panel-blue" id="remote-states">
+				<div class="panel-heading">
+					<h3 class="panel-title">Remote States</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-onion">
+						<thead>
+							<tr>
+								<th>End Point</th>
+								<th>Value</th>
+								<th>Time Stamp</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
