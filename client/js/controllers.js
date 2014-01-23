@@ -40,6 +40,7 @@ function($scope, $state, socket, sha3, localStorage) {
 	});
 
 	this.login = function (email, password) {
+		email = email.toLowerCase();
 		var pwHash = sha3(password);
 		socket.emit('LOGIN', {
 			email: email,
@@ -48,10 +49,18 @@ function($scope, $state, socket, sha3, localStorage) {
 	};
 
 	this.signUp = function (email, password) {
+		email = email.toLowerCase();
 		var pwHash = sha3(password);
 		socket.emit('SIGNUP', {
 			email: email,
 			hash: pwHash
+		});
+	};
+
+	this.forgotPassword = function (email) {
+		email = email.toLowerCase();
+		socket.emit('FORGOT_PASSWORD', {
+			email: email
 		});
 	};
 }]);
