@@ -17,27 +17,57 @@ expressServer.use(express.session({
 	secret : 'onion.io'
 }));
 
+rpc.call('DB_CHECK_TEST', {
+}, function(result) {
+	console.log('DB_CHECK_TEST');
+	console.log(result);
+});
+
 rpc.call('DB_ADD_USER', {
-	user : 'guest',
-	pass : 'guest'
+	id : 'String',
+	email : 'harry@onion.io',
+	passHash : 'String',
+	status : 'String',
+	devices : ['Array'],
+	date : new Date()
 }, function(result) {
 	console.log('DB_ADD_USER');
 	console.log(result);
 });
 
-rpc.call('DB_CHECK_SESSION', {
-	user : 'guest',
-	pass : 'guest'
+rpc.call('DB_ADD_DEVICE', {
+	name:'harry friday',
 }, function(result) {
-	console.log('DB_CHECK_SESSION');
+	console.log('DB_ADD_DEVICE');
 	console.log(result);
 });
 
-rpc.call('DB_CREATE_SESSION', {
-	user : 'guest',
-	pass : 'guest'
+rpc.call('DB_GET_USER', {
+	email : 'harry@onion.io'
 }, function(result) {
-	console.log('DB_CREATE_SESSION');
+	console.log('DB_GET_USER');
+	console.log(result);
+});
+
+rpc.call('DB_GET_DEVICE', {
+	name:'harry friday'
+}, function(result) {
+	console.log('DB_GET_DEVICE harry');
+	console.log(result);
+});
+
+rpc.call('DB_DELETE_DEVICE', {
+	_id:'52e03edfb2547c00005b8a27'
+}, function(result) {
+	console.log('DB_DELETE_DEVICE harry');
+	console.log(result);
+});
+
+rpc.call('DB_UPDATE_DEVICE', {
+	condition:{_id:"52e03f8001797800006574c3"},
+	update:{name:"update harry friday"}
+}, function(result) {
+	console.log('DB_UPDATE_DEVICE harry');
 	console.log(result);
 });
 
