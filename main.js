@@ -117,6 +117,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGIN', function(data) {
+		console.log('received login');
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
@@ -151,7 +152,7 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('SIGNUP', function(data) {
+	socket.on('FORGOT', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
 			from : "Onion ✔ <harry@onion.io>", // sender address

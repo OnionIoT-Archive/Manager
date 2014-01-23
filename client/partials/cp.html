@@ -1,5 +1,5 @@
 <div class="container cp-container">
-	<div id="sidebar" ng-controller="NavCtrl as nav">
+	<div id="sidebar" ng-controller="NavCtrl">
 		<div class="navbar navbar-onion">
 			<a class="navbar-brand" href="#"><span class="icon-onion"></span>&nbsp;Onion<sup><sup>CP</sup></sup></a>
 			<form class="form navbar-form navbar-right">
@@ -8,15 +8,15 @@
 		</div>
 
 		<ul class="nav nav-pills nav-stacked">
-			<li ng-repeat="item in nav.tabItems" ng-class="{active: nav.isActive(item.sref)}">
+			<li ng-repeat="item in tabItems" ng-class="{active: isActive(item.sref)}">
 				<a ui-sref="{{item.sref}}"><span ng-if="item.icon!==''" class="fa fa-{{item.icon}}"></span>{{item.title}}</a>
 			</li>
 		</ul>
 
 		<ul class="nav nav-pills nav-stacked nav-logout">
-			<li ng-class="{active: nav.isActive('cp.profile')}">
+			<li ng-class="{active: isActive('cp.profile')}">
 				<a ui-sref="cp.profile">
-					{{nav.userProfile.email}}
+					{{userProfile.email}}
 					<button class="btn pull-right"><span class="fa fa-sign-out"></span></button>
 				</a>
 			</li>
