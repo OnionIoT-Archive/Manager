@@ -2,48 +2,48 @@
 	<div class="login-header">
 		<div class="onion-jumbotron">
 			<h1 class=""><span class="icon-onion"></span>&nbsp;Onion</h1>
-			<p>
-				Please login to access the Management Panel.
-			</p>
+			<p>Please login to access the Management Panel.</p>
 		</div>
 	</div>
 	<div class="login-chevron"></div>
 	<div class="login-body">
 		<form role="form" class="login-form form-horizontal">
-			<div ng-if="login.loginFailed" class="alert alert-danger">
+			<div ng-if="loginFailed" class="alert alert-danger">
 				Login failed, please try again!
 			</div>
 			<div class="form-group">
 				<label for="email" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-envelope-o"></span></label>
 				<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-					<input type="email" class="form-control" id="email" placeholder="Email Address" ng-model="user.email">
+					<input type="email" class="form-control" id="email" placeholder="Email Address" ng-model="email" />
 				</div>
 			</div>
-			<div class="form-group" ng-class="{disabled: login.mode === 'forgot'}">
+			<div class="form-group" ng-class="{disabled: mode === 'forgot'}">
 				<label for="password" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-key"></span></label>
 				<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-					<input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.password" ng-disabled="login.mode === 'forgot'" />
+					<input type="password" class="form-control" id="password" placeholder="Password" ng-model="password" ng-disabled="mode === 'forgot'" />
 				</div>
 			</div>
 			<div class="form-group">
+<<<<<<< HEAD
 				<button ng-if="login.mode === 'login'" type="submit" class="btn btn-default btn-block" ng-click='login.login()'>
+=======
+				<button ng-if="mode === 'login'" type="submit" class="btn btn-default btn-block" ng-click='login()'>
+>>>>>>> eabcd55a04bd8166757c15d8061f5c78d949ee80
 					Login<span class="fa fa-sign-in pull-right"></span>
 				</button>
-				<button ng-if="login.mode === 'signup'" type="submit" class="btn btn-blue btn-block" ng-click='login.authen()'>
+				<button ng-if="mode === 'signup'" type="submit" class="btn btn-blue btn-block" ng-click='login()'>
 					Sign Up<span class="fa fa-user pull-right"></span>
 				</button>
-				<button ng-if="login.mode === 'forgot'" type="submit" class="btn btn-green btn-block" ng-click='login.authen()'>
+				<button ng-if="mode === 'forgot'" type="submit" class="btn btn-green btn-block" ng-click='login()'>
 					Send Password Reset Email<span class="fa fa-lock pull-right"></span>
 				</button>
 			</div>
 		</form>
 		<ul id="login-switch">
-			<li ng-if="login.mode !== 'login'"><a href="#" ng-click="login.switchMode($event, 'login')">Login</a></li>
-			<li ng-if="login.mode !== 'signup'"><a href="#" ng-click="login.switchMode($event, 'signup')">Sign Up</a></li>
-			<li ng-if="login.mode !== 'forgot'"><a href="#" ng-click="login.switchMode($event, 'forgot')">Forgot Password?</a></li>
+			<li ng-if="mode !== 'login'"><a href="#" ng-click="switchMode($event, 'login')">Login</a></li>
+			<li ng-if="mode !== 'signup'"><a href="#" ng-click="switchMode($event, 'signup')">Sign Up</a></li>
+			<li ng-if="mode !== 'forgot'"><a href="#" ng-click="switchMode($event, 'forgot')">Forgot Password?</a></li>
 		</ul>
-		<p>
-			&copy; Onion Corporation 2014
-		</p>
+		<p>&copy; Onion Corporation 2014</p>
 	</div>
 </div>

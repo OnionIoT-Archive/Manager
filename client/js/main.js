@@ -10,7 +10,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     $stateProvider.state('login', {
     	url: '/login',
     	templateUrl: './partials/login.html',
-        controller: 'LoginCtrl as login'
+        controller: 'LoginCtrl'
     });
 
     /*** Control Panel ***/
