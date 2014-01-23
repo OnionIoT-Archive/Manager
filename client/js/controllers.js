@@ -30,12 +30,24 @@ function($scope, $state, socket, sha3, localStorage) {
 	var self = this;
 
 	socket.on('LOGIN_SUCCESS', function (data) {
+		console.log('login success');
 		// Add session token to local storage
 		localStorage.add('OnionSessionToken', data.token);
 		$state.go('/dashboard');
 	});
 
 	socket.on('LOGIN_FAIL', function () {
+		console.log('login fail');
+		self.loginFailed = true;
+	});
+
+	socket.on('SIGNUP_SUCCESS', function () {
+		console.log('signup success');
+		self.loginFailed = true;
+	});
+
+	socket.on('SIGNUP_FAIL', function () {
+		console.log('signup fail');
 		self.loginFailed = true;
 	});
 
