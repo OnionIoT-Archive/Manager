@@ -235,6 +235,9 @@ a:hover {
 	overflow: hidden;
 	border: none;
 }
+	.panel > * {
+		border-radius: 0;
+	}
 	.panel:after {
 		font-size: 100px;
 		position: absolute;
@@ -250,15 +253,31 @@ a:hover {
 		-moz-osx-font-smoothing: grayscale;
 		color: rgba(0, 0, 0, 0.25);
 	}
-	.panel.panel-green {
+
+	.panel.panel-green > .panel-heading {
 		background-color: #19b698;
 		color: #fff;
 	}
-	.panel.panel-blue {
+
+	.panel.panel-blue > .panel-heading {
 		background-color: #4aa3df;
 		color: #fff;
 	}
-	.panel.panel-purple {
+
+	.panel.panel-purple > .panel-heading {
+		background-color: #7761a7;
+		color: #fff;
+	}
+
+	.panel .panel-body-green {
+		background-color: #19b698;
+		color: #fff;
+	}
+	.panel .panel-body-blue {
+		background-color: #4aa3df;
+		color: #fff;
+	}
+	.panel .panel-body-purple {
 		background-color: #7761a7;
 		color: #fff;
 	}
