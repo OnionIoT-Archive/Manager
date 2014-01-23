@@ -137,7 +137,7 @@ socketServer.sockets.on('connection', function(socket) {
 				});
 			} else {
 				console.log('LOGIN_FAILED');
-				socket.emit('LOGIN_FAILED', {
+				socket.emit('LOGIN_FAIL', {
 				});
 			}
 		});
