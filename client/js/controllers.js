@@ -14,8 +14,7 @@ controllers.controller('NavCtrl', ['$scope', '$state', 'tabItems', 'userProfile'
 }]);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService', 'loggedIn', function($scope, $state, socket, sha3, localStorage, loggedIn) {
-	if (loggedIn) $state.go('cp.dashboard');
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService', function($scope, $state, socket, sha3, localStorage) {
 
 	var clearFields = function () {
 		$scope.loginFailed = false;
@@ -50,7 +49,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 		$state.go('cp.dashboard');
 	});
 	socket.on('LOGIN_FAIL', function () {
-		$state.password = '';
+		$scope.password = '';
 		$scope.loginFailed = true;
 	});
 

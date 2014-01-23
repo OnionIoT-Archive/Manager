@@ -11,8 +11,14 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	url: '/login',
     	templateUrl: './partials/login.html',
         resolve: {
-            loggedIn: ['localStorageService', function (localStorage) {
-                return !!localStorage.get('OnionSessionToken');
+            loggedIn: ['localStorageService', 'socket', function (localStorage, socket) {
+                var token = localStorage.get('OnionSessionToken');
+                console.log(token);
+                if (token) {
+                    socket.emit('CHECK_SESSION', {
+                        token: token
+                    });
+                }
             }]
         },
         controller: 'LoginCtrl'
