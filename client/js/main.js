@@ -10,6 +10,11 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     $stateProvider.state('login', {
     	url: '/login',
     	templateUrl: './partials/login.html',
+        resolve: {
+            loggedIn: ['localStorageService', function (localStorage) {
+                return !!localStorage.get('OnionSessionToken');
+            }]
+        },
         controller: 'LoginCtrl'
     });
 

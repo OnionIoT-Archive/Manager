@@ -2,8 +2,7 @@
 
 var controllers = angular.module('manager.controllers', []);
 
-controllers.controller('NavCtrl', ['$scope', '$state', 'tabItems', 'userProfile',
-function($scope, $state, tabItems, userProfile) {
+controllers.controller('NavCtrl', ['$scope', '$state', 'tabItems', 'userProfile', function($scope, $state, tabItems, userProfile) {
 	$scope.tabItems = angular.copy(tabItems);
 
 	$scope.userProfile = angular.copy(userProfile);
@@ -15,42 +14,26 @@ function($scope, $state, tabItems, userProfile) {
 }]);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService',
-function($scope, $state, socket, sha3, localStorage) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService', 'loggedIn', function($scope, $state, socket, sha3, localStorage, loggedIn) {
+	if (loggedIn) $state.go('cp.dashboard');
+
+	var clearFields = function () {
+		$scope.email = '';
+		$scope.password = '';
+	};
 
 	// Switching between Login, Signup and Forgot Password
 	$scope.mode = 'login';
 
 	$scope.switchMode = function ($event, mode) {
-		$event.preventDefault();
-		$scope.email = '';
-		$scope.password = '';
+		if ($event) $event.preventDefault();
+		clearFields();
 		$scope.mode = mode;
-	};
+	};	
 
-	socket.on('LOGIN_SUCCESS', function (data) {
-		console.log('login success');
-		// Add session token to local storage
-		localStorage.add('OnionSessionToken', data.token);
-		$state.go('/dashboard');
-	});
-
-	socket.on('LOGIN_FAIL', function () {
-		console.log('login fail');
-		$scope.loginFailed = true;
-	});
-
-	socket.on('SIGNUP_SUCCESS', function () {
-		console.log('signup success');
-		$scope.loginFailed = true;
-	});
-
-	socket.on('SIGNUP_FAIL', function () {
-		console.log('signup fail');
-		$scope.loginFailed = true;
-	});
-
+	// Login
 	$scope.login = function () {
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('LOGIN', {
@@ -58,8 +41,22 @@ function($scope, $state, socket, sha3, localStorage) {
 			hash: pwHash
 		});
 	};
+	socket.on('LOGIN_SUCCESS', function (data) {
+		clearFields();
+		$scope.loginFailed = false;
+		// Add session token to local storage
+		localStorage.add('OnionSessionToken', data.token);
+		$state.go('cp.dashboard');
+	});
+	socket.on('LOGIN_FAIL', function () {
+		$state.password = '';
+		$scope.loginFailed = true;
+	});
 
+	// Sign Up
 	$scope.signUp = function () {
+		console.log('signing up');
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.emit('SIGNUP', {
@@ -67,21 +64,42 @@ function($scope, $state, socket, sha3, localStorage) {
 			hash: pwHash
 		});
 	};
+	socket.on('SIGNUP_SUCCESS', function () {
+		$scope.signupFailed = false;
+		clearFields();
+		$scope.switchMode(null, 'login');
+	});
+	socket.on('SIGNUP_FAIL', function () {
+		$scope.signupFailed = true;
+		clearFields();
+	});
 
+	// Password Reset
 	$scope.forgotPassword = function () {
+		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		socket.emit('FORGOT_PASSWORD', {
 			email: email
 		});
 	};
+	socket.on('PASSWORD_RESET_SUCCESS', function () {
+		console.log('signup success');
+		$scope.loginFailed = true;
+	});
+	socket.on('PASSWORD_RESET_FAIL', function () {
+		console.log('signup fail');
+		$scope.loginFailed = true;
+	});
 }]);
 
-controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', 
-function ($scope, $state, socket) {
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
 
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket',
-function ($scope, $state, socket) {
+controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
+
+}]);
+
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
 
 }]);
