@@ -254,6 +254,11 @@ a:hover {
 		color: rgba(0, 0, 0, 0.25);
 	}
 
+	.panel.panel-dark > .panel-heading {
+		background-color: #22262e;
+		color: #fff;
+	}
+
 	.panel.panel-green > .panel-heading {
 		background-color: #19b698;
 		color: #fff;
