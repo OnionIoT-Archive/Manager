@@ -39,18 +39,6 @@ var mailOptions = {
 
 var userInfo = {};
 
-function testEmail() {
-	smtpTransport.sendMail(mailOptions, function(error, response) {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log("Message sent: " + response.message);
-		}
-	});
-};
-
-testEmail();
-
 rpc.call('DB_CHECK_TEST', {
 }, function(result) {
 	console.log('DB_CHECK_TEST');
@@ -112,6 +100,9 @@ rpc.call('DB_UPDATE_DEVICE', {
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
+	socket.emit('CONNECTED',{});
+	userInfo.socketId = socket.id;
+
 	socket.emit('news', {
 		hello : 'world'
 	});
@@ -127,7 +118,7 @@ socketServer.sockets.on('connection', function(socket) {
 		}, function(result) {
 			console.log('login harry after rpc');
 			console.log(result);
-			if (result==null) {
+			if (result == null) {
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
 					token : _token
@@ -145,20 +136,17 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('LOGOUT',function(data){
-		rpc.call('DB_DELETE_SESSION',data,function(data){
-			
+	socket.on('LOGOUT', function(data) {
+		rpc.call('DB_DELETE_SESSION', data, function(data) {
+
 		});
 	});
-	
+
 	socket.on('SIGNUP', function(data) {
 		rpc.call('DB_GET_USER', {
 			email : data.email
 		}, function(result) {
-			if (result==null) {
-				socket.emit('SIGNUP_FAIL', {
-				});
-			} else {
+			if (result == "null") {
 				rpc.call('DB_ADD_USER', {
 					email : data.email,
 					passHash : data.hash
@@ -166,18 +154,39 @@ socketServer.sockets.on('connection', function(socket) {
 					socket.emit('SIGNUP_SUCCESS', {
 					});
 				});
+			} else {
+				socket.emit('SIGNUP_FAIL', {
+				});
 			}
 		});
 	});
-	
-	socket.on('CHECK_SESSION',function(data){
-		if(data&&data.token){
-			
-		}else{
-			
+
+	socket.on('CHECK_SESSION', function(data) {
+		if (data && data.token) {
+			rpc.call('', {
+				token : data.token
+			}, function(session) {
+				if (session == 'null') {
+					socket.emit('NO_SESSION', {
+					});
+				} else {
+					//user already login
+					userInfo.token = data.token;
+					userInfo.userId = session.userId;
+					// rpc.call('DB_GET_USER', {
+						// _id : userInfo.userId
+					// }, function(user) {
+						// userInfo.email = user.email;
+						// socket.emit('HAS_SESSION', {
+					// });
+					// });
+				}
+			})
+		} else {
+
 		}
 	});
-	
+
 	socket.on('FORGOT_PASSWORD', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
@@ -198,23 +207,23 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('GET_DEVICE',function(data){
-		rpc.call('DB_GET_DEVICE',data,function(devicLists){
-			socket.emit('DEVICE_LIST',{
-				devices:devicLists
+	socket.on('GET_DEVICE', function(data) {
+		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+			socket.emit('DEVICE_LIST', {
+				devices : devicLists
 			})
 		});
 	});
-	
-	socket.on('ADD_DEVICE',function(data){
-		rpc.call('DB_ADD_DEVICE',data,function(data){
-			
+
+	socket.on('ADD_DEVICE', function(data) {
+		rpc.call('DB_ADD_DEVICE', data, function(data) {
+
 		});
 	});
-	
-	socket.on('REMOVE_DEVICE',function(data){
-		rpc.call('DB_DELETE_DEVICE',data,function(data){
-			
+
+	socket.on('REMOVE_DEVICE', function(data) {
+		rpc.call('DB_DELETE_DEVICE', data, function(data) {
+
 		});
 	});
 });
@@ -227,7 +236,7 @@ expressServer.configure(function() {
 	expressServer.use('/', express.static(__dirname + '/client'));
 
 	expressServer.get('*', function(req, res) {
-		
+
 		res.redirect('/');
 	});
 });
