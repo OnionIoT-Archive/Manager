@@ -51,8 +51,11 @@ function($scope, $state, socket, sha3, localStorage) {
 		self.loginFailed = true;
 	});
 
-	this.login = function (email, password) {
-		email = email.toLowerCase();
+	this.login = function () {
+		console.log($scope.user.email);
+		console.log(self);
+		var email = $scope.user.email.toLowerCase();
+		var password = $scope.user.password;
 		var pwHash = sha3(password);
 		socket.emit('LOGIN', {
 			email: email,

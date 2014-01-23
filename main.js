@@ -7,6 +7,7 @@ var http = require('http');
 var manager = require('./server/main');
 var rpc = require('./server/amqp-rpc/amqp_rpc');
 var nodemailer = require("nodemailer");
+var uuid = require('node-uuid');
 
 // Create servers
 var expressServer = express();
@@ -117,12 +118,19 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGIN', function(data) {
+		console.log('login harry');
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
 		}, function(result) {
 			if (result) {
-				socket.emit('LOGIN_SUCCESS', {
+				var _token = uuid.v1();
+				rpc.call('DB_ADD_SESSION', {
+					token : _token
+				}, function(data) {
+					socket.emit('LOGIN_SUCCESS', {
+						token : data.token
+					});
 				});
 			} else {
 				socket.emit('LOGIN_FAILED', {
@@ -145,13 +153,14 @@ socketServer.sockets.on('connection', function(socket) {
 					passHash : data.hash
 				}, function(result) {
 					socket.emit('SIGNUP_SUCCESS', {
+
 					});
 				});
 			}
 		});
 	});
 
-	socket.on('SIGNUP', function(data) {
+	socket.on('FORGOT_PASSWORD', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
 			from : "Onion ✔ <harry@onion.io>", // sender address
