@@ -27,6 +27,27 @@ var smtpTransport = nodemailer.createTransport("SMTP", {
 	}
 });
 
+// setup e-mail data with unicode symbols
+var mailOptions = {
+	from : "Onion ✔ <harry@onion.io>", // sender address
+	to : "harry@onion.io", // list of receivers
+	subject : "Onion:Reset Passwrd", // Subject line
+	text : "Http://www.onion.io/changethis", // plaintext body
+	html : "<b>Click <a href='#'>here</a> to reset your password</b>" // html body
+}
+
+function testEmail() {
+	smtpTransport.sendMail(mailOptions, function(error, response) {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log("Message sent: " + response.message);
+		}
+	});
+};
+
+testEmail();
+
 rpc.call('DB_CHECK_TEST', {
 }, function(result) {
 	console.log('DB_CHECK_TEST');
@@ -139,8 +160,16 @@ socketServer.sockets.on('connection', function(socket) {
 			text : "Http://www.onion.io/changethis", // plaintext body
 			html : "<b>Click <a href='#'>here</a> to reset your password</b>" // html body
 		}
-	});
 
+		// send mail with defined transport object
+		smtpTransport.sendMail(mailOptions, function(error, response) {
+			if (error) {
+				console.log(error);
+			} else {
+				console.log("Message sent: " + response.message);
+			}
+		});
+	});
 });
 
 /***** HTTP server *****/
