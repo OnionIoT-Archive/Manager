@@ -6,12 +6,11 @@ controllers.controller('NavCtrl', ['$scope', '$state', 'tabItems', 'userProfile'
 function($scope, $state, tabItems, userProfile) {
 	$scope.tabItems = angular.copy(tabItems);
 
-	$scope.userProfile = angular.copy(userProfile);
-
-	console.log($state);
+	this.userProfile = 	$scope.userProfile = angular.copy(userProfile);
+);
 	// Determin whether the current tab is active or not
-	$scope.isActive = function(sref) {
-		return ($state.current.name.search(sref) !== -1) ? true : false;
+	this.isActive = funct	$scope.isActive = function(sref) {
+nt.name.search(sref) !== -1) ? true : false;
 	};
 }]);
 
@@ -20,14 +19,16 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 function($scope, $state, socket, sha3, localStorage) {
 
 	// Switching between Login, Signup and Forgot Password
-	$scope.mode = 'login';
+	this.mode = 'login';
 
-	$scope.switchMode = function ($event, mode) {
-		$event.preventDefault();
-		$scope.mode = mode;
+		$scope.mode = 'login';
+tio	$scope.switchMode = function ($event, mode) {
+
+		this.mode = mode;
 	};
 
-	socket.on('LOGIN_SUCCESS', function (data) {
+	va		$scope.mode = mode;
+ket.on(nction (data) {
 		console.log('login success');
 		// Add session token to local storage
 		localStorage.add('OnionSessionToken', data.token);
@@ -36,41 +37,32 @@ function($scope, $state, socket, sha3, localStorage) {
 
 	socket.on('LOGIN_FAIL', function () {
 		console.log('login fail');
-		$scope.loginFailed = true;
-	});
-
-	socket.on('SIGNUP_SUCCESS', function () {
+		self.logi		$scope.loginFailed = true;
+et.on('SIGNUP_SUCCESS', function () {
 		console.log('signup success');
-		$scope.loginFailed = true;
-	});
-
-	socket.on('SIGNUP_FAIL', function () {
+		self.loginF		$scope.loginFailed = true;
+.on('SIGNUP_FAIL', function () {
 		console.log('signup fail');
-		$scope.loginFailed = true;
-	});
-
-	$scope.login = function () {
+		self.loginFai		$scope.loginFailed = true;
+in = fun	$scope.login = function () {
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		socket.emit('LOGIN', {
 			email: $scope.login.email,
-			hash: pwHash
-		});
-	};
-
-	$scope.signUp = function () {
+GIN', {
+			email: email,
+			ha	$scope.signUp = function () {
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		socket.emit('SIGNUP', {
-			email: $scope.email,
+owerCase();
+		var pwHash = sha3(password);
+		socket.			email: $scope.email,
+			email: email,
 			hash: pwHash
-		});
-	};
-
-	$scope.forgotPassword = function () {
+		$scope.forgotPassword = function () {
 		var email = $scope.email.toLowerCase();
-		socket.emit('FORGOT_PASSWORD', {
-			email: $scope.email
+erCase();
+		socket.emit('FORGOT_PASSWORD', 			email: $scope.email
+l
 		});
 	};
 }]);
