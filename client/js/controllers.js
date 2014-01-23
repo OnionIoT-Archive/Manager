@@ -7,7 +7,7 @@ function($scope, $state, tabItems, userProfile) {
 	$scope.tabItems = angular.copy(tabItems);
 
 	$scope.userProfile = angular.copy(userProfile);
-	
+
 	console.log($state);
 	// Determin whether the current tab is active or not
 	$scope.isActive = function(sref) {
