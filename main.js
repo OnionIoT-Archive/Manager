@@ -155,7 +155,7 @@ socketServer.sockets.on('connection', function(socket) {
 		rpc.call('DB_GET_USER', {
 			email : data.email
 		}, function(result) {
-			if (result) {
+			if (result==null) {
 				socket.emit('SIGNUP_FAIL', {
 				});
 			} else {
@@ -172,6 +172,8 @@ socketServer.sockets.on('connection', function(socket) {
 	
 	socket.on('CHECK_SESSION',function(data){
 		if(data&&data.token){
+			
+		}else{
 			
 		}
 	});
