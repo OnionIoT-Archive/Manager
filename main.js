@@ -65,12 +65,11 @@ socketServer.sockets.on('connection', function(socket) {
 				console.log('result ' + result);
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
-					// token : _token
+					 token : _token
 				}, function(data) {
-					console.log('DB_ADD_SESSION ' + data);
-					console.log('LOGIN_SUCCESS');
+					
 					socket.emit('LOGIN_SUCCESS', {
-						token : data.token
+						token : _token
 					});
 				});
 			} else {
