@@ -39,15 +39,6 @@ var mailOptions = {
 
 var userInfo = {};
 
-rpc.call('DB_ADD_SESSION', {
-}, function(data) {
-	console.log('DB_ADD_SESSION ' + data);
-	console.log('LOGIN_SUCCESS');
-	socket.emit('LOGIN_SUCCESS', {
-		token : data.token
-	});
-});
-
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
@@ -70,7 +61,7 @@ socketServer.sockets.on('connection', function(socket) {
 		}, function(result) {
 			console.log('login harry after rpc');
 			console.log(result);
-			if (result != null) {
+			if (result != 'null') {
 				console.log('result ' + result);
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
