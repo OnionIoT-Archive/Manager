@@ -99,7 +99,9 @@ controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket
 }]);
 
 controllers.controller('CpCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
+	$scope.logout = function () {
 
+	};
 }]);
 
 controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
