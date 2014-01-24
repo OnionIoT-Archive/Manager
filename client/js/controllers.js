@@ -8,6 +8,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 	var clearFields = function () {
 		$scope.loginFailed = false;
 		$scope.signupFailed = false;
+		$scope.pwResetSent = false;
 		$scope.email = '';
 		$scope.password = '';
 	};
@@ -58,7 +59,6 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 	});
 	socket.on('SIGNUP_FAIL', function () {
 		$scope.signupFailed = true;
-		clearFields();
 	});
 
 	// Password Reset
@@ -70,11 +70,9 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 		});
 	};
 	socket.on('PASSWORD_RESET_SUCCESS', function () {
-		console.log('signup success');
-		$scope.loginFailed = true;
+		$scope.pwResetSent = true;
 	});
 	socket.on('PASSWORD_RESET_FAIL', function () {
-		console.log('signup fail');
 		$scope.loginFailed = true;
 	});
 }]);
