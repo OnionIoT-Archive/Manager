@@ -10,23 +10,13 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     $stateProvider.state('login', {
     	url: '/login',
     	templateUrl: './partials/login.html',
-        resolve: {
-            loggedIn: ['localStorageService', 'socket', function (localStorage, socket) {
-                var token = localStorage.get('OnionSessionToken');
-                console.log(token);
-                if (token) {
-                    socket.emit('CHECK_SESSION', {
-                        token: token
-                    });
-                }
-            }]
-        },
         controller: 'LoginCtrl'
     });
 
     /*** Control Panel ***/
     $stateProvider.state('cp', {
         abstract: true,
+        controller: 'CpCtrl',
     	templateUrl: './partials/cp.html'
     });
 

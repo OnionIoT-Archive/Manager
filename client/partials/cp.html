@@ -1,5 +1,5 @@
 <div class="container cp-container">
-	<div id="sidebar" ng-controller="NavCtrl">
+	<div id="sidebar">
 		<div class="navbar navbar-onion">
 			<a class="navbar-brand" href="#"><span class="icon-onion"></span>&nbsp;Onion<sup><sup>CP</sup></sup></a>
 			<form class="form navbar-form navbar-right">
@@ -17,7 +17,7 @@
 			<li ng-class="{active: isActive('cp.profile')}">
 				<a ui-sref="cp.profile">
 					{{userProfile.email}}
-					<button class="btn pull-right"><span class="fa fa-sign-out"></span></button>
+					<button class="btn pull-right" ng-click="logout($event);"><span class="fa fa-sign-out"></span></button>
 				</a>
 			</li>
 		</ul>

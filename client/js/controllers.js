@@ -2,19 +2,8 @@
 
 var controllers = angular.module('manager.controllers', []);
 
-controllers.controller('NavCtrl', ['$scope', '$state', 'tabItems', 'userProfile', function($scope, $state, tabItems, userProfile) {
-	$scope.tabItems = angular.copy(tabItems);
-
-	$scope.userProfile = angular.copy(userProfile);
-
-	// Determin whether the current tab is active or not
-	$scope.isActive = function(sref) {
-		return ($state.current.name.search(sref) !== -1) ? true : false;
-	};
-}]);
-
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'localStorageService', function($scope, $state, socket, sha3, localStorage) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'session', function($scope, $state, socket, sha3, session) {
 
 	var clearFields = function () {
 		$scope.loginFailed = false;
@@ -45,9 +34,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 	socket.on('LOGIN_SUCCESS', function (data) {
 		clearFields();
 		// Add session token to local storage
-		console.log(data);
-		localStorage.add('OnionSessionToken', data.token);
-		$state.go('cp.dashboard');
+		session.login(data.token);
 	});
 	socket.on('LOGIN_FAIL', function () {
 		$scope.password = '';
@@ -96,40 +83,21 @@ controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket
 	$scope.signup = function () {
 		socket.emit('SIGNUP', {});
 	};
-	
-	$scope.login = function () {
-		socket.emit('LOGIN', {});
-	};
-	
-	$scope.logout = function () {
-		socket.emit('LOGOUT', {});
-	};
-	
-	$scope.check_session = function () {
-		socket.emit('CHECK_SESSION', {
-			token:'12334'
-		});
-	};
-	
-	$scope.forgor_password = function () {
-		socket.emit('FORGOT_PASSWORD', {});
-	};
-	$scope.get_device = function () {
-		socket.emit('GET_DEVICE', {});
-	};
-	$scope.add_device = function () {
-		socket.emit('ADD_DEVICE', {});
-	};
-	$scope.remove_device = function () {
-		socket.emit('REMOVE_DEVICE', {});
-	};
-	
-	
 }]);
 
-controllers.controller('CpCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
-	$scope.logout = function () {
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'session', 'tabItems', 'userProfile', function ($scope, $state, socket, session, tabItems, userProfile) {
+	$scope.tabItems = angular.copy(tabItems);
 
+	$scope.userProfile = angular.copy(userProfile);
+
+	// Determin whether the current tab is active or not
+	$scope.isActive = function (sref) {
+		return ($state.current.name.search(sref) !== -1) ? true : false;
+	};
+
+	$scope.logout = function ($event) {
+		$event.preventDefault();
+		session.logout();
 	};
 }]);
 
