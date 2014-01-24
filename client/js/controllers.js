@@ -96,6 +96,35 @@ controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket
 	$scope.signup = function () {
 		socket.emit('SIGNUP', {});
 	};
+	
+	$scope.login = function () {
+		socket.emit('LOGIN', {});
+	};
+	
+	$scope.logout = function () {
+		socket.emit('LOGOUT', {});
+	};
+	
+	$scope.check_session = function () {
+		socket.emit('CHECK_SESSION', {
+			token:'12334'
+		});
+	};
+	
+	$scope.forgor_password = function () {
+		socket.emit('FORGOT_PASSWORD', {});
+	};
+	$scope.get_device = function () {
+		socket.emit('GET_DEVICE', {});
+	};
+	$scope.add_device = function () {
+		socket.emit('ADD_DEVICE', {});
+	};
+	$scope.remove_device = function () {
+		socket.emit('REMOVE_DEVICE', {});
+	};
+	
+	
 }]);
 
 controllers.controller('CpCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {

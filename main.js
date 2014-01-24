@@ -39,19 +39,11 @@ var mailOptions = {
 
 var userInfo = {};
 
-rpc.call('DB_ADD_SESSION', {
-}, function(data) {
-	console.log('DB_ADD_SESSION ' + data);
-	console.log('LOGIN_SUCCESS');
-	socket.emit('LOGIN_SUCCESS', {
-		token : data.token
-	});
-});
-
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
 	socket.emit('CONNECTED', {});
+	
 	userInfo.socketId = socket.id;
 
 	socket.emit('news', {
@@ -70,16 +62,15 @@ socketServer.sockets.on('connection', function(socket) {
 		}, function(result) {
 			console.log('login harry after rpc');
 			console.log(result);
-			if (result != null) {
+			if (result != 'null') {
 				console.log('result ' + result);
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
-					// token : _token
+					 token : _token
 				}, function(data) {
-					console.log('DB_ADD_SESSION ' + data);
-					console.log('LOGIN_SUCCESS');
+					
 					socket.emit('LOGIN_SUCCESS', {
-						token : data.token
+						token : _token
 					});
 				});
 			} else {
@@ -116,10 +107,14 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('CHECK_SESSION', function(data) {
+		
 		if (data && data.token) {
-			rpc.call('', {
+			console.log(data.token);
+			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
+				console.log('check session ');
+				console.log(session);
 				if (session == 'null') {
 					socket.emit('NO_SESSION', {
 					});
@@ -131,8 +126,8 @@ socketServer.sockets.on('connection', function(socket) {
 					// _id : userInfo.userId
 					// }, function(user) {
 					// userInfo.email = user.email;
-					// socket.emit('HAS_SESSION', {
-					// });
+					socket.emit('HAS_SESSION', {
+					});
 					// });
 				}
 			})
