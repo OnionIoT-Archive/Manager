@@ -34,10 +34,13 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 		loggedIn: false
 	};
 
-	$rootScope.$watch('session', function () {
+	var check = function () {
 		if ($rootScope.session.loggedIn === true && $state.current.name === 'login') $state.go('cp.dashboard');
 		else if ($rootScope.session.loggedIn === false && $state.current.name !== 'login') $state.go('login');
-	});
+	};
+
+	$rootScope.$watch('session', check, true);
+	$rootScope.$on('$stateChangeSuccess', check);
 
 	socket.on('HAS_SESSION', function () {
 		$rootScope.session.loggedIn = true;
@@ -48,6 +51,7 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 	});
 
 	var token = localStorageService.get('OnionSessionToken');
+
 	if (token) {
 		socket.on('CONNECTED', function () {
 			socket.emit('CHECK_SESSION', {
@@ -67,7 +71,6 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 	};
 
 	return {
-		session: $rootScope.session,
 		login: login,
 		logout: logout
 	};
