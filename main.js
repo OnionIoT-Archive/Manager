@@ -39,68 +39,19 @@ var mailOptions = {
 
 var userInfo = {};
 
-rpc.call('DB_CHECK_TEST', {
-}, function(result) {
-	console.log('DB_CHECK_TEST');
-	console.log(result);
-});
-
-rpc.call('DB_ADD_USER', {
-	id : 'String',
-	email : 'harry@onion.io',
-	passHash : 'String',
-	status : 'String',
-	devices : ['Array'],
-	date : new Date()
-}, function(result) {
-	console.log('DB_ADD_USER');
-	console.log(result);
-});
-
-rpc.call('DB_ADD_DEVICE', {
-	name : 'harry friday',
-}, function(result) {
-	console.log('DB_ADD_DEVICE');
-	console.log(result);
-});
-
-rpc.call('DB_GET_USER', {
-	email : 'harry@onion.io2'
-}, function(result) {
-	console.log('DB_GET_USER');
-	console.log(result);
-});
-
-rpc.call('DB_GET_DEVICE', {
-	name : 'harry friday'
-}, function(result) {
-	console.log('DB_GET_DEVICE harry');
-	console.log(result);
-});
-
-rpc.call('DB_DELETE_DEVICE', {
-	_id : '52e03edfb2547c00005b8a27'
-}, function(result) {
-	console.log('DB_DELETE_DEVICE harry');
-	console.log(result);
-});
-
-rpc.call('DB_UPDATE_DEVICE', {
-	condition : {
-		_id : "52e03f8001797800006574c3"
-	},
-	update : {
-		name : "update harry friday"
-	}
-}, function(result) {
-	console.log('DB_UPDATE_DEVICE harry');
-	console.log(result);
+rpc.call('DB_ADD_SESSION', {
+}, function(data) {
+	console.log('DB_ADD_SESSION ' + data);
+	console.log('LOGIN_SUCCESS');
+	socket.emit('LOGIN_SUCCESS', {
+		token : data.token
+	});
 });
 
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
-	socket.emit('CONNECTED',{});
+	socket.emit('CONNECTED', {});
 	userInfo.socketId = socket.id;
 
 	socket.emit('news', {
@@ -112,17 +63,20 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('LOGIN', function(data) {
 		console.log('login harry');
+		console.log(data);
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
 		}, function(result) {
 			console.log('login harry after rpc');
 			console.log(result);
-			if (result == null) {
+			if (result != null) {
+				console.log('result ' + result);
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
-					token : _token
+					// token : _token
 				}, function(data) {
+					console.log('DB_ADD_SESSION ' + data);
 					console.log('LOGIN_SUCCESS');
 					socket.emit('LOGIN_SUCCESS', {
 						token : data.token
@@ -174,10 +128,10 @@ socketServer.sockets.on('connection', function(socket) {
 					userInfo.token = data.token;
 					userInfo.userId = session.userId;
 					// rpc.call('DB_GET_USER', {
-						// _id : userInfo.userId
+					// _id : userInfo.userId
 					// }, function(user) {
-						// userInfo.email = user.email;
-						// socket.emit('HAS_SESSION', {
+					// userInfo.email = user.email;
+					// socket.emit('HAS_SESSION', {
 					// });
 					// });
 				}
