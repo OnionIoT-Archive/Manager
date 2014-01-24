@@ -166,13 +166,21 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_DEVICE', function(data) {
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
-
+			socket.emit('ADD_DEVICE_SUCCESS',{});
+		});
+	});
+	
+	socket.on('DB_UPDATE_DEVICE', function(data) {
+		rpc.call('DB_UPDATE_DEVICE', data, function(data) {
+			console.log(data);
+			socket.emit('UPDATE_DEVICE_SUCCESS',{});
 		});
 	});
 
 	socket.on('REMOVE_DEVICE', function(data) {
 		rpc.call('DB_DELETE_DEVICE', data, function(data) {
-
+			console.log(data);
+			socket.emit('REMOVE_DEVICE_SUCCESS',{});
 		});
 	});
 });
