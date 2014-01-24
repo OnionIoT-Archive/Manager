@@ -43,6 +43,7 @@ var userInfo = {};
 
 socketServer.sockets.on('connection', function(socket) {
 	socket.emit('CONNECTED', {});
+	
 	userInfo.socketId = socket.id;
 
 	socket.emit('news', {
@@ -106,10 +107,14 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('CHECK_SESSION', function(data) {
+		
 		if (data && data.token) {
-			rpc.call('', {
+			console.log(data.token);
+			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
+				console.log('check session ');
+				console.log(session);
 				if (session == 'null') {
 					socket.emit('NO_SESSION', {
 					});
@@ -121,8 +126,8 @@ socketServer.sockets.on('connection', function(socket) {
 					// _id : userInfo.userId
 					// }, function(user) {
 					// userInfo.email = user.email;
-					// socket.emit('HAS_SESSION', {
-					// });
+					socket.emit('HAS_SESSION', {
+					});
 					// });
 				}
 			})
