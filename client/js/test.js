@@ -4,15 +4,23 @@ var test = angular.module('manager.test', []);
 
 test.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
 	$scope.signup = function () {
-		socket.emit('SIGNUP', {});
+		socket.emit('SIGNUP', {
+			email:'ha@onion.io',
+			hash:'111'
+		});
 	};
 	
 	$scope.login = function () {
-		socket.emit('LOGIN', {});
+		socket.emit('LOGIN', {
+			email:'bl@onion.io',
+			hash:'5f16f4c7f149ac4f9510d9cf8cf384038ad348b3bcdc01915f95de12df9d1b02'
+		});
 	};
 	
 	$scope.logout = function () {
-		socket.emit('LOGOUT', {});
+		socket.emit('LOGOUT', {
+			token:'fc78a0b0-853d-11e3-8a11-6dcf27baeba9'
+		});
 	};
 	
 	$scope.check_session = function () {

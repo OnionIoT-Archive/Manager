@@ -39,11 +39,15 @@ var mailOptions = {
 
 var userInfo = {};
 
+rpc.call('DB_REMOVE_SESSION', {}, function(data) {
+	console.log('data');
+});
+
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
 	socket.emit('CONNECTED', {});
-	
+
 	userInfo.socketId = socket.id;
 
 	socket.emit('news', {
@@ -54,8 +58,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGIN', function(data) {
-		console.log('login harry');
-		console.log(data);
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
@@ -66,9 +68,9 @@ socketServer.sockets.on('connection', function(socket) {
 				console.log('result ' + result);
 				var _token = uuid.v1();
 				rpc.call('DB_ADD_SESSION', {
-					 token : _token
+					token : _token
 				}, function(data) {
-					
+
 					socket.emit('LOGIN_SUCCESS', {
 						token : _token
 					});
@@ -82,8 +84,9 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGOUT', function(data) {
-		rpc.call('DB_DELETE_SESSION', data, function(data) {
-
+		rpc.call('DB_REMOVE_SESSION', data, function(data) {
+			console.log(data);
+			socket.emit('LOGOUT_SUCCESS', {});
 		});
 	});
 
@@ -107,7 +110,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('CHECK_SESSION', function(data) {
-		
+
 		if (data && data.token) {
 			console.log(data.token);
 			rpc.call('DB_GET_SESSION', {
@@ -166,21 +169,20 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_DEVICE', function(data) {
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
-			socket.emit('ADD_DEVICE_SUCCESS',{});
+			socket.emit('ADD_DEVICE_SUCCESS', {});
 		});
 	});
-	
+
 	socket.on('DB_UPDATE_DEVICE', function(data) {
 		rpc.call('DB_UPDATE_DEVICE', data, function(data) {
 			console.log(data);
-			socket.emit('UPDATE_DEVICE_SUCCESS',{});
+			socket.emit('UPDATE_DEVICE_SUCCESS', {});
 		});
 	});
 
 	socket.on('REMOVE_DEVICE', function(data) {
 		rpc.call('DB_DELETE_DEVICE', data, function(data) {
-			console.log(data);
-			socket.emit('REMOVE_DEVICE_SUCCESS',{});
+			socket.emit('REMOVE_DEVICE_SUCCESS', {});
 		});
 	});
 });
