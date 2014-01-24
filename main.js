@@ -54,8 +54,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGIN', function(data) {
-		console.log('login harry');
-		console.log(data);
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
