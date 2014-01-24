@@ -45,6 +45,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'loca
 	socket.on('LOGIN_SUCCESS', function (data) {
 		clearFields();
 		// Add session token to local storage
+		console.log(data);
 		localStorage.add('OnionSessionToken', data.token);
 		$state.go('cp.dashboard');
 	});
