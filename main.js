@@ -92,7 +92,7 @@ socketServer.sockets.on('connection', function(socket) {
 					email : data.email,
 					passHash : data.hash
 				}, function(result) {
-					socket.emit('SIGNUP_SUCCESS', {
+					socket.emit('SIGNUP_PASS', {
 					});
 				});
 			} else {
