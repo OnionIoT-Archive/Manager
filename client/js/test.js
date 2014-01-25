@@ -25,7 +25,7 @@ test.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
 	
 	$scope.check_session = function () {
 		socket.emit('CHECK_SESSION', {
-			token:'12334'
+			token:'5b4d3020-8614-11e3-90de-d75a85d927ca'
 		});
 	};
 	
