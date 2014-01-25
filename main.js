@@ -163,8 +163,9 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 	
 	socket.on('GET_DEVICE', function(data) {
-		console.log(userInfo.userId);
-		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+		console.log(data);
+		rpc.call('DB_GET_DEVICE2', data, function(devicLists) {
+			console.log('userInfo.userId');
 			socket.emit('DEVICE', {
 				devices : devicLists
 			})
