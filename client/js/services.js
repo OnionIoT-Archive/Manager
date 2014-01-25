@@ -48,9 +48,11 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 
 	socket.on('NO_SESSION', function () {
 		$rootScope.session.loggedIn = false;
+		localStorageService.clearAll();
 	});
 
 	var token = localStorageService.get('OnionSessionToken');
+	console.log(token);
 
 	if (token) {
 		socket.on('CONNECTED', function () {
