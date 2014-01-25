@@ -58,13 +58,13 @@ socketServer.sockets.on('connection', function(socket) {
 			email : data.email,
 			passHash : data.hash
 		}, function(result) {
-			if (result != 'null') {
+			if (result != null) {
 				var _token = uuid.v1();
-				var _result = JSON.parse(result);
-				if(!userInfo.userId) userInfo.userId = _result._id;
+				//var _result = JSON.parse(result);
+				if(!userInfo.userId) userInfo.userId = result._id;
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
-					userId:_result._id
+					userId:result._id
 				}, function(data) {
 					socket.emit('LOGIN_PASS', {
 						token : _token
@@ -79,7 +79,7 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('LOGOUT', function(data) {
 		rpc.call('DB_REMOVE_SESSION', data, function(data) {
-			socket.emit('LOGOUT_SUCCESS', {});
+			socket.emit('LOGOUT_PASS', {});
 		});
 	});
 
@@ -87,7 +87,7 @@ socketServer.sockets.on('connection', function(socket) {
 		rpc.call('DB_GET_USER', {
 			email : data.email
 		}, function(result) {
-			if (result == "null") {
+			if (result == null) {
 				rpc.call('DB_ADD_USER', {
 					email : data.email,
 					passHash : data.hash
@@ -108,18 +108,22 @@ socketServer.sockets.on('connection', function(socket) {
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
-				if (session == 'null') {
-					socket.emit('NO_SESSION', {
+				
+				if (session == null) {
+					socket.emit('CHECK_SESSION_FAIL', {
 					});
 				} else {
 					//user already login
+					
 					userInfo.token = data.token;
-					if(!userInfo.userId)userInfo.userId = session.userId;
+					if(session&&session.userId)userInfo.userId = session.userId;
+					console.log(session.userId);
+					//console.log(userInfo);
 					// rpc.call('DB_GET_USER', {
 					// _id : userInfo.userId
 					// }, function(user) {
 					// userInfo.email = user.email;
-					socket.emit('HAS_SESSION', {
+					socket.emit('CHECK_SESSION_PASS', {
 					});
 					// });
 				}
@@ -128,7 +132,7 @@ socketServer.sockets.on('connection', function(socket) {
 
 		}
 	});
-
+	
 	socket.on('FORGOT_PASSWORD', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
@@ -150,6 +154,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('GET_DEVICE_LIST', function(data) {
+		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('DEVICE_LIST', {
 				devices : devicLists
@@ -167,6 +172,8 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_DEVICE', function(data) {
+		console.log(userInfo.userId);
+		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_SUCCESS', {});
 		});
@@ -183,6 +190,7 @@ socketServer.sockets.on('connection', function(socket) {
 			socket.emit('REMOVE_DEVICE_SUCCESS', {});
 		});
 	});
+
 });
 
 /***** HTTP server *****/
