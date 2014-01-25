@@ -29,54 +29,70 @@ services.constant('userProfile', {
 	email: 'bl@onion.io'
 });
 
-services.factory('session', ['$rootScope', '$state', 'localStorageService', 'socket', function ($rootScope, $state, localStorageService, socket) {
-	$rootScope.session = {
-		loggedIn: false
-	};
+services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket', 'sha3', function ($rootScope, $state, localStorageService, socket, sha3) {
+	$rootScope.loggedIn = false;
 
 	// Callbacks to check if system still logged in and log out if not
 	var check = function () {
-		if ($rootScope.session.loggedIn === true && $state.current.name === 'login') $state.go('cp.dashboard');
-		else if ($rootScope.session.loggedIn === false && $state.current.name !== 'login') $state.go('login');
+		if ($rootScope.loggedIn === true && $state.current.name === 'login') $state.go('cp.dashboard');
+		else if ($rootScope.loggedIn === false && $state.current.name !== 'login') $state.go('login');
 	};
-	$rootScope.$watch('session', check, true);
+
+	$rootScope.$watch('loggedIn', check);
 	$rootScope.$on('$stateChangeSuccess', check);
-
-	socket.on('HAS_SESSION', function () {
-		$rootScope.session.loggedIn = true;
-	});
-
-	socket.on('NO_SESSION', function () {
-		$rootScope.session.loggedIn = false;
-		localStorageService.clearAll();
-	});
 
 	// Get token and check against server to see if session has expired
 	var token = localStorageService.get('OnionSessionToken');
 	if (token) {
 		socket.on('CONNECTED', function () {
-			socket.emit('CHECK_SESSION', {
+			socket.removeAllListeners('CONNECTED');
+
+			socket.rpc('CHECK_SESSION', {
 				token: token
+			}, function () {
+				$rootScope.$apply(function () {
+					$rootScope.loggedIn = true;
+				});
+			}, function () {
+				$rootScope.$apply(function () {
+					$rootScope.loggedIn = false;
+					localStorageService.clearAll();
+				});
 			});
 		});
 	}
 
-	var login = function (token) {
-		localStorageService.add('OnionSessionToken', token);
-		$rootScope.session.loggedIn = true;
-	};
+	var login = function (email, password, passCallback, failCallback) {
+		if (!passCallback) passCallback = angular.noop;
+		if (!failCallback) passCallback = angular.noop;
+		var passwordHash = sha3(password);
 
-	var logout = function () {
-		var token = localStorageService.get('OnionSessionToken');
-		socket.emit('LOGOUT', {
-			token: token
+		socket.rpc('LOGIN', {
+			email: email,
+			hash: passwordHash
+		}, function (data) {
+			$rootScope.$apply(function () {
+				localStorageService.add('OnionSessionToken', data.token);
+				$rootScope.loggedIn = true;
+				passCallback();
+			});
+		}, function (data) {
+			$rootScope.$apply(function () {
+				failCallback();
+			});
 		});
 	};
 
-	socket.on('LOGOUT_SUCCESS', function () {
-		localStorageService.clearAll();
-		$rootScope.session.loggedIn = false;
-	});
+	var logout = function () {
+		socket.rpc('LOGOUT', {
+			token: token
+		}, function () {
+			$rootScope.$apply(function () {
+				localStorageService.clearAll();
+				$rootScope.loggedIn = false;
+			});
+		});
+	};
 
 	return {
 		login: login,
@@ -96,19 +112,22 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 					});
 				});
 			},
+			removeAllListeners: socket.removeAllListeners,
 			emit: function (eventName, data, callback) {
+				if (!callback) callback = angular.noop;
 				socket.emit(eventName, data, function () {
 					var args = arguments;
 					$rootScope.$apply(function () {
-						if (callback) {
-							callback.apply(socket, args);
-						}
+						callback.apply(socket, args);
 					});
 				})
 			},
 			rpc: function (functionName, data, callback, passCallback, failCallback) {
 				// callback is optional 
-				if (!failCallback) {
+				if (!passCallback) {
+					passCallback = callback;
+					callback = angular.noop;
+				} else if (!failCallback) {
 					failCallback = passCallback;
 					passCallback = callback;
 					callback = angular.noop;

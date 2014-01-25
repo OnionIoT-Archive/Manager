@@ -3,7 +3,7 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'session', function($scope, $state, socket, sha3, session) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
 
 	var clearFields = function () {
 		$scope.loginFailed = false;
@@ -27,15 +27,10 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 	$scope.login = function () {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
-		var pwHash = sha3($scope.password);
+		var password = $scope.password;
 
-		socket.rpc('LOGIN', {
-			email: email,
-			hash: pwHash
-		}, function (data) {
+		auth.login(email, password, function () {
 			clearFields();
-			// Add session token to local storage
-			session.login(data.token);
 		}, function () {
 			$scope.password = '';
 			$scope.loginFailed = true;
@@ -44,7 +39,6 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 
 	// Sign Up
 	$scope.signUp = function () {
-		console.log('signing up');
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
@@ -61,19 +55,17 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 	};
 
 	// Password Reset
-	$scope.forgotPassword = function () {
+	$scope.passwordReset = function () {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
-		socket.emit('FORGOT_PASSWORD', {
+		socket.emit('PWRESET', {
 			email: email
+		}, function () {
+			$scope.pwResetSent = true;
+		}, function () {
+			$scope.pwResetSent = false;
 		});
 	};
-	socket.on('PASSWORD_RESET_SUCCESS', function () {
-		$scope.pwResetSent = true;
-	});
-	socket.on('PASSWORD_RESET_FAIL', function () {
-		$scope.loginFailed = true;
-	});
 }]);
 
 controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
@@ -82,7 +74,7 @@ controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket
 	};
 }]);
 
-controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'session', 'tabItems', 'userProfile', function ($scope, $state, socket, session, tabItems, userProfile) {
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItems', 'userProfile', function ($scope, $state, socket, auth, tabItems, userProfile) {
 	$scope.tabItems = angular.copy(tabItems);
 
 	$scope.userProfile = angular.copy(userProfile);
@@ -93,8 +85,9 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'session', 'tabI
 	};
 
 	$scope.logout = function ($event) {
+		$event.stopPropagation();
 		$event.preventDefault();
-		session.logout();
+		auth.logout();
 	};
 }]);
 
