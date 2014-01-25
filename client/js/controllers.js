@@ -27,20 +27,19 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		socket.emit('LOGIN', {
+
+		socket.rpc('LOGIN', {
 			email: email,
 			hash: pwHash
+		}, function (data) {
+			clearFields();
+			// Add session token to local storage
+			session.login(data.token);
+		}, function (data) {
+			$scope.password = '';
+			$scope.loginFailed = true;
 		});
 	};
-	socket.on('LOGIN_SUCCESS', function (data) {
-		clearFields();
-		// Add session token to local storage
-		session.login(data.token);
-	});
-	socket.on('LOGIN_FAIL', function () {
-		$scope.password = '';
-		$scope.loginFailed = true;
-	});
 
 	// Sign Up
 	$scope.signUp = function () {

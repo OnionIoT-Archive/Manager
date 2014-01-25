@@ -34,11 +34,11 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 		loggedIn: false
 	};
 
+	// Callbacks to check if system still logged in and log out if not
 	var check = function () {
 		if ($rootScope.session.loggedIn === true && $state.current.name === 'login') $state.go('cp.dashboard');
 		else if ($rootScope.session.loggedIn === false && $state.current.name !== 'login') $state.go('login');
 	};
-
 	$rootScope.$watch('session', check, true);
 	$rootScope.$on('$stateChangeSuccess', check);
 
@@ -51,9 +51,8 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 		localStorageService.clearAll();
 	});
 
+	// Get token and check against server to see if session has expired
 	var token = localStorageService.get('OnionSessionToken');
-	console.log(token);
-
 	if (token) {
 		socket.on('CONNECTED', function () {
 			socket.emit('CHECK_SESSION', {
@@ -106,6 +105,33 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 						}
 					});
 				})
+			},
+			rpc: function (functionName, data, callback, passCallback, failCallback) {
+				// callback is optional 
+				if (!failCallback) {
+					failCallback = passCallback;
+					passCallback = callback;
+					callback = angular.noop;
+				}
+
+				var removeListeners = function () {
+					socket.removeAllListeners('functionName' + '_PASS');
+					socket.removeAllListeners('functionName' + '_FAIL');
+				};
+
+				socket.on(functionName + '_PASS', function (data) {
+					console.log('pass');
+					passCallback(data);
+					removeListeners();
+				});
+
+				socket.on(functionName + '_FAIL', function (data) {
+					console.log('pass');
+					failCallback(data);
+					removeListeners();
+				});
+
+				socket.emit(functionName, data);
 			}
 		};
 	}
