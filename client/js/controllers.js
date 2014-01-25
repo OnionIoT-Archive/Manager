@@ -16,8 +16,9 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 	// Switching between Login, Signup and Forgot Password
 	$scope.mode = 'login';
 
-	$scope.switchMode = function ($event, mode) {
+	$scope.switchMode = function (mode, $event) {
 		if ($event) $event.preventDefault();
+
 		clearFields();
 		$scope.mode = mode;
 	};	
@@ -35,7 +36,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 			clearFields();
 			// Add session token to local storage
 			session.login(data.token);
-		}, function (data) {
+		}, function () {
 			$scope.password = '';
 			$scope.loginFailed = true;
 		});
@@ -47,18 +48,17 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'sha3', 'sess
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		socket.emit('SIGNUP', {
+
+		socket.rpc('SIGNUP', {
 			email: email,
 			hash: pwHash
-		});
+		}, function () {
+			clearFields();
+			$scope.switchMode('login');
+		}, function () {
+			$scope.signupFailed = true;
+		})
 	};
-	socket.on('SIGNUP_SUCCESS', function () {
-		clearFields();
-		$scope.switchMode(null, 'login');
-	});
-	socket.on('SIGNUP_FAIL', function () {
-		$scope.signupFailed = true;
-	});
 
 	// Password Reset
 	$scope.forgotPassword = function () {

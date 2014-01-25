@@ -120,13 +120,11 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 				};
 
 				socket.on(functionName + '_PASS', function (data) {
-					console.log('pass');
 					passCallback(data);
 					removeListeners();
 				});
 
 				socket.on(functionName + '_FAIL', function (data) {
-					console.log('pass');
 					failCallback(data);
 					removeListeners();
 				});
