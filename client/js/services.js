@@ -66,9 +66,16 @@ services.factory('session', ['$rootScope', '$state', 'localStorageService', 'soc
 	};
 
 	var logout = function () {
+		var token = localStorageService.get('OnionSessionToken');
+		socket.emit('LOGOUT', {
+			token: token
+		});
+	};
+
+	socket.on('LOGOUT_SUCCESS', function () {
 		localStorageService.clearAll();
 		$rootScope.session.loggedIn = false;
-	};
+	});
 
 	return {
 		login: login,
