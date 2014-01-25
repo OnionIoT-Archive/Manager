@@ -39,10 +39,6 @@ var mailOptions = {
 
 var userInfo = {};
 
-rpc.call('DB_REMOVE_SESSION', {}, function(data) {
-	console.log('data');
-});
-
 /***** WebSocket server *****/
 
 socketServer.sockets.on('connection', function(socket) {
@@ -63,21 +59,18 @@ socketServer.sockets.on('connection', function(socket) {
 			passHash : data.hash
 		}, function(result) {
 			if (result != 'null') {
-				console.log('result ' + result);
 				var _token = uuid.v1();
-				console.log('result._id');
 				var _result = JSON.parse(result);
+				if(!userInfo.userId) userInfo.userId = _result._id;
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId:_result._id
 				}, function(data) {
-
-					socket.emit('LOGIN_SUCCESS', {
+					socket.emit('LOGIN_PASS', {
 						token : _token
 					});
 				});
 			} else {
-				console.log('LOGIN_FAILED');
 				socket.emit('LOGIN_FAIL', {
 				});
 			}
@@ -86,7 +79,6 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('LOGOUT', function(data) {
 		rpc.call('DB_REMOVE_SESSION', data, function(data) {
-			console.log(data);
 			socket.emit('LOGOUT_SUCCESS', {});
 		});
 	});
@@ -113,19 +105,16 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('CHECK_SESSION', function(data) {
 
 		if (data && data.token) {
-			console.log(data.token);
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
-				console.log('check session ');
-				console.log(session);
 				if (session == 'null') {
 					socket.emit('NO_SESSION', {
 					});
 				} else {
 					//user already login
 					userInfo.token = data.token;
-					userInfo.userId = session.userId;
+					if(!userInfo.userId)userInfo.userId = session.userId;
 					// rpc.call('DB_GET_USER', {
 					// _id : userInfo.userId
 					// }, function(user) {
@@ -169,6 +158,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 	
 	socket.on('GET_DEVICE', function(data) {
+		console.log(userInfo.userId);
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('DEVICE', {
 				devices : devicLists
@@ -184,7 +174,6 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('DB_UPDATE_DEVICE', function(data) {
 		rpc.call('DB_UPDATE_DEVICE', data, function(data) {
-			console.log(data);
 			socket.emit('UPDATE_DEVICE_SUCCESS', {});
 		});
 	});
