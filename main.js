@@ -62,13 +62,14 @@ socketServer.sockets.on('connection', function(socket) {
 			email : data.email,
 			passHash : data.hash
 		}, function(result) {
-			console.log('login harry after rpc');
-			console.log(result);
 			if (result != 'null') {
 				console.log('result ' + result);
 				var _token = uuid.v1();
+				console.log('result._id');
+				var _result = JSON.parse(result);
 				rpc.call('DB_ADD_SESSION', {
-					token : _token
+					token : _token,
+					userId:_result._id
 				}, function(data) {
 
 					socket.emit('LOGIN_SUCCESS', {
@@ -159,9 +160,17 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('GET_DEVICE', function(data) {
+	socket.on('GET_DEVICE_LIST', function(data) {
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('DEVICE_LIST', {
+				devices : devicLists
+			})
+		});
+	});
+	
+	socket.on('GET_DEVICE', function(data) {
+		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+			socket.emit('DEVICE', {
 				devices : devicLists
 			})
 		});
