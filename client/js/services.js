@@ -38,7 +38,7 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 		else if ($rootScope.loggedIn === false && $state.current.name !== 'login') $state.go('login');
 	};
 
-	$rootScope.$watch('loggedIn', check, true);
+	$rootScope.$watch('loggedIn', check);
 	$rootScope.$on('$stateChangeSuccess', check);
 
 	// Get token and check against server to see if session has expired
@@ -50,10 +50,14 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 			socket.rpc('CHECK_SESSION', {
 				token: token
 			}, function () {
-				$rootScope.session.loggedIn = true;
+				$rootScope.$apply(function () {
+					$rootScope.loggedIn = true;
+				});
 			}, function () {
-				$rootScope.session.loggedIn = false;
-				localStorageService.clearAll();
+				$rootScope.$apply(function () {
+					$rootScope.loggedIn = false;
+					localStorageService.clearAll();
+				});
 			});
 		});
 	}
@@ -67,11 +71,15 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 			email: email,
 			hash: passwordHash
 		}, function (data) {
-			localStorageService.add('OnionSessionToken', data.token);
-			$rootScope.loggedIn = true;
-			passCallback();
+			$rootScope.$apply(function () {
+				localStorageService.add('OnionSessionToken', data.token);
+				$rootScope.loggedIn = true;
+				passCallback();
+			});
 		}, function (data) {
-			failCallback();
+			$rootScope.$apply(function () {
+				failCallback();
+			});
 		});
 	};
 
@@ -79,8 +87,10 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 		socket.rpc('LOGOUT', {
 			token: token
 		}, function () {
-			localStorageService.clearAll();
-			$rootScope.loggedIn = false;
+			$rootScope.$apply(function () {
+				localStorageService.clearAll();
+				$rootScope.loggedIn = false;
+			});
 		});
 	};
 
@@ -104,12 +114,11 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 			},
 			removeAllListeners: socket.removeAllListeners,
 			emit: function (eventName, data, callback) {
+				if (!callback) callback = angular.noop;
 				socket.emit(eventName, data, function () {
 					var args = arguments;
 					$rootScope.$apply(function () {
-						if (callback) {
-							callback.apply(socket, args);
-						}
+						callback.apply(socket, args);
 					});
 				})
 			},
@@ -118,9 +127,7 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 				if (!passCallback) {
 					passCallback = callback;
 					callback = angular.noop;
-				}
-
-				if (!failCallback) {
+				} else if (!failCallback) {
 					failCallback = passCallback;
 					passCallback = callback;
 					callback = angular.noop;
