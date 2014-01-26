@@ -153,7 +153,7 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('GET_DEVICE_LIST', function(data) {
+	socket.on('LIST_DEVICES', function(data) {
 		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('DEVICE_LIST', {
@@ -163,8 +163,10 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 	
 	socket.on('GET_DEVICE', function(data) {
-		console.log(userInfo.userId);
+		console.log(data);
+		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+			console.log('userInfo.userId');
 			socket.emit('DEVICE', {
 				devices : devicLists
 			})
