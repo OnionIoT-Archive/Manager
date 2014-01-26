@@ -122,15 +122,15 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 					});
 				})
 			},
-			rpc: function (functionName, data, callback, passCallback, failCallback) {
-				// callback is optional 
-				if (!passCallback) {
-					passCallback = callback;
-					callback = angular.noop;
-				} else if (!failCallback) {
+			rpc: function (functionName, data, passCallback, failCallback) {
+				if (typeof data === 'function') {
 					failCallback = passCallback;
-					passCallback = callback;
-					callback = angular.noop;
+					passCallback = data;
+					data = {};
+				}
+
+				if (!failCallback) {
+					failCallback = angular.noop;
 				}
 
 				var removeListeners = function () {
