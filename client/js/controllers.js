@@ -95,7 +95,9 @@ controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', functio
 	$scope.devices = [];
 
 	socket.rpc('LIST_DEVICES', function (data) {
-		console.log(data);
+		$scope.$apply(function () {
+			$scope.devices = JSON.parse(data.devices);
+		});
 	});
 }]);
 
