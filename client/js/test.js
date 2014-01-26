@@ -42,7 +42,7 @@ test.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
 			date : new Date(),
 			userId : 'uer id',
 			status : 'status',
-			mata : {
+			meta : {
 				name:'meta name',
 				description:'meta description',
 				location:'meta location',
