@@ -92,7 +92,11 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItem
 }]);
 
 controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
+	$scope.devices = [];
 
+	socket.rpc('LIST_DEVICES', function (data) {
+		console.log(data);
+	});
 }]);
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
