@@ -36,25 +36,18 @@ test.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
 		socket.emit('GET_DEVICE', {});
 	};
 	$scope.add_device = function() {
-		var _endpoint = {
-			on : {
-				type : 'function',
-				value : 1,
-				method : 'GET'
-			},
-			off : {
-				type : 'function',
-				value : 2,
-				method : 'GET'
-			}
-		}
 		socket.emit('ADD_DEVICE', {
-			id : 'String',
-			key : 'String',
-			endpoint : _endpoint,
-			name : 'String',
+			id : 'id is here',
+			key : 'key is here',
 			date : new Date(),
-			userId : 'String'
+			userId : 'uer id',
+			status : 'status',
+			mata : {
+				name:'meta name',
+				description:'meta description',
+				location:'meta location',
+				deviceType:'meta deviceType'
+			}
 		});
 	};
 
