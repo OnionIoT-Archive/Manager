@@ -156,7 +156,7 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('LIST_DEVICES', function(data) {
 		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			console.log(typeof devicLists);
+			console.log(devicLists);
 			socket.emit('LIST_DEVICES_PASS', {
 				devices : devicLists
 			})

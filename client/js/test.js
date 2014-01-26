@@ -33,13 +33,16 @@ test.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
 		socket.emit('FORGOT_PASSWORD', {});
 	};
 	$scope.get_device = function () {
-		socket.emit('GET_DEVICE', {});
+		socket.emit('LIST_DEVICES', {});
+		socket.on('LIST_DEVICES_PASS', function(data){
+			console.log(data);
+		});
 	};
 	$scope.add_device = function() {
 		socket.emit('ADD_DEVICE', {
 			id : 'id is here',
 			key : 'key is here',
-			date : new Date(),
+			lastUpdate : new Date(),
 			userId : 'uer id',
 			status : 'status',
 			meta : {
