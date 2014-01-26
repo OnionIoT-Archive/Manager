@@ -102,54 +102,82 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 
 services.factory('socket', ['$rootScope', function ($rootScope) {
 	if (angular.isDefined(window.io)) {
+		var cache = {};
+
 		var socket = io.connect();
-		return {
-			on: function (eventName, callback) {
-				socket.on(eventName, function () {  
-					var args = arguments;
-					$rootScope.$apply(function () {
-						callback.apply(socket, args);
-					});
+
+		var on = function (eventName, callback) {
+			socket.on(eventName, function () {  
+				var args = arguments;
+				$rootScope.$apply(function () {
+					callback.apply(socket, args);
 				});
-			},
-			removeAllListeners: socket.removeAllListeners,
-			emit: function (eventName, data, callback) {
-				if (!callback) callback = angular.noop;
-				socket.emit(eventName, data, function () {
-					var args = arguments;
-					$rootScope.$apply(function () {
-						callback.apply(socket, args);
-					});
-				})
-			},
-			rpc: function (functionName, data, passCallback, failCallback) {
-				if (typeof data === 'function') {
-					failCallback = passCallback;
-					passCallback = data;
-					data = {};
-				}
+			});
+		};
 
-				if (!failCallback) {
-					failCallback = angular.noop;
-				}
-
-				var removeListeners = function () {
-					socket.removeAllListeners('functionName' + '_PASS');
-					socket.removeAllListeners('functionName' + '_FAIL');
-				};
-
-				socket.on(functionName + '_PASS', function (data) {
-					passCallback(data);
-					removeListeners();
+		var emit = function (eventName, data, callback) {
+			if (!callback) callback = angular.noop;
+			socket.emit(eventName, data, function () {
+				var args = arguments;
+				$rootScope.$apply(function () {
+					callback.apply(socket, args);
 				});
+			})
+		};
 
-				socket.on(functionName + '_FAIL', function (data) {
-					failCallback(data);
-					removeListeners();
-				});
-
-				socket.emit(functionName, data);
+		var rpc = function (functionName, data, passCallback, failCallback) {
+			if (typeof data === 'function') {
+				failCallback = passCallback;
+				passCallback = data;
+				data = {};
 			}
+
+			if (!failCallback) {
+				failCallback = angular.noop;
+			}
+
+			var removeListeners = function () {
+				socket.removeAllListeners('functionName' + '_PASS');
+				socket.removeAllListeners('functionName' + '_FAIL');
+			};
+
+			socket.on(functionName + '_PASS', function (data) {
+				passCallback(data);
+				removeListeners();
+			});
+
+			socket.on(functionName + '_FAIL', function (data) {
+				failCallback(data);
+				removeListeners();
+			});
+
+			socket.emit(functionName, data);
+		};
+
+		var rpcCached = function (functionName, data, refresh) {
+			var temp = {};
+			data = data || {};
+			refresh = refresh || false;
+
+			// Fetch data from remote only if cache unavailable or if refresh is true
+			if (refresh || cache[functionName] === undefined) {
+				rpc(functionName, data, function (data) {
+					cache[functionName] = data;
+					temp = data;
+				});
+			} else {
+				temp = cache[functionName];
+			}
+
+			return temp;
+		};
+
+		return {
+			on: on,
+			emit: emit,
+			rpc: rpc,
+			rpcCached: rpcCached,
+			removeAllListeners: socket.removeAllListeners
 		};
 	}
 }]);

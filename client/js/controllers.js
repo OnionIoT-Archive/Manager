@@ -91,15 +91,11 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItem
 	};
 }]);
 
-controllers.controller('DevicesListCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
-	$scope.devices = [];
-
-	socket.rpc('LIST_DEVICES', function (data) {
-		$scope.$apply(function () {
-			$scope.devices = JSON.parse(data.devices);
-			console.log($scope.devices);
-		});
-	});
+controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
+	$scope.devices = socket.rpcCached('LIST_DEVICES');
+	$timeout(function () {
+		console.log($scope.devices);
+	}, 3000);
 }]);
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {

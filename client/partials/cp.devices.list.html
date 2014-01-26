@@ -34,12 +34,12 @@
 				<tr ng-repeat="device in devices">
 					<td class="listing-checkbox"><input type="checkbox" /></td>
 					<td class="listing-name">
-						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device._id})">{{device.name}}</a>
+						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device._id})">{{device.meta.name}}</a>
 					</td>
-					<td class="listing-id"><a ng-href="http://api.onion.io/{{device.id}}">{{device.id}}</a></td>
-					<td class="listing-description">{{device.id}}</td>
-					<td class="listing-status">{{device.id}}</td>
-					<td class="listing-last">{{device.date}}</td>
+					<td class="listing-id"><a ng-href="http://api.onion.io/{{device.id}}">{{device._id}}</a></td>
+					<td class="listing-description">{{device.meta.description}}</td>
+					<td class="listing-status">{{device.status}}</td>
+					<td class="listing-last">{{device.lastUpdate}}</td>
 				</tr>
 			</tbody>
 		</table>
