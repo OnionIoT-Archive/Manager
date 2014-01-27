@@ -61,10 +61,11 @@ socketServer.sockets.on('connection', function(socket) {
 			if (result != null) {
 				var _token = uuid.v1();
 				//var _result = JSON.parse(result);
-				if(!userInfo.userId) userInfo.userId = result._id;
+				if (!userInfo.userId)
+					userInfo.userId = result._id;
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
-					userId:result._id
+					userId : result._id
 				}, function(data) {
 					socket.emit('LOGIN_PASS', {
 						token : _token
@@ -108,31 +109,23 @@ socketServer.sockets.on('connection', function(socket) {
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
-				
+
 				if (session == null) {
 					socket.emit('CHECK_SESSION_FAIL', {
 					});
 				} else {
-					//user already login
-					
 					userInfo.token = data.token;
-					if(session&&session.userId)userInfo.userId = session.userId;
-					console.log(session.userId);
-					//console.log(userInfo);
-					// rpc.call('DB_GET_USER', {
-					// _id : userInfo.userId
-					// }, function(user) {
-					// userInfo.email = user.email;
+					if (session && session.userId)
+						userInfo.userId = session.userId;
 					socket.emit('CHECK_SESSION_PASS', {
 					});
-					// });
 				}
 			})
 		} else {
 
 		}
 	});
-	
+
 	socket.on('FORGOT_PASSWORD', function(data) {
 		// setup e-mail data with unicode symbols
 		var mailOptions = {
@@ -154,21 +147,23 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LIST_DEVICES', function(data) {
-		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
+		if (userInfo && userInfo.userId)
+			data.userId = userInfo.userId;
+		console.log(data);
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			console.log(devicLists);
 			socket.emit('LIST_DEVICES_PASS', {
 				devices : devicLists
 			})
 		});
 	});
-	
+
 	socket.on('GET_DEVICE', function(data) {
 		console.log(data);
-		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
+		if (userInfo && userInfo.userId)
+			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicList) {
 			console.log(devicList);
-			socket.emit('DEVICE', {
+			socket.emit('GET_DEVICE_PASS', {
 				devices : devicList
 			})
 		});
@@ -176,7 +171,8 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_DEVICE', function(data) {
 		console.log(userInfo.userId);
-		if(userInfo&&userInfo.userId)data.userId = userInfo.userId;
+		if (userInfo && userInfo.userId)
+			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_SUCCESS', {});
 		});
@@ -193,7 +189,6 @@ socketServer.sockets.on('connection', function(socket) {
 			socket.emit('REMOVE_DEVICE_SUCCESS', {});
 		});
 	});
-
 });
 
 /***** HTTP server *****/
@@ -202,9 +197,7 @@ socketServer.sockets.on('connection', function(socket) {
 expressServer.configure(function() {
 	expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
-
 	expressServer.get('*', function(req, res) {
-
 		res.redirect('/');
 	});
 });
