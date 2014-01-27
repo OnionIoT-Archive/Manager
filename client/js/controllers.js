@@ -98,6 +98,7 @@ function($scope, $state, socket, auth, tabItems, userProfile) {
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
 	$scope.devices = [];
 	socket.rpcCached('LIST_DEVICES', function (data) {
+		console.log(data);
 		$scope.devices = data;
 	});
 
