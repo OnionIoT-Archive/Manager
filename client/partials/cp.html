@@ -8,7 +8,7 @@
 		</div>
 
 		<ul class="nav nav-pills nav-stacked">
-			<li ng-repeat="item in tabItems" ng-class="{active: isActive(item.sref)}">
+			<li ng-repeat="item in tabItems" ng-class="{active: isActive(item.root)}">
 				<a ui-sref="{{item.sref}}"><span ng-if="item.icon!==''" class="fa fa-{{item.icon}}"></span>{{item.title}}</a>
 			</li>
 		</ul>

@@ -84,8 +84,8 @@ function($scope, $state, socket, auth, tabItems, userProfile) {
 	$scope.userProfile = angular.copy(userProfile);
 
 	// Determin whether the current tab is active or not
-	$scope.isActive = function(sref) {
-		return ($state.current.name.search(sref) !== -1) ? true : false;
+	$scope.isActive = function (root) {
+		return ($state.current.name.search(root) !== -1) ? true : false;
 	};
 
 	$scope.logout = function($event) {
@@ -95,21 +95,41 @@ function($scope, $state, socket, auth, tabItems, userProfile) {
 	};
 }]);
 
-controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
-function($scope, $timeout, $state, socket) {
-
-	socket.emit('LIST_DEVICES', {});
-	socket.on('LIST_DEVICES_PASS', function(data) {
-		console.log(data);
+controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
+	$scope.devices = [];
+	socket.rpcCached('LIST_DEVICES', function (data) {
+		$scope.devices = data.devices;
 	});
-	
-	$scope.devices = socket.rpcCached('LIST_DEVICES');
-	$timeout(function() {
-		console.log($scope.devices);
-	}, 10000);
+
+	$scope.toggleSelection = function ($event) {
+		if ($event) $event.preventDefault();
+
+		var selectedAll = true;
+		angular.forEach($scope.devices, function (value, key) {
+			// Test if everything is selected
+			selectedAll = selectedAll && value.selected;
+		});
+
+		if (selectedAll) {
+			angular.forEach($scope.devices, function (value, key) {
+				// Test if everything is selected
+				value.selected = false;
+			});
+		} else {
+			angular.forEach($scope.devices, function (value, key) {
+				// Test if everything is selected
+				value.selected = true;
+			});
+		}
+	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket',
-function($scope, $state, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', function ($scope, $stateParams, socket) {
+	var device = {};
 
+	socket.rpcCached('GET_DEVICE', {
+		id: $stateParams.deviceId
+	}, function (data) {
+		device = data;
+	})
 }]);

@@ -6,21 +6,25 @@ services.constant('tabItems', [
 	{
 		title: 'Dashboard',
 		icon: 'dashboard',
+		root: 'dashboard',
 		sref: 'cp.dashboard'
 	},
 	{
 		title: 'Devices',
 		icon: 'puzzle-piece',
+		root: 'devices',
 		sref: 'cp.devices.list'
 	},
 	{
 		title: 'Services',
 		icon: 'tasks',
+		root: 'services',
 		sref: 'cp.services'
 	},
 	{
 		title: 'Settings',
 		icon: 'cogs',
+		root: 'settings',
 		sref: 'cp.settings'
 	}
 ]);
@@ -50,14 +54,10 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 			socket.rpc('CHECK_SESSION', {
 				token: token
 			}, function () {
-				$rootScope.$apply(function () {
-					$rootScope.loggedIn = true;
-				});
+				$rootScope.loggedIn = true;
 			}, function () {
-				$rootScope.$apply(function () {
-					$rootScope.loggedIn = false;
-					localStorageService.clearAll();
-				});
+				$rootScope.loggedIn = false;
+				localStorageService.clearAll();
 			});
 		});
 	}
@@ -71,15 +71,11 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 			email: email,
 			hash: passwordHash
 		}, function (data) {
-			$rootScope.$apply(function () {
-				localStorageService.add('OnionSessionToken', data.token);
-				$rootScope.loggedIn = true;
-				passCallback();
-			});
+			localStorageService.add('OnionSessionToken', data.token);
+			$rootScope.loggedIn = true;
+			passCallback();
 		}, function (data) {
-			$rootScope.$apply(function () {
-				failCallback();
-			});
+			failCallback();
 		});
 	};
 
@@ -87,10 +83,8 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 		socket.rpc('LOGOUT', {
 			token: token
 		}, function () {
-			$rootScope.$apply(function () {
-				localStorageService.clearAll();
-				$rootScope.loggedIn = false;
-			});
+			localStorageService.clearAll();
+			$rootScope.loggedIn = false;
 		});
 	};
 
@@ -106,22 +100,21 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 
 		var socket = io.connect();
 
+		var removeListeners = function () {
+			socket.removeAllListeners('functionName' + '_PASS');
+			socket.removeAllListeners('functionName' + '_FAIL');
+		};
+
 		var on = function (eventName, callback) {
-			socket.on(eventName, function () {  
-				var args = arguments;
-				$rootScope.$apply(function () {
-					callback.apply(socket, args);
-				});
+			socket.on(eventName, function (data) {
+				callback(data);
 			});
 		};
 
 		var emit = function (eventName, data, callback) {
 			if (!callback) callback = angular.noop;
-			socket.emit(eventName, data, function () {
-				var args = arguments;
-				$rootScope.$apply(function () {
-					callback.apply(socket, args);
-				});
+			socket.emit(eventName, data, function (data) {
+				callback(data);
 			})
 		};
 
@@ -136,40 +129,45 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 				failCallback = angular.noop;
 			}
 
-			var removeListeners = function () {
-				socket.removeAllListeners('functionName' + '_PASS');
-				socket.removeAllListeners('functionName' + '_FAIL');
-			};
-
 			socket.on(functionName + '_PASS', function (data) {
-				passCallback(data);
+				$rootScope.$apply(function () {
+					passCallback(data);
+				});
 				removeListeners();
 			});
 
 			socket.on(functionName + '_FAIL', function (data) {
-				failCallback(data);
+				$rootScope.$apply(function () {
+					failCallback(data);
+				});
 				removeListeners();
 			});
 
 			socket.emit(functionName, data);
 		};
 
-		var rpcCached = function (functionName, data, refresh) {
-			var temp = {};
-			data = data || {};
-			refresh = refresh || false;
-
-			// Fetch data from remote only if cache unavailable or if refresh is true
-			if (refresh || cache[functionName] === undefined) {
-				rpc(functionName, data, function (data) {
-					cache[functionName] = data;
-					temp = data;
-				});
-			} else {
-				temp = cache[functionName];
+		var rpcCached = function (functionName, data, passCallback, refresh) {
+			if (typeof data === 'function') {
+				refresh = passCallback;
+				passCallback = data;
+				data = {};
 			}
 
-			return temp;
+			// Only if refresh mode on or cache DNE
+			if (refresh || !cache[functionName]) {
+				socket.on(functionName + '_PASS', function (data) {
+					cache[functionName] = data;
+					$rootScope.$apply(function () {
+						passCallback(data);
+					});
+					removeListeners();
+				});
+
+				socket.emit(functionName, data);
+			} else {
+				passCallback(cache[functionName]);
+			}
+
 		};
 
 		return {
