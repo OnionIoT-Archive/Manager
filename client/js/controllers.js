@@ -98,7 +98,7 @@ function($scope, $state, socket, auth, tabItems, userProfile) {
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
 	$scope.devices = [];
 	socket.rpcCached('LIST_DEVICES', function (data) {
-		$scope.devices = data.devices;
+		$scope.devices = data;
 	});
 
 	$scope.toggleSelection = function ($event) {
@@ -128,8 +128,8 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', f
 	var device = {};
 
 	socket.rpcCached('GET_DEVICE', {
-		id: $stateParams.deviceId
+		_id: $stateParams.deviceId
 	}, function (data) {
-		device = data;
+		console.log(data);
 	})
 }]);
