@@ -20,16 +20,16 @@
 							<table class="table table-onion">
 								<tbody>
 									<tr>
-										<td><a data-toggle="tooltip" data-placement="right" title="Unique identifier"><strong>Device ID</strong></a></td>
-										<td>device001</td>
+										<td><a href="#" ng-click="$event.preventDefault();" tooltip-placement="right" tooltip="Unique identifier"><strong>Device ID</strong></a></td>
+										<td>{{device.id}}</td>
 									</tr>
 									<tr>
-										<td><a data-toggle="tooltip" data-placement="right" title="Secret key for authentication"><strong>Device Key</strong></a></td>
-										<td>asdfaljkhagkegu34513jhkg6jh123</td>
+										<td><a href="#" ng-click="$event.preventDefault();" tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
+										<td>{{device.key}}</td>
 									</tr>
 									<tr>
 										<td><strong>Description</strong></td>
-										<td>Dummy Description for this testing device</td>
+										<td>{{device.meta.description}}</td>
 									</tr>
 								</tbody>
 							</table>
@@ -39,17 +39,15 @@
 								<tbody>
 									<tr>
 										<td><strong>Status</strong></td>
-										<td>
-											Online
-										</td>
+										<td>{{device.status}}</td>
 									</tr>
 									<tr>
-										<td><a data-toggle="tooltip" data-placement="right" title="URL to access the API"><strong>API Endpoint</strong></a></td>
+										<td><a href="#" ng-click="$event.preventDefault();" tooltip-placement="right" tooltip="URL to access the API"><strong>API Endpoint</strong></a></td>
 										<td><a href="http://dev.onion.io/api/{{currentDevice.id}}">http://dev.onion.io/api/device001</a></td>
 									</tr>
 									<tr>
 										<td><strong>Device Type</strong></td>
-										<td>Public</td>
+										<td>{{device.meta.deviceType}}</td>
 									</tr>
 								</tbody>
 							</table>

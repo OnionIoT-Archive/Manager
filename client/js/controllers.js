@@ -126,11 +126,10 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 }]);
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', function ($scope, $stateParams, socket) {
-	var device = {};
-
+	$scope.device = {};
 	socket.rpcCached('GET_DEVICE', {
 		_id: $stateParams.deviceId
 	}, function (data) {
-		console.log(data);
+		$scope.device = data;
 	})
 }]);
