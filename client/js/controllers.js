@@ -80,8 +80,8 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItem
 	$scope.userProfile = angular.copy(userProfile);
 
 	// Determin whether the current tab is active or not
-	$scope.isActive = function (sref) {
-		return ($state.current.name.search(sref) !== -1) ? true : false;
+	$scope.isActive = function (root) {
+		return ($state.current.name.search(root) !== -1) ? true : false;
 	};
 
 	$scope.logout = function ($event) {
@@ -92,12 +92,40 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItem
 }]);
 
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
-	$scope.devices = socket.rpcCached('LIST_DEVICES');
-	$timeout(function () {
-		console.log($scope.devices);
-	}, 3000);
+	$scope.devices = [];
+	socket.rpcCached('LIST_DEVICES', function (data) {
+		$scope.devices = data.devices;
+	});
+
+	$scope.toggleSelection = function ($event) {
+		if ($event) $event.preventDefault();
+
+		var selectedAll = true;
+		angular.forEach($scope.devices, function (value, key) {
+			// Test if everything is selected
+			selectedAll = selectedAll && value.selected;
+		});
+
+		if (selectedAll) {
+			angular.forEach($scope.devices, function (value, key) {
+				// Test if everything is selected
+				value.selected = false;
+			});
+		} else {
+			angular.forEach($scope.devices, function (value, key) {
+				// Test if everything is selected
+				value.selected = true;
+			});
+		}
+	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', function ($scope, $stateParams, socket) {
+	var device = {};
 
+	socket.rpcCached('GET_DEVICE', {
+		id: $stateParams.deviceId
+	}, function (data) {
+		device = data;
+	})
 }]);
