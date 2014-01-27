@@ -20,11 +20,6 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	templateUrl: './partials/cp.html'
     });
 
-    $stateProvider.state('cp.dashboard', {
-    	url: '^/dashboard',
-    	templateUrl: './partials/cp.dashboard.html'
-    });
-
     $stateProvider.state('cp.devices', {
         url: '^/devices',
         abstract: true,
@@ -44,9 +39,9 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	templateUrl: './partials/cp.services.html'
     });
 
-    $stateProvider.state('cp.settings', {
-    	url: '^/settings',
-    	templateUrl: './partials/cp.settings.html'
+    $stateProvider.state('cp.support', {
+        url: '^/support',
+        templateUrl: './partials/cp.support.html'
     });
 
     $stateProvider.state('cp.profile', {
@@ -60,7 +55,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
         controller: 'TestCtrl'
     });
 
-	$urlRouterProvider.otherwise('/dashboard');
+	$urlRouterProvider.otherwise('cp.devices');
 
 }]);
 

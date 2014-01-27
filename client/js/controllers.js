@@ -3,8 +3,7 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth',
-function($scope, $state, socket, auth) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -70,19 +69,13 @@ function($scope, $state, socket, auth) {
 	};
 }]);
 
-controllers.controller('TestCtrl', ['$scope', 'socket',
-function($scope, socket) {
+controllers.controller('TestCtrl', ['$scope', 'socket', function($scope, socket) {
 	$scope.signup = function() {
 		socket.emit('SIGNUP', {});
 	};
 }]);
 
-controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItems', 'userProfile',
-function($scope, $state, socket, auth, tabItems, userProfile) {
-	$scope.tabItems = angular.copy(tabItems);
-
-	$scope.userProfile = angular.copy(userProfile);
-
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
 	// Determin whether the current tab is active or not
 	$scope.isActive = function (root) {
 		return ($state.current.name.search(root) !== -1) ? true : false;
@@ -98,7 +91,6 @@ function($scope, $state, socket, auth, tabItems, userProfile) {
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
 	$scope.devices = [];
 	socket.rpcCached('LIST_DEVICES', function (data) {
-		console.log(data);
 		$scope.devices = data;
 	});
 
@@ -130,6 +122,7 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', f
 	socket.rpcCached('GET_DEVICE', {
 		_id: $stateParams.deviceId
 	}, function (data) {
+		console.log(data);
 		$scope.device = data;
 	})
 }]);

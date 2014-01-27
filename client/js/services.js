@@ -2,43 +2,12 @@
 
 var services = angular.module('manager.services', []);
 
-services.constant('tabItems', [
-	{
-		title: 'Dashboard',
-		icon: 'dashboard',
-		root: 'dashboard',
-		sref: 'cp.dashboard'
-	},
-	{
-		title: 'Devices',
-		icon: 'puzzle-piece',
-		root: 'devices',
-		sref: 'cp.devices.list'
-	},
-	{
-		title: 'Services',
-		icon: 'tasks',
-		root: 'services',
-		sref: 'cp.services'
-	},
-	{
-		title: 'Settings',
-		icon: 'cogs',
-		root: 'settings',
-		sref: 'cp.settings'
-	}
-]);
-
-services.constant('userProfile', {
-	email: 'bl@onion.io'
-});
-
 services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket', 'sha3', function ($rootScope, $state, localStorageService, socket, sha3) {
 	$rootScope.loggedIn = false;
 
 	// Callbacks to check if system still logged in and log out if not
 	var check = function () {
-		if ($rootScope.loggedIn === true && $state.current.name === 'login') $state.go('cp.dashboard');
+		if ($rootScope.loggedIn === true && $state.current.name === 'login') $state.go('cp.devices.list');
 		else if ($rootScope.loggedIn === false && $state.current.name !== 'login') $state.go('login');
 	};
 

@@ -2,22 +2,24 @@
 	<div id="sidebar">
 		<div class="navbar navbar-onion">
 			<a class="navbar-brand" href="#"><span class="icon-onion"></span>&nbsp;Onion<sup><sup>CP</sup></sup></a>
-			<form class="form navbar-form navbar-right">
+			<!-- <form class="form navbar-form navbar-right">
 				<button class="btn btn-onion"><span class="fa fa-bars"></span></button>
-			</form>
+			</form> -->
 		</div>
 
 		<ul class="nav nav-pills nav-stacked">
-			<li ng-repeat="item in tabItems" ng-class="{active: isActive(item.root)}">
-				<a ui-sref="{{item.sref}}"><span ng-if="item.icon!==''" class="fa fa-{{item.icon}}"></span>{{item.title}}</a>
+			<li ng-class="{active: isActive('cp.devices')}">
+				<a ui-sref="cp.devices.list"><span class="fa fa-puzzle-piece"></span>Devices</a>
 			</li>
-		</ul>
-
-		<ul class="nav nav-pills nav-stacked nav-logout">
+			<li ng-class="{active: isActive('cp.services')}">
+				<a ui-sref="cp.services"><span class="fa fa-tasks"></span>Services</a>
+			</li>
+			<li ng-class="{active: isActive('cp.support')}">
+				<a ui-sref="cp.support"><span class="fa fa-question-circle"></span>Support</a>
+			</li>
 			<li ng-class="{active: isActive('cp.profile')}">
-				<a ui-sref="cp.profile">
-					{{userProfile.email}}
-					<button class="btn pull-right" ng-click="logout($event);"><span class="fa fa-sign-out"></span></button>
+				<a ui-sref="cp.profile"><span class="fa fa-user"></span>User Profile
+					<button class="btn pull-right" ng-click="logout($event);"><span class="fa fa-power-off"></span></button>
 				</a>
 			</li>
 		</ul>
