@@ -191,11 +191,11 @@ socketServer.sockets.on('connection', function(socket) {
 		if (data && data._id) {
 			console.log(data);
 			rpc.call('DB_ADD_PROCEDURE', {
-				path : 'path',
-				fuctionId : 1,
-				verb : 'verb',
+				path : '/test',
+				fuctionId : 1002,
+				verb : 'post',
 				deviceId : data._id,
-				postParams : [],
+				postParams : ['temp','altitude'],
 				lastAccess : new Date()
 			}, function(data) {
 			});
@@ -207,10 +207,9 @@ socketServer.sockets.on('connection', function(socket) {
 		if (data && data._id) {
 			
 			rpc.call('DB_ADD_STATE', {
-				path : 'path',
+				path : '/statePath',
 				value : {},
 				deviceId : data._id,
-				postParams : [],
 				timeStep : new Date()
 			}, function(data) {
 			});
