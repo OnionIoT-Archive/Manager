@@ -151,7 +151,7 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		console.log(data);
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			socket.emit('LIST_DEVICES_PASS',devicLists)
+			socket.emit('LIST_DEVICES_PASS', devicLists)
 		});
 	});
 
@@ -161,7 +161,7 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicList) {
 			console.log(devicList);
-			socket.emit('GET_DEVICE_PASS',devicList)
+			socket.emit('GET_DEVICE_PASS', devicList)
 		});
 	});
 
@@ -184,6 +184,37 @@ socketServer.sockets.on('connection', function(socket) {
 		rpc.call('DB_DELETE_DEVICE', data, function(data) {
 			socket.emit('REMOVE_DEVICE_SUCCESS', {});
 		});
+	});
+
+	socket.on('ADD_PROCEDURE', function(data) {
+		
+		if (data && data._id) {
+			console.log(data);
+			rpc.call('DB_ADD_PROCEDURE', {
+				path : 'path',
+				fuctionId : 1,
+				verb : 'verb',
+				deviceId : data._id,
+				postParams : [],
+				lastAccess : new Date()
+			}, function(data) {
+			});
+		}
+	});
+	
+	socket.on('ADD_STATES', function(data) {
+		console.log(data);
+		if (data && data._id) {
+			
+			rpc.call('DB_ADD_STATE', {
+				path : 'path',
+				value : {},
+				deviceId : data._id,
+				postParams : [],
+				timeStep : new Date()
+			}, function(data) {
+			});
+		}
 	});
 });
 
