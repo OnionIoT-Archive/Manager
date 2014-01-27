@@ -151,9 +151,7 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		console.log(data);
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			socket.emit('LIST_DEVICES_PASS', {
-				devices : devicLists
-			})
+			socket.emit('LIST_DEVICES_PASS',devicLists)
 		});
 	});
 
@@ -163,9 +161,7 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicList) {
 			console.log(devicList);
-			socket.emit('GET_DEVICE_PASS', {
-				devices : devicList
-			})
+			socket.emit('GET_DEVICE_PASS',devicList)
 		});
 	});
 
