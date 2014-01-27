@@ -3,9 +3,10 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth',
+function($scope, $state, socket, auth) {
 
-	var clearFields = function () {
+	var clearFields = function() {
 		$scope.loginFailed = false;
 		$scope.signupFailed = false;
 		$scope.pwResetSent = false;
@@ -16,88 +17,99 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', funct
 	// Switching between Login, Signup and Forgot Password
 	$scope.mode = 'login';
 
-	$scope.switchMode = function (mode, $event) {
-		if ($event) $event.preventDefault();
+	$scope.switchMode = function(mode, $event) {
+		if ($event)
+			$event.preventDefault();
 
 		clearFields();
 		$scope.mode = mode;
-	};	
+	};
 
 	// Login
-	$scope.login = function () {
+	$scope.login = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var password = $scope.password;
 
-		auth.login(email, password, function () {
+		auth.login(email, password, function() {
 			clearFields();
-		}, function () {
+		}, function() {
 			$scope.password = '';
 			$scope.loginFailed = true;
 		});
 	};
 
 	// Sign Up
-	$scope.signUp = function () {
+	$scope.signUp = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 
 		socket.rpc('SIGNUP', {
-			email: email,
-			hash: pwHash
-		}, function () {
+			email : email,
+			hash : pwHash
+		}, function() {
 			clearFields();
 			$scope.switchMode('login');
-		}, function () {
+		}, function() {
 			$scope.signupFailed = true;
 		})
 	};
 
 	// Password Reset
-	$scope.passwordReset = function () {
+	$scope.passwordReset = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		socket.emit('PWRESET', {
-			email: email
-		}, function () {
+			email : email
+		}, function() {
 			$scope.pwResetSent = true;
-		}, function () {
+		}, function() {
 			$scope.pwResetSent = false;
 		});
 	};
 }]);
 
-controllers.controller('TestCtrl', ['$scope', 'socket', function ($scope, socket) {
-	$scope.signup = function () {
+controllers.controller('TestCtrl', ['$scope', 'socket',
+function($scope, socket) {
+	$scope.signup = function() {
 		socket.emit('SIGNUP', {});
 	};
 }]);
 
-controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItems', 'userProfile', function ($scope, $state, socket, auth, tabItems, userProfile) {
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', 'tabItems', 'userProfile',
+function($scope, $state, socket, auth, tabItems, userProfile) {
 	$scope.tabItems = angular.copy(tabItems);
 
 	$scope.userProfile = angular.copy(userProfile);
 
 	// Determin whether the current tab is active or not
-	$scope.isActive = function (sref) {
+	$scope.isActive = function(sref) {
 		return ($state.current.name.search(sref) !== -1) ? true : false;
 	};
 
-	$scope.logout = function ($event) {
+	$scope.logout = function($event) {
 		$event.stopPropagation();
 		$event.preventDefault();
 		auth.logout();
 	};
 }]);
 
-controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
+controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
+function($scope, $timeout, $state, socket) {
+
+	socket.emit('LIST_DEVICES', {});
+	socket.on('LIST_DEVICES_PASS', function(data) {
+		console.log(data);
+	});
+	
 	$scope.devices = socket.rpcCached('LIST_DEVICES');
-	$timeout(function () {
+	$timeout(function() {
 		console.log($scope.devices);
-	}, 3000);
+	}, 10000);
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket', function ($scope, $state, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', 'socket',
+function($scope, $state, socket) {
 
 }]);
