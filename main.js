@@ -59,7 +59,7 @@ socketServer.sockets.on('connection', function(socket) {
 			passHash : data.hash
 		}, function(result) {
 			if (result != null) {
-				var _token = uuid.v1();
+				var _token = uuid.v1().replace(/-/g, "");
 				//var _result = JSON.parse(result);
 				if (!userInfo.userId)
 					userInfo.userId = result._id;
