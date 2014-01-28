@@ -175,8 +175,11 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('DEVICE_UPDATE', function(data) {
-		console.log(data);
+		console.log(data.update.meta.name);
+		data.update =  {$set: {'meta.name': data.update.meta.name,'meta.description':data.update.meta.description}};
+		
 		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
+			console.log('device');
 			console.log(device);
 			rpc.call('DB_GET_DEVICE', data.condition, function(devicList) {
 				console.log(devicList);
