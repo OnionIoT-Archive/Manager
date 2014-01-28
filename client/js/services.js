@@ -65,17 +65,17 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 
 services.factory('socket', ['$rootScope', function ($rootScope) {
 	if (angular.isDefined(window.io)) {
-		var cache = {};
-
 		var socket = io.connect();
-
-		var removeListeners = function () {
-			socket.removeAllListeners('functionName' + '_PASS');
-			socket.removeAllListeners('functionName' + '_FAIL');
-		};
 
 		var on = function (eventName, callback) {
 			socket.on(eventName, function (data) {
+				callback(data);
+			});
+		};
+
+		var once = function (eventName, callback) {
+			socket.on(eventName, function (data) {
+				socket.removeAllListeners(eventName);
 				callback(data);
 			});
 		};
@@ -98,6 +98,11 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 				failCallback = angular.noop;
 			}
 
+			var removeListeners = function () {
+				socket.removeAllListeners(functionName + '_PASS');
+				socket.removeAllListeners(functionName + '_FAIL');
+			};
+
 			socket.on(functionName + '_PASS', function (data) {
 				$rootScope.$apply(function () {
 					passCallback(data);
@@ -115,35 +120,11 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 			socket.emit(functionName, data);
 		};
 
-		var rpcCached = function (functionName, data, passCallback, refresh) {
-			if (typeof data === 'function') {
-				refresh = passCallback;
-				passCallback = data;
-				data = {};
-			}
-
-			// Only if refresh mode on or cache DNE
-			if (refresh || !cache[functionName]) {
-				socket.on(functionName + '_PASS', function (data) {
-					cache[functionName] = data;
-					$rootScope.$apply(function () {
-						passCallback(data);
-					});
-					removeListeners();
-				});
-
-				socket.emit(functionName, data);
-			} else {
-				passCallback(cache[functionName]);
-			}
-
-		};
-
 		return {
 			on: on,
+			once: once,
 			emit: emit,
 			rpc: rpc,
-			rpcCached: rpcCached,
 			removeAllListeners: socket.removeAllListeners
 		};
 	}
