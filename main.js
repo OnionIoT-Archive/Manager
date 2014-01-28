@@ -166,7 +166,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_DEVICE', function(data) {
-		console.log(userInfo.userId);
+		console.log(data);
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
@@ -174,9 +174,15 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('DB_UPDATE_DEVICE', function(data) {
-		rpc.call('DB_UPDATE_DEVICE', data, function(data) {
-			socket.emit('UPDATE_DEVICE_SUCCESS', {});
+	socket.on('DEVICE_UPDATE', function(data) {
+		console.log(data);
+		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
+			console.log(device);
+			rpc.call('DB_GET_DEVICE', data.condition, function(devicList) {
+				console.log(devicList);
+				socket.emit('DEVICE_UPDATE_PASS', devicList);
+			});
+			
 		});
 	});
 
@@ -187,7 +193,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_PROCEDURE', function(data) {
-		
+
 		if (data && data._id) {
 			console.log(data);
 			rpc.call('DB_ADD_PROCEDURE', {
@@ -195,17 +201,17 @@ socketServer.sockets.on('connection', function(socket) {
 				fuctionId : 1002,
 				verb : 'post',
 				deviceId : data._id,
-				postParams : ['temp','altitude'],
+				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()
 			}, function(data) {
 			});
 		}
 	});
-	
+
 	socket.on('ADD_STATES', function(data) {
 		console.log(data);
 		if (data && data._id) {
-			
+
 			rpc.call('DB_ADD_STATE', {
 				path : '/statePath',
 				value : 333,

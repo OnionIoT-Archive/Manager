@@ -84,12 +84,15 @@ function($scope, socket) {
 	};
 
 	$scope.update_device = function() {
-		socket.emit('DB_UPDATE_DEVICE', {
+		socket.emit('DEVICE_UPDATE', {
 			condition : {
-				_id : '52e2c45713f098956d370d0a'
+				_id : $scope.deviceId
 			},
 			update : {
-				name : 'new name by id'
+				meta : {
+					name : '$scope.device.meta.name',
+					description : '$scopedevice.meta.description'
+				}
 			}
 		});
 	};
