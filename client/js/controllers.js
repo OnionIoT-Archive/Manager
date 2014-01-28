@@ -90,7 +90,7 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', function
 
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
 	$scope.devices = [];
-	socket.rpcCached('LIST_DEVICES', function (data) {
+	socket.rpc('LIST_DEVICES', function (data) {
 		$scope.devices = data;
 	});
 
@@ -117,14 +117,30 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', function ($scope, $stateParams, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
 	$scope.device = {};
-	socket.rpcCached('GET_DEVICE', {
+	$scope.editMode = false;
+
+	socket.rpc('GET_DEVICE', {
 		_id: $stateParams.deviceId
 	}, function (data) {
 		console.log(data);
 		$scope.device = data;
 	});
+
+	$scope.toggleEdit = function () {
+		if ($scope.editMode) {
+			socket.rpc('DEVICE_UPDATE', {
+				_id: $stateParams.deviceId,
+				name: device.meta.name,
+				description: device.meta.description
+			}, function (data) {
+				$scope.device = data;
+			});
+		}
+
+		$scope.editMode = !$scope.editMode;
+	};
 
 	$scope.renewKey = function ($event) {
 		$event.preventDefault();
@@ -133,6 +149,16 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', f
 			id: $stateParams.deviceId
 		}, function (data) {
 			$scope.device.key = data.key;
+		});
+	};
+
+	$scope.deleteDevice = function ($event) {
+		$event.preventDefault();
+
+		socket.rpc('DELETE_DEVICE', {
+			id: $stateParams.deviceId
+		}, function (data) {
+			$state.go('cp.devices.list');
 		});
 	};
 }]);

@@ -10,7 +10,7 @@
 		<div class="form-group">
 			<label for="search" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-search"></span></label>
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-				<input type="text" class="form-control" id="search" placeholder="Search Devices">
+				<input type="text" class="form-control" id="search" placeholder="Search Devices" ng-model="searchText">
 			</div>
 		</div>
 	</form>
@@ -31,7 +31,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="device in devices">
+				<tr ng-repeat="device in devices | filter:searchText">
 					<td class="listing-checkbox"><input type="checkbox" ng-model="device.selected" /></td>
 					<td class="listing-name">
 						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device._id})">{{device.meta.name}}</a>

@@ -303,7 +303,6 @@ a:hover {
 	margin-right: -15px;
 }
 	.panel-heading .btn-onion:active,
-	.panel-heading .btn-onion:focus,
 	.panel-heading .btn-onion:hover {
 		color: #fff;
 	}
@@ -430,6 +429,25 @@ a:hover {
 	.table-onion .listing-description {
 		height: 2em;
 	}
+
+	.table-onion input {
+		border: 0;
+		text-shadow: 0;
+		background-color: #ecf0f2;
+		height: 40px;
+		padding: 10px;
+		width: 100%;
+	}
+	.table-onion .btn-onion {
+		background-color: transparent;
+		color: #50545A;
+	}
+		.table-onion .btn-onion:active,
+		.table-onion .btn-onion:hover {
+			background-color: transparent;
+			color: #000;
+			box-shadow: none;
+		}
 
 .table-wrapper {
 	padding: 15px;
