@@ -115,6 +115,12 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 			});
 		}
 	};
+
+	$scope.newDevice = function () {
+		socket.rpc('NEW_DEVICE', {}, function (data) {
+			$state.go('cp.devices.edit', {deviceId: data.id});
+		});
+	};
 }]);
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
@@ -136,7 +142,7 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 				},
 				update: {
 					name: $scope.device.meta.name,
-					description: $scopedevice.meta.description
+					description: $scope.device.meta.description
 				}
 			}, function (data) {
 				$scope.device = data;
