@@ -103,4 +103,14 @@ function($scope, socket) {
 		});
 	};
 
+	$scope.new_key = function() {
+		socket.emit('RENEW_KEY', {
+			_id : $scope.deviceId
+		});
+		socket.on('RENEW_KEY_PASS', function(data){
+			console.log(data.key);
+		});
+		
+	};
+
 }]);

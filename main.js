@@ -182,7 +182,7 @@ socketServer.sockets.on('connection', function(socket) {
 				console.log(devicList);
 				socket.emit('DEVICE_UPDATE_PASS', devicList);
 			});
-			
+
 		});
 	});
 
@@ -220,6 +220,20 @@ socketServer.sockets.on('connection', function(socket) {
 			}, function(data) {
 			});
 		}
+	});
+
+	socket.on('RENEW_KEY', function(data) {
+		var Data ={};
+		Data.condition = data;
+		var _key = uuid.v4().replace(/-/g, "");
+		Data.update = {key:_key};
+		rpc.call('DB_UPDATE_DEVICE', Data, function(device) {
+			console.log(device);
+			socket.emit('RENEW_KEY_PASS', {
+			key : _key
+		});
+		});
+		
 	});
 });
 
