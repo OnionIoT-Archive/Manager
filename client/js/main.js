@@ -55,7 +55,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
         controller: 'TestCtrl'
     });
 
-	$urlRouterProvider.otherwise('cp.devices.list');
+	$urlRouterProvider.otherwise('/devices');
 
 }]);
 
