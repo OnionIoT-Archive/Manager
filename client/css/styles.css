@@ -430,15 +430,17 @@ a:hover {
 		height: 2em;
 	}
 
-	.table-onion input {
+	.table-onion input[type="text"] {
 		border: 0;
 		text-shadow: 0;
 		background-color: #ecf0f2;
 		height: 40px;
 		padding: 10px;
+		margin-left: -10px;
 		width: 100%;
 	}
 	.table-onion .btn-onion {
+		height: 20px;
 		background-color: transparent;
 		color: #50545A;
 	}
