@@ -208,7 +208,7 @@ socketServer.sockets.on('connection', function(socket) {
 			
 			rpc.call('DB_ADD_STATE', {
 				path : '/statePath',
-				value : {},
+				value : 333,
 				deviceId : data._id,
 				timeStamp : new Date()
 			}, function(data) {
