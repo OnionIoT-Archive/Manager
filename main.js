@@ -174,8 +174,9 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('DB_UPDATE_DEVICE', function(data) {
-		rpc.call('DB_UPDATE_DEVICE', data, function(data) {
+	socket.on('DEVICE_UPDATE', function(data) {
+		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
+			console.log(device);
 			socket.emit('UPDATE_DEVICE_SUCCESS', {});
 		});
 	});
