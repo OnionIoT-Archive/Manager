@@ -131,9 +131,13 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 	$scope.toggleEdit = function () {
 		if ($scope.editMode) {
 			socket.rpc('DEVICE_UPDATE', {
-				_id: $stateParams.deviceId,
-				name: device.meta.name,
-				description: device.meta.description
+				condition: {
+					_id: $stateParams.deviceId
+				},
+				update: {
+					name: $scope.device.meta.name,
+					description: $scopedevice.meta.description
+				}
 			}, function (data) {
 				$scope.device = data;
 			});
