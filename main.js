@@ -166,7 +166,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_DEVICE', function(data) {
-		console.log(userInfo.userId);
+		console.log(data);
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
@@ -175,6 +175,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('DEVICE_UPDATE', function(data) {
+		console.log(data);
 		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
 			console.log(device);
 			socket.emit('UPDATE_DEVICE_SUCCESS', {});
