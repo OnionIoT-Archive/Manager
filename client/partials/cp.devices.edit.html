@@ -65,17 +65,50 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<div class="panel panel-blue" id="remote-functions">
+			<div class="panel panel-purple">
 				<div class="panel-heading">
 					<h3 class="panel-title">Remote Functions</h3>
 				</div>
 				<div class="panel-body">
-					<table class="table table-onion">
-						<tbody>
+					<table class="table table-onion table-striped">
+						<thead>
 							<tr>
+								<th>Method</th>
+								<th>End Point</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="procedure in device.procedures">
 								<td>
-									<span class="verb"></span>
+									<span class="verb" ng-class="procedure.verb">{{procedure.verb}}</span>
 								</td>
+								<td>
+									{{procedure.path}}
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="panel panel-purple">
+				<div class="panel-heading">
+					<h3 class="panel-title">Remote States</h3>
+				</div>
+				<div class="panel-body">
+					<table class="table table-onion table-striped">
+						<thead>
+							<tr>
+								<th>End Point</th>
+								<th>Value</th>
+								<th>Time Stamp</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="state in device.states">
+								<td>{{state.path}}</td>
+								<td>{{state.value}}</td>
+								<td>{{state.timeStamp}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -83,16 +116,16 @@
 			</div>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<div class="panel panel-blue" id="remote-states">
+			<div class="panel panel-purple">
 				<div class="panel-heading">
-					<h3 class="panel-title">Remote States</h3>
+					<h3 class="panel-title">History</h3>
 				</div>
 				<div class="panel-body">
-					<table class="table table-onion">
+					<table class="table table-onion table-striped">
 						<thead>
 							<tr>
+								<th>Action</th>
 								<th>End Point</th>
-								<th>Value</th>
 								<th>Time Stamp</th>
 							</tr>
 						</thead>

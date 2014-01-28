@@ -1,21 +1,38 @@
 <div class="navbar navbar-onion">
 	<ul class="nav navbar-nav nav-onion">
-    	<li><a href="#"><span class="fa fa-rocket"></span>Send!</a></li>
+    	<li><a href="#" ng-click="send($event)"><span class="fa fa-rocket"></span>Send!</a></li>
+    	<li><a href="#"><span class="fa fa-times"></span>Cancel</a></li>
     </ul>
 </div>
 
 <div class="wrapper">
-	<h4>Contact Us</h4>
+	<h4>Submit Support Ticket</h4>
+
 	<div class="row">
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-xs-offset-3">
-			<form id="support-contact" role="form">
-				<div class="form-group">
-					<input type="email" class="form-control" id="subject" placeholder="Subject" />
-				</div>
-				<div class="form-group">
-					<textarea></textarea>
-				</div>
-			</form>
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+			<div class="alert alert-success">
+				Your ticket has been submitted successfully.
+			</div>
+			<div class="alert alert-danger">
+				Please fill in all information and try again.
+			</div>
 		</div>
 	</div>
+
+	<form id="support-contact" role="form">
+		<div class="row">
+			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+				<div class="form-group">
+					<input type="text" class="form-control" id="subject" placeholder="Subject" ng-model="subject" />
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="form-group">
+					<textarea id="details" placeholder="Please detail your issue or question..." ng-model="details"></textarea>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

@@ -126,3 +126,19 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', f
 		$scope.device = data;
 	})
 }]);
+
+controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, socket) {
+	$scope.send = function ($event) {
+		$event.preventDefault();
+
+		socket.rpc('NEW_TICKET', {
+			entry_1679870466: 'testing User',
+			entry_1266873877: $scope.subject,
+			entry_1148148744: $scope.details
+		}, function (data) {
+			console.log(data);
+		}, function (data) {
+			console.log(data);
+		});
+	};
+}]);
