@@ -8,7 +8,7 @@
 </div>
 
 <div class="wrapper">
-	<h4>Device Name</h4>
+	<h4>{{device.meta.name}}</h4>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-dark" id="summary">
@@ -17,7 +17,10 @@
 						<h4 class="panel-title">Device Information</h4>
 					</div>
 					<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-						<button class="btn btn-onion pull-right"><span class="fa fa-pencil"></span></button>
+						<button class="btn btn-onion pull-right" ng-click="toggleEdit()">
+							<span ng-if="!editMode" class="fa fa-pencil"></span>
+							<span ng-if="editMode" class="fa fa-check"></span>
+						</button>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -31,11 +34,24 @@
 									</tr>
 									<tr>
 										<td><a href="#" ng-click="$event.preventDefault();" tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
-										<td>{{device.key}}</td>
+										<td>
+											{{device.key}}
+											<button ng-if="editMode" class="btn btn-onion pull-right" ng-click="renewKey($event)"><span class="fa fa-key"></span></button>
+										</td>
+									</tr>
+									<tr>
+										<td><strong>Canonical Name</strong></td>
+										<td>
+											<span ng-if="!editMode">{{device.meta.name}}</span>
+											<input type="text" ng-if="editMode" ng-model="device.meta.name" />
+										</td>
 									</tr>
 									<tr>
 										<td><strong>Description</strong></td>
-										<td>{{device.meta.description}}</td>
+										<td>
+											<span ng-if="!editMode">{{device.meta.description}}</span>
+											<input type="text" ng-if="editMode" ng-model="device.meta.description" />
+										</td>
 									</tr>
 								</tbody>
 							</table>

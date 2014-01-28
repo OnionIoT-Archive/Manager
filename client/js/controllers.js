@@ -119,12 +119,28 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
 	$scope.device = {};
+	$scope.editMode = false;
+
 	socket.rpc('GET_DEVICE', {
 		_id: $stateParams.deviceId
 	}, function (data) {
 		console.log(data);
 		$scope.device = data;
 	});
+
+	$scope.toggleEdit = function () {
+		if ($scope.editMode) {
+			socket.rpc('DEVICE_UPDATE', {
+				_id: $stateParams.deviceId,
+				name: device.meta.name,
+				description: device.meta.description
+			}, function (data) {
+				$scope.device = data;
+			});
+		}
+
+		$scope.editMode = !$scope.editMode;
+	};
 
 	$scope.renewKey = function ($event) {
 		$event.preventDefault();
