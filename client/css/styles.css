@@ -241,6 +241,15 @@ a:hover {
 	overflow: hidden;
 	border: 0;
 }
+
+	.panel#summary {
+		margin-bottom: 20px;
+	}	
+
+	.panel:last-child {
+		margin-bottom: 0;
+	}
+
 	.panel > * {
 		border-radius: 0;
 	}

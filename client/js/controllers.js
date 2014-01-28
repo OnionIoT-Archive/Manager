@@ -124,7 +124,17 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$stateParams', 'socket', f
 	}, function (data) {
 		console.log(data);
 		$scope.device = data;
-	})
+	});
+
+	$scope.renewKey = function ($event) {
+		$event.preventDefault();
+
+		socket.rpc('RENEW_KEY', {
+			id: $stateParams.deviceId
+		}, function (data) {
+			$scope.device.key = data.key;
+		});
+	};
 }]);
 
 controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, socket) {
