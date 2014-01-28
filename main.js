@@ -210,7 +210,7 @@ socketServer.sockets.on('connection', function(socket) {
 				path : '/statePath',
 				value : {},
 				deviceId : data._id,
-				timeStep : new Date()
+				timeStamp : new Date()
 			}, function(data) {
 			});
 		}
