@@ -172,9 +172,9 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 	};
 
 	$scope.deleteDevice = function () {
-		socket.rpc('DELETE_DEVICE', {
+		socket.rpc('DELETE_DEVICES', [{
 			id: $stateParams.deviceId
-		}, function (data) {
+		}], function (data) {
 			$state.go('cp.devices.list');
 		});
 	};
