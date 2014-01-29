@@ -222,3 +222,7 @@ controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, soc
 		});
 	};
 }]);
+
+controllers.controller('UsersEditCtrl', ['$scope', 'socket', function ($scope, socket) {
+	
+}]);
