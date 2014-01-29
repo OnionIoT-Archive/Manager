@@ -187,7 +187,6 @@ socketServer.sockets.on('connection', function(socket) {
 				console.log(devicList);
 				socket.emit('DEVICE_UPDATE_PASS', devicList);
 			});
-
 		});
 	});
 
