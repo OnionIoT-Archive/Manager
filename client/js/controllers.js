@@ -3,7 +3,8 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth',
+function($scope, $state, socket, auth) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -66,15 +67,17 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', funct
 	};
 }]);
 
-controllers.controller('TestCtrl', ['$scope', 'socket', function($scope, socket) {
+controllers.controller('TestCtrl', ['$scope', 'socket',
+function($scope, socket) {
 	$scope.signup = function() {
 		socket.emit('SIGNUP', {});
 	};
 }]);
 
-controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', function($scope, $state, socket, auth) {
+controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth',
+function($scope, $state, socket, auth) {
 	// Determin whether the current tab is active or not
-	$scope.isActive = function (root) {
+	$scope.isActive = function(root) {
 		return ($state.current.name.search(root) !== -1) ? true : false;
 	};
 
@@ -85,79 +88,83 @@ controllers.controller('CpCtrl', ['$scope', '$state', 'socket', 'auth', function
 	};
 }]);
 
-controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', function ($scope, $timeout, $state, socket) {
+controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
+function($scope, $timeout, $state, socket) {
 	$scope.devices = [];
-	socket.rpc('LIST_DEVICES', function (data) {
+	socket.rpc('LIST_DEVICES', function(data) {
 		$scope.devices = data;
 	});
 
-	$scope.toggleSelection = function () {
+	$scope.toggleSelection = function() {
 		var selectedAll = true;
-		angular.forEach($scope.devices, function (value, key) {
+		angular.forEach($scope.devices, function(value, key) {
 			// Test if everything is selected
 			selectedAll = selectedAll && value.selected;
 		});
 
 		if (selectedAll) {
-			angular.forEach($scope.devices, function (value, key) {
+			angular.forEach($scope.devices, function(value, key) {
 				// Test if everything is selected
 				value.selected = false;
 			});
 		} else {
-			angular.forEach($scope.devices, function (value, key) {
+			angular.forEach($scope.devices, function(value, key) {
 				// Test if everything is selected
 				value.selected = true;
 			});
 		}
 	};
 
-	$scope.deleteSelected = function () {
+	$scope.deleteSelected = function() {
 		if (confirm("Are you sure you would like to delete selected devices?")) {
 			var deviceIds = [];
-			angular.forEach($scope.devices, function (value, key) {
+			angular.forEach($scope.devices, function(value, key) {
 				if (value.selected) {
 					deviceIds.push({
-						id: value._id
+						id : value._id
 					});
 				}
 			});
-			socket.rpc('DELETE_DEVICES', deviceIds, function () {
-				socket.rpc('LIST_DEVICES', function (data) {
+			socket.rpc('DELETE_DEVICES', deviceIds, function() {
+				socket.rpc('LIST_DEVICES', function(data) {
 					$scope.devices = data;
 				});
 			});
 		}
 	};
 
-	$scope.newDevice = function () {
-		socket.rpc('NEW_DEVICE', {}, function (data) {
-			$state.go('cp.devices.edit', {deviceId: data.id});
+	$scope.newDevice = function() {
+		socket.rpc('NEW_DEVICE', {}, function(data) {
+			$state.go('cp.devices.edit', {
+				deviceId : data.id
+			});
 		});
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket',
+function($scope, $state, $stateParams, socket) {
 	$scope.device = {};
 	$scope.editMode = false;
 
 	socket.rpc('GET_DEVICE', {
-		_id: $stateParams.deviceId
-	}, function (data) {
+		_id : $stateParams.deviceId
+	}, function(data) {
 		console.log(data);
 		$scope.device = data;
 	});
 
-	$scope.toggleEdit = function () {
+	$scope.toggleEdit = function() {
 		if ($scope.editMode) {
 			socket.rpc('DEVICE_UPDATE', {
-				condition: {
-					_id: $stateParams.deviceId
+				condition : {
+					_id : $stateParams.deviceId
 				},
-				update: {
-					name: $scope.device.meta.name,
-					description: $scope.device.meta.description
+				update : {
+					name : $scope.device.meta.name,
+					description : $scope.device.meta.description
 				}
-			}, function (data) {
+			}, function(data) {
 				$scope.device = data;
 			});
 		}
@@ -165,64 +172,92 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 		$scope.editMode = !$scope.editMode;
 	};
 
-	$scope.renewKey = function () {
+	$scope.renewKey = function() {
 		socket.rpc('RENEW_KEY', {
-			id: $stateParams.deviceId
-		}, function (data) {
+			id : $stateParams.deviceId
+		}, function(data) {
 			$scope.device.key = data.key;
 		});
 	};
 
-	$scope.deleteDevice = function () {
+	$scope.deleteDevice = function() {
 		socket.rpc('DELETE_DEVICES', [{
-			id: $stateParams.deviceId
-		}], function () {
+			id : $stateParams.deviceId
+		}], function() {
 			$state.go('cp.devices.list');
 		});
 	};
 }]);
 
-controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
+controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket',
+function($scope, $state, $stateParams, socket) {
 	$scope.device = {
-		id: 'new_device',
-		key: 'N/A',
-		status: 'Unknown',
-		meta: {
-			name: '',
-			description: '',
-			deviceType: 'public'
+		id : 'new_device',
+		key : 'N/A',
+		status : 'Unknown',
+		meta : {
+			name : '',
+			description : '',
+			deviceType : 'public'
 		}
 	};
 	$scope.editMode = true;
 	$scope.addMode = true;
 
-	$scope.toggleEdit = function () {
+	$scope.toggleEdit = function() {
 		socket.rpc('ADD_DEVICE', {
-			meta: {
-				name: $scope.device.meta.name,
-				description: $scope.device.meta.description,
-				deviceType: $scope.device.meta.deviceType
+			meta : {
+				name : $scope.device.meta.name,
+				description : $scope.device.meta.description,
+				deviceType : $scope.device.meta.deviceType
 			}
-		}, function (data) {
-			$state.go('cp.devices.edit', {deviceId: data.id});
+		}, function(data) {
+			$state.go('cp.devices.edit', {
+				deviceId : data.id
+			});
 		});
 	};
 }]);
 
-controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, socket) {
-	$scope.send = function () {
+controllers.controller('SupportCtrl', ['$scope', 'socket',
+function($scope, socket) {
+	$scope.send = function() {
 		socket.rpc('NEW_TICKET', {
-			entry_1679870466: 'testing User',
-			entry_1266873877: $scope.subject,
-			entry_1148148744: $scope.details
-		}, function (data) {
+			entry_1679870466 : 'testing User',
+			entry_1266873877 : $scope.subject,
+			entry_1148148744 : $scope.details
+		}, function(data) {
 			console.log(data);
-		}, function (data) {
+		}, function(data) {
 			console.log(data);
 		});
 	};
 }]);
 
-controllers.controller('UsersEditCtrl', ['$scope', 'socket', function ($scope, socket) {
-	
+controllers.controller('UsersEditCtrl', ['$scope', 'socket',
+function($scope, socket) {
+
+	socket.rpc('GET_USER', {
+	}, function() {
+		clearFields();
+		$scope.switchMode('login');
+	}, function() {
+		$scope.signupFailed = true;
+	})
+
+	$scope.email = $scope.email || '';
+	var email = $scope.email.toLowerCase();
+	var pwHash = sha3($scope.password);
+	$scope.userUpdate = function() {
+		socket.rpc('USER_UPDATE', {
+			email : email,
+			hash : pwHash
+		}, function() {
+			clearFields();
+			$scope.switchMode('login');
+		}, function() {
+			$scope.signupFailed = true;
+		})
+	};
+
 }]);
