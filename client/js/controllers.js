@@ -121,8 +121,10 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 					});
 				}
 			});
-			socket.rpc('DELETE_DEVICES', deviceIds, function (data) {
-				$scope.devices = data;
+			socket.rpc('DELETE_DEVICES', deviceIds, function () {
+				socket.rpc('LIST_DEVICES', function (data) {
+					$scope.devices = data;
+				});
 			});
 		}
 	};
@@ -174,7 +176,7 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 	$scope.deleteDevice = function () {
 		socket.rpc('DELETE_DEVICES', [{
 			id: $stateParams.deviceId
-		}], function (data) {
+		}], function () {
 			$state.go('cp.devices.list');
 		});
 	};
