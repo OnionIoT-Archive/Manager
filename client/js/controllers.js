@@ -111,6 +111,22 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 		}
 	};
 
+	$scope.deleteSelected = function () {
+		if (confirm("Are you sure you would like to delete selected devices?")) {
+			var deviceIds = [];
+			angular.forEach($scope.devices, function (value, key) {
+				if (value.selected) {
+					deviceIds.push({
+						id: value._id
+					});
+				}
+			});
+			socket.rpc('DELETE_DEVICES', deviceIds, function (data) {
+				$scope.devices = data;
+			});
+		}
+	};
+
 	$scope.newDevice = function () {
 		socket.rpc('NEW_DEVICE', {}, function (data) {
 			$state.go('cp.devices.edit', {deviceId: data.id});
@@ -180,9 +196,10 @@ controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 's
 
 	$scope.toggleEdit = function () {
 		socket.rpc('ADD_DEVICE', {
-			update: {
+			meta: {
 				name: $scope.device.meta.name,
-				description: $scope.device.meta.description
+				description: $scope.device.meta.description,
+				deviceType: $scope.device.meta.deviceType
 			}
 		}, function (data) {
 			$state.go('cp.devices.edit', {deviceId: data.id});
