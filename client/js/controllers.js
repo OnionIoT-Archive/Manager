@@ -180,9 +180,10 @@ controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 's
 
 	$scope.toggleEdit = function () {
 		socket.rpc('ADD_DEVICE', {
-			update: {
+			meta: {
 				name: $scope.device.meta.name,
-				description: $scope.device.meta.description
+				description: $scope.device.meta.description,
+				deviceType: $scope.device.meta.deviceType
 			}
 		}, function (data) {
 			$state.go('cp.devices.edit', {deviceId: data.id});
