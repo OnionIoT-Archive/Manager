@@ -28,6 +28,10 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
         url: '',
         templateUrl: './partials/cp.devices.list.html',
         controller: 'DevicesListCtrl'
+    }).state('cp.devices.add', {
+        url: '/new',
+        templateUrl: './partials/cp.devices.edit.html',
+        controller: 'DevicesAddCtrl'
     }).state('cp.devices.edit', {
         url: '/:deviceId',
         templateUrl: './partials/cp.devices.edit.html',
