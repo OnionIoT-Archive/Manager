@@ -117,6 +117,9 @@ a:hover {
 	.navbar-onion > .navbar-brand {
 		font-size: 20px;
 	}
+	.navbar-onion > .navbar-brand sup {
+		font-weight: lighter;
+	}
 	.navbar-onion .navbar-brand {
 		color: #fff;
 	}
@@ -666,3 +669,22 @@ form#support-contact #details{
 	font-size: 72px;
 	margin: 0;
 }
+
+.verb {
+	height: 100%;
+	color: #fff;
+	font-size: 10px;
+	margin-top: 3px;
+}
+	.verb:before {
+		padding: 5px;
+		font-weight: bold;
+	}
+	.verb.verb-get:before {
+		background-color: #0aa699;
+		content: 'GET';
+	}
+	.verb.verb-post:before {
+		background-color: #FDD01C;
+		content: 'POST';
+	}

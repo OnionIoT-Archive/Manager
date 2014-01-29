@@ -1,20 +1,20 @@
 <div class="navbar navbar-onion">
 	<ul class="nav navbar-nav nav-onion">
     	<li><a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a></li>
-    	<li><a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-check': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a></li>
+    	<li><a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a></li>
     	<li ng-if="!addMode"><a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a></li>
     	<li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li>
     </ul>
 </div>
 
 <div class="wrapper">
-	<h4 ng-if="!addMode">{{device.meta.name}}</h4>
-	<h4 ng-if="addMode">Add New Device</h4>
+	<h3 ng-if="!addMode"><span class="fa fa-puzzle-piece">{{device.meta.name}}</h3>
+	<h3 ng-if="addMode"><span class="fa fa-add"></span>Add New Device</h3>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-dark" id="summary">
 				<div class="panel-heading">
-					<h4 class="panel-title">Device Information</h4>
+					<h3 class="panel-title">Device Information</h3>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -97,11 +97,14 @@
 						<tbody>
 							<tr ng-repeat="procedure in device.procedures">
 								<td>
-									<span class="verb" ng-class="procedure.verb">{{procedure.verb}}</span>
+									<div class="verb" ng-class="'verb-' + procedure.verb"></div>
 								</td>
 								<td>
 									{{procedure.path}}
 								</td>
+							</tr>
+							<tr ng-if="device.procedures.length === 0">
+								<td colspan="3">No precedure registered.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -127,6 +130,9 @@
 								<td>{{state.value}}</td>
 								<td>{{state.timeStamp}}</td>
 							</tr>
+							<tr ng-if="device.states.length === 0">
+								<td colspan="3">No state registered.</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -147,10 +153,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							<!--<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>-->
 							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td colspan="3">No activity history found.</td>
 							</tr>
 						</tbody>
 					</table>

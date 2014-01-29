@@ -1,9 +1,8 @@
 <div class="navbar navbar-onion">
 	<ul class="nav navbar-nav nav-onion">
-    	<li><a href="#" ng-click="toggleSelection($event)"><span class="fa fa-check"></span>Select</a></li>
+    	<li><a ng-click="toggleSelection()"><span class="fa fa-check"></span>Select</a></li>
     	<li><a ui-sref="cp.devices.add"><span class="fa fa-plus"></span>New</a></li>
-    	<li><a href="#"><span class="fa fa-minus"></span>Delete</a></li>
-    	<li><a href="#"><span class="fa fa-refresh"></span>Refresh</a></li>
+    	<li><a ng-click="deleteSelected()"><span class="fa fa-minus"></span>Delete</a></li>
     </ul>
 
 	<form role="search" class="navbar-form navbar-right">
