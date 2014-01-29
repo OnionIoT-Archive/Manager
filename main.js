@@ -191,9 +191,9 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('REMOVE_DEVICE', function(data) {
+	socket.on('DELETE_DEVICE', function(data) {
 		rpc.call('DB_DELETE_DEVICE', data, function(data) {
-			socket.emit('REMOVE_DEVICE_SUCCESS', {});
+			socket.emit('DELETE_DEVICE_PASS', {});
 		});
 	});
 
