@@ -167,10 +167,13 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_DEVICE', function(data) {
 		console.log(data);
+		var _key = uuid.v4().replace(/-/g, "");
+		data.key = _key;
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
-			socket.emit('ADD_DEVICE_SUCCESS', {});
+			console.log(data);
+			socket.emit('ADD_DEVICE_PASS', {id:data._id});
 		});
 	});
 
