@@ -173,13 +173,20 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			console.log(data);
-			socket.emit('ADD_DEVICE_PASS', {id:data._id});
+			socket.emit('ADD_DEVICE_PASS', {
+				id : data._id
+			});
 		});
 	});
 
 	socket.on('DEVICE_UPDATE', function(data) {
-		data.update =  {$set: {'meta.name': data.update.name,'meta.description':data.update.description}};
-		
+		data.update = {
+			$set : {
+				'meta.name' : data.update.name,
+				'meta.description' : data.update.description
+			}
+		};
+
 		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
 			console.log('device');
 			console.log(device);
@@ -194,6 +201,15 @@ socketServer.sockets.on('connection', function(socket) {
 		rpc.call('DB_DELETE_DEVICE', data, function(data) {
 			socket.emit('DELETE_DEVICE_PASS', {});
 		});
+	});
+
+	socket.on('DELETE_DEVICES', function(data) {
+		console.log(data);
+		for (var i = 0; i < data.length; i++) {
+			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
+				socket.emit('DELETE_DEVICE_PASS', {});
+			});
+		}
 	});
 
 	socket.on('ADD_PROCEDURE', function(data) {
@@ -227,17 +243,19 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('RENEW_KEY', function(data) {
-		var Data ={};
+		var Data = {};
 		Data.condition = data;
 		var _key = uuid.v4().replace(/-/g, "");
-		Data.update = {key:_key};
+		Data.update = {
+			key : _key
+		};
 		rpc.call('DB_UPDATE_DEVICE', Data, function(device) {
 			console.log(device);
 			socket.emit('RENEW_KEY_PASS', {
-			key : _key
+				key : _key
+			});
 		});
-		});
-		
+
 	});
 });
 
