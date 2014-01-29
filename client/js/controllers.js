@@ -16,10 +16,7 @@ controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', funct
 	// Switching between Login, Signup and Forgot Password
 	$scope.mode = 'login';
 
-	$scope.switchMode = function(mode, $event) {
-		if ($event)
-			$event.preventDefault();
-
+	$scope.switchMode = function(mode) {
 		clearFields();
 		$scope.mode = mode;
 	};
@@ -94,9 +91,7 @@ controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'sock
 		$scope.devices = data;
 	});
 
-	$scope.toggleSelection = function ($event) {
-		if ($event) $event.preventDefault();
-
+	$scope.toggleSelection = function () {
 		var selectedAll = true;
 		angular.forEach($scope.devices, function (value, key) {
 			// Test if everything is selected
@@ -152,9 +147,7 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 		$scope.editMode = !$scope.editMode;
 	};
 
-	$scope.renewKey = function ($event) {
-		$event.preventDefault();
-
+	$scope.renewKey = function () {
 		socket.rpc('RENEW_KEY', {
 			id: $stateParams.deviceId
 		}, function (data) {
@@ -162,9 +155,7 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 		});
 	};
 
-	$scope.deleteDevice = function ($event) {
-		$event.preventDefault();
-
+	$scope.deleteDevice = function () {
 		socket.rpc('DELETE_DEVICE', {
 			id: $stateParams.deviceId
 		}, function (data) {
@@ -173,10 +164,34 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 	};
 }]);
 
-controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, socket) {
-	$scope.send = function ($event) {
-		$event.preventDefault();
+controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket', function ($scope, $state, $stateParams, socket) {
+	$scope.device = {
+		id: 'new_device',
+		key: 'N/A',
+		status: 'Unknown',
+		meta: {
+			name: '',
+			description: '',
+			deviceType: 'public'
+		}
+	};
+	$scope.editMode = true;
+	$scope.addMode = true;
 
+	$scope.toggleEdit = function () {
+		socket.rpc('ADD_DEVICE', {
+			update: {
+				name: $scope.device.meta.name,
+				description: $scope.device.meta.description
+			}
+		}, function (data) {
+			$state.go('cp.devices.edit', {deviceId: data.id});
+		});
+	};
+}]);
+
+controllers.controller('SupportCtrl', ['$scope', 'socket', function ($scope, socket) {
+	$scope.send = function () {
 		socket.rpc('NEW_TICKET', {
 			entry_1679870466: 'testing User',
 			entry_1266873877: $scope.subject,
