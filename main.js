@@ -255,7 +255,14 @@ socketServer.sockets.on('connection', function(socket) {
 				key : _key
 			});
 		});
-
+	});
+	
+	socket.on('USER_UPDATE',function(data){
+		
+	});
+	
+	socket.on('GET_USER',function(data){
+		
 	});
 });
 

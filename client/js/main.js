@@ -50,7 +50,8 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
 
     $stateProvider.state('cp.profile', {
     	url: '^/profile',
-    	templateUrl: './partials/cp.profile.html'
+    	templateUrl: './partials/cp.profile.html',
+    	controller: 'UsersEditCtrl'
     });
 
     $stateProvider.state('test', {
