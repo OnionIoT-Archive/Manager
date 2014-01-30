@@ -36,9 +36,9 @@
 			</div>
 		</form>
 		<ul id="login-switch">
-			<li ng-if="mode !== 'login'"><a href="#" ng-click="switchMode('login', $event)">Login</a></li>
-			<li ng-if="mode !== 'signup'"><a href="#" ng-click="switchMode('signup', $event)">Sign Up</a></li>
-			<li ng-if="mode !== 'forgot'"><a href="#" ng-click="switchMode('forgot', $event)">Forgot Password?</a></li>
+			<li ng-if="mode !== 'login'"><a ng-click="switchMode('login')">Login</a></li>
+			<li ng-if="mode !== 'signup'"><a ng-click="switchMode('signup')">Sign Up</a></li>
+			<li ng-if="mode !== 'forgot'"><a ng-click="switchMode('forgot')">Forgot Password?</a></li>
 		</ul>
 		<p>&copy; 2014 Onion Corporation</p>
 	</div>
