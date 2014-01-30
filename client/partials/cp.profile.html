@@ -3,10 +3,14 @@
 </div>
 
 <div ui-view>
-	<form role="form">
+	<form name='form' role="form">
 		<div class="form-group">
 			<label for="exampleInputEmail1">Email address</label>
-			<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" ng-model='email'>
+			<input name='uEmail' type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" ng-model='email'>
+			<div ng-show="form.uEmail.$dirty && form.uEmail.$invalid">
+				Invalid: <span ng-show="form.uEmail.$error.required">Tell us your email.</span>
+				<span ng-show="form.uEmail.$error.email">This is not a valid email.</span>
+			</div>
 		</div>
 		<div class="form-group">
 			<label for="exampleInputPassword1">Old Pasword</label>
@@ -14,7 +18,7 @@
 			<label for="exampleInputPassword1">Password</label>
 			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-model='password'>
 		</div>
-		<button type="submit" class="btn btn-default" ng-click='userUpdate()'>
+		<button type="submit" ng-disabled="form.$invalid" class="btn btn-default" ng-click='userUpdate()'>
 			Submit
 		</button>
 	</form>

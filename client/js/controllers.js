@@ -245,9 +245,11 @@ function($scope, $state, socket, auth, sha3) {
 	});
 
 	$scope.userUpdate = function() {
-		$scope.email = $scope.email || '';
-		var email = $scope.email.toLowerCase();
+		console.log($scope.email);
 		console.log($scope.password);
+		$scope.email = $scope.email || '';
+		
+		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.rpc('USER_UPDATE', {
 			update : {
@@ -255,9 +257,9 @@ function($scope, $state, socket, auth, sha3) {
 				hash : pwHash
 			}
 		}, function() {
-			confirm("Update successfully");
+			console.log("Update successfully");
 		}, function() {
-			confirm("User name does not match password!");
+			console.log("User name does not match password!");
 		})
 	};
 
