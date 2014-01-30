@@ -260,15 +260,33 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('USER_UPDATE', function(data) {
-		console.log(userInfo);
-		data.condition = {_id:userInfo.userId};
-		rpc.call('DB_UPDATE_USER',data,function(user){
-			socket.emit('USER_UPDATE_PASS',{});
+		console.log(data.oldPass);
+		data.condition = {
+			_id : userInfo.userId
+		};
+
+		rpc.call('DB_GET_USER', {
+			_id : userInfo.userId,
+			passHash : data.oldPass
+		}, function(_user) {
+			console.log('_user');
+			console.log(_user);
+			if (_user) {
+				rpc.call('DB_UPDATE_USER', data, function(user) {
+					socket.emit('USER_UPDATE_PASS', {});
+				});
+
+			} else {
+				socket.emit('USER_UPDATE_FAIL', {});
+			}
 		});
+
 	});
 
 	socket.on('GET_USER', function(data) {
-		rpc.call('DB_GET_USER',{_id:userInfo.userId},function(user){
+		rpc.call('DB_GET_USER', {
+			_id : userInfo.userId
+		}, function(user) {
 			socket.emit('GET_USER_PASS', user);
 		});
 	});
