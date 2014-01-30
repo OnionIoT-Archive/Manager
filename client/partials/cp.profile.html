@@ -9,12 +9,12 @@
 			<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" ng-model='email'>
 		</div>
 		<div class="form-group">
-			<label for="exampleInputPassword1">Password</label>
+			<label for="exampleInputPassword1">Old Pasword</label>
 			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Old Password" ng-medel='oldPassword'>
 			<label for="exampleInputPassword1">Password</label>
 			<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" ng-medel='password'>
 		</div>
-		<button type="submit" class="btn btn-default">
+		<button type="submit" class="btn btn-default" ng-click='userUpdate()'>
 			Submit
 		</button>
 	</form>

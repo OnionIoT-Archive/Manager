@@ -61,8 +61,10 @@ socketServer.sockets.on('connection', function(socket) {
 			if (result != null) {
 				var _token = uuid.v1().replace(/-/g, "");
 				//var _result = JSON.parse(result);
-				if (!userInfo.userId)
+				if (!userInfo.userId) {
 					userInfo.userId = result._id;
+					userInfo.email = result.email;
+				}
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId : result._id
@@ -256,12 +258,15 @@ socketServer.sockets.on('connection', function(socket) {
 			});
 		});
 	});
-	
-	socket.on('USER_UPDATE',function(data){
+
+	socket.on('USER_UPDATE', function(data) {
 		
 	});
-	
-	socket.on('GET_USER',function(data){
+
+	socket.on('GET_USER', function(data) {
+		rpc.call('DB_GET_USER',{_id:userInfo.useId},function(user){
+			socket.emit('GET_USER_PASS', user);
+		});
 		
 	});
 });

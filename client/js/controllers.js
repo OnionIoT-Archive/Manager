@@ -3,8 +3,8 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth',
-function($scope, $state, socket, auth) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
+function($scope, $state, socket, auth,sha3) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -234,29 +234,28 @@ function($scope, socket) {
 	};
 }]);
 
-controllers.controller('UsersEditCtrl', ['$scope', 'socket',
-function($scope, socket) {
+controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth','sha3',
+function($scope, $state, socket, auth,sha3) {
 
 	socket.rpc('GET_USER', {
+	}, function(user) {
+		$scope.email = user.email;
 	}, function() {
-		clearFields();
-		$scope.switchMode('login');
-	}, function() {
-		$scope.signupFailed = true;
-	})
 
-	$scope.email = $scope.email || '';
-	var email = $scope.email.toLowerCase();
-	var pwHash = sha3($scope.password);
+	});
+
 	$scope.userUpdate = function() {
+		$scope.email = $scope.email || '';
+		var email = $scope.email.toLowerCase();
+		console.log($scope.password);
+		var pwHash = sha3($scope.password);
 		socket.rpc('USER_UPDATE', {
 			email : email,
 			hash : pwHash
 		}, function() {
-			clearFields();
-			$scope.switchMode('login');
+			
 		}, function() {
-			$scope.signupFailed = true;
+			
 		})
 	};
 
