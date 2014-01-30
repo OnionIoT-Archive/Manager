@@ -260,11 +260,17 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('USER_UPDATE', function(data) {
-		
+		console.log(userInfo);
+		return
+		data.condition = {_id:userInfo.userId};
+		rpc.call('DB_UPDATE_USER',data,function(user){
+			socket.emit('DB_UPDATE_USER_PASS',{});
+		});
 	});
 
 	socket.on('GET_USER', function(data) {
 		rpc.call('DB_GET_USER',{_id:userInfo.useId},function(user){
+			console.log(user);
 			socket.emit('GET_USER_PASS', user);
 		});
 		

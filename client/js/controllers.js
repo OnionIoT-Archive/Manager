@@ -4,7 +4,7 @@ var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
 controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
-function($scope, $state, socket, auth,sha3) {
+function($scope, $state, socket, auth, sha3) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -234,8 +234,8 @@ function($scope, socket) {
 	};
 }]);
 
-controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth','sha3',
-function($scope, $state, socket, auth,sha3) {
+controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
+function($scope, $state, socket, auth, sha3) {
 
 	socket.rpc('GET_USER', {
 	}, function(user) {
@@ -250,12 +250,14 @@ function($scope, $state, socket, auth,sha3) {
 		console.log($scope.password);
 		var pwHash = sha3($scope.password);
 		socket.rpc('USER_UPDATE', {
-			email : email,
-			hash : pwHash
+			update : {
+				email : email,
+				hash : pwHash
+			}
 		}, function() {
-			
+			confirm("Update successfully");
 		}, function() {
-			
+			confirm("User name does not match password!");
 		})
 	};
 
