@@ -45,7 +45,8 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
 
     $stateProvider.state('cp.support', {
         url: '^/support',
-        templateUrl: './partials/cp.support.html'
+        templateUrl: './partials/cp.support.html',
+    	controller: 'SupportCtrl'
     });
 
     $stateProvider.state('cp.profile', {

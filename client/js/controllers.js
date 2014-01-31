@@ -248,11 +248,11 @@ function($scope, $state, socket, auth, sha3) {
 		console.log($scope.email);
 		console.log($scope.password);
 		$scope.email = $scope.email || '';
-		
+
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
 		socket.rpc('USER_UPDATE', {
-			oldPass:sha3($scope.oldPassword),
+			oldPass : sha3($scope.oldPassword),
 			update : {
 				email : email,
 				passHash : pwHash
@@ -261,6 +261,21 @@ function($scope, $state, socket, auth, sha3) {
 			alert("Update successfully");
 		}, function() {
 			alert("User name does not match password!");
+		})
+	};
+
+}]);
+
+controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3', '$http',
+function($scope, $state, socket, auth, sha3, $http) {
+	$scope.send = function() {
+		socket.rpc('UPLOAD_SUPPORT', {
+			subject : $scope.subject,
+			details : $scope.details
+		}, function(data) {
+			alert('upload success!')
+		}, function(data) {
+			
 		})
 	};
 

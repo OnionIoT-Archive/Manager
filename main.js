@@ -8,6 +8,7 @@ var manager = require('./server/main');
 var rpc = require('./server/amqp-rpc/amqp_rpc');
 var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
+var request = require('request');
 
 // Create servers
 var expressServer = express();
@@ -290,6 +291,23 @@ socketServer.sockets.on('connection', function(socket) {
 			socket.emit('GET_USER_PASS', user);
 		});
 	});
+
+	socket.on('UPLOAD_SUPPORT', function(data) {
+		request.post('https://docs.google.com/a/onion.io/forms/d/14oz4l53ZnGv5EFnddhWDisp1kz0G_RXmYY8ahCXlfDw/formResponse', {
+			form : {
+				entry_1679870466 : userInfo.userId,
+				entry_1266873877:data.subject,
+				entry_1148148744:data.details
+			}
+		}, function(err, response) {
+			if(err){
+				
+			}else{
+				socket.emit('UPLOAD_SUPPORT_PASS',{});
+			}
+		});
+	});
+
 });
 
 /***** HTTP server *****/
