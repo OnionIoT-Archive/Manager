@@ -268,14 +268,24 @@ function($scope, $state, socket, auth, sha3) {
 
 controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3', '$http',
 function($scope, $state, socket, auth, sha3, $http) {
-	$scope.send = function() {
+	$scope.click = false;
+	$scope.send = function($event) {
+		if(!$scope.subject||!$scope.details){
+			$scope.click = true;
+			$scope.sumbitted = false;
+			$event.preventDefault();
+			return
+		}
+		$event.preventDefault();
 		socket.rpc('UPLOAD_SUPPORT', {
 			subject : $scope.subject,
 			details : $scope.details
 		}, function(data) {
-			alert('upload success!')
+			$scope.sumbitted = true;
+			$scope.subject = '';
+			$scope.details = '';
 		}, function(data) {
-			
+			$scope.sumbitted = false;
 		})
 	};
 
