@@ -158,30 +158,25 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('LIST_DEVICES', function(data) {
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
-		console.log(data);
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('LIST_DEVICES_PASS', devicLists)
 		});
 	});
 
 	socket.on('GET_DEVICE', function(data) {
-		console.log(data);
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicList) {
-			console.log(devicList);
 			socket.emit('GET_DEVICE_PASS', devicList)
 		});
 	});
 
 	socket.on('ADD_DEVICE', function(data) {
-		console.log(data);
 		var _key = uuid.v4().replace(/-/g, "");
 		data.key = _key;
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
-			console.log(data);
 			socket.emit('ADD_DEVICE_PASS', {
 				id : data._id
 			});
@@ -197,10 +192,7 @@ socketServer.sockets.on('connection', function(socket) {
 		};
 
 		rpc.call('DB_UPDATE_DEVICE', data, function(device) {
-			console.log('device');
-			console.log(device);
 			rpc.call('DB_GET_DEVICE', data.condition, function(devicList) {
-				console.log(devicList);
 				socket.emit('DEVICE_UPDATE_PASS', devicList);
 			});
 		});
@@ -213,7 +205,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('DELETE_DEVICES', function(data) {
-		console.log(data);
 		for (var i = 0; i < data.length; i++) {
 			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
 				socket.emit('DELETE_DEVICE_PASS', {});
@@ -224,7 +215,6 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('ADD_PROCEDURE', function(data) {
 
 		if (data && data._id) {
-			console.log(data);
 			rpc.call('DB_ADD_PROCEDURE', {
 				path : '/test',
 				fuctionId : 1002,
@@ -238,7 +228,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_STATES', function(data) {
-		console.log(data);
 		if (data && data._id) {
 
 			rpc.call('DB_ADD_STATE', {
@@ -259,7 +248,6 @@ socketServer.sockets.on('connection', function(socket) {
 			key : _key
 		};
 		rpc.call('DB_UPDATE_DEVICE', Data, function(device) {
-			console.log(device);
 			socket.emit('RENEW_KEY_PASS', {
 				key : _key
 			});
@@ -267,7 +255,6 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('USER_UPDATE', function(data) {
-		console.log(data.oldPass);
 		data.condition = {
 			_id : userInfo.userId
 		};
@@ -276,9 +263,7 @@ socketServer.sockets.on('connection', function(socket) {
 			_id : userInfo.userId,
 			passHash : data.oldPass
 		}, function(_user) {
-			console.log('_user');
-			console.log(_user);
-			if (_user) {
+			if (!data.isReset||_user) {
 				rpc.call('DB_UPDATE_USER', data, function(user) {
 					socket.emit('USER_UPDATE_PASS', {});
 				});

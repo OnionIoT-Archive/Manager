@@ -150,7 +150,6 @@ function($scope, $state, $stateParams, socket) {
 	socket.rpc('GET_DEVICE', {
 		_id : $stateParams.deviceId
 	}, function(data) {
-		console.log(data);
 		$scope.device = data;
 	});
 
@@ -240,28 +239,53 @@ function($scope, $state, socket, auth, sha3) {
 	socket.rpc('GET_USER', {
 	}, function(user) {
 		$scope.email = user.email;
+		$scope.fullName=user.fullname;
+		$scope.website=user.website;
+		$scope.company=user.company;
+		$scope.address=user.address;
+		$scope.title=user.title;
+		$scope.industry=user.industry;
+		$scope.number=user.phone;
 	}, function() {
 
 	});
 
 	$scope.userUpdate = function() {
-		console.log($scope.email);
-		console.log($scope.password);
 		$scope.email = $scope.email || '';
-
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
+		var fullname =$scope.fullName;
+		var website=$scope.website;
+		var company=$scope.company;
+		var address=$scope.address;
+		var title=$scope.title;
+		var industry=$scope.industry;
+		var phone=$scope.number;
+		var isReset;
+		if(!$scope.oldPassword){
+			isReset = false;
+		}else{
+			isReset = true;
+		}
 		socket.rpc('USER_UPDATE', {
+			isReset:isReset,
 			oldPass : sha3($scope.oldPassword),
 			update : {
 				email : email,
-				passHash : pwHash
+				passHash : pwHash,
+				fullname:fullname,
+				website:website,
+				company:company,
+				title:title,
+				industry:industry,
+				phone:phone,
+				address:address
 			}
 		}, function() {
 			alert("Update successfully");
 		}, function() {
 			alert("User name does not match password!");
-		})
+		});
 	};
 
 }]);
@@ -270,7 +294,7 @@ controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sh
 function($scope, $state, socket, auth, sha3, $http) {
 	$scope.click = false;
 	$scope.send = function($event) {
-		if(!$scope.subject||!$scope.details){
+		if (!$scope.subject || !$scope.details) {
 			$scope.click = true;
 			$scope.sumbitted = false;
 			$event.preventDefault();
