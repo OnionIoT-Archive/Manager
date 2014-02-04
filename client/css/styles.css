@@ -614,6 +614,9 @@ form#support-contact #details{
 	background-color: #0090d9;
 	color: #fff;
 }
+.btn[disabled]{
+	pointer-events: auto;
+}
 	.login-form .btn-blue:hover,
 	.login-form .btn-blue:active,
 	.login-form .btn-blue:focus {

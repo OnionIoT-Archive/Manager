@@ -82,6 +82,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGOUT', function(data) {
+		console.log(data);
 		rpc.call('DB_REMOVE_SESSION', data, function(data) {
 			socket.emit('LOGOUT_PASS', {});
 		});

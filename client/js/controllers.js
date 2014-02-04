@@ -236,50 +236,54 @@ function($scope, socket) {
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
 function($scope, $state, socket, auth, sha3) {
 
-	socket.rpc('GET_USER', {
-	}, function(user) {
-		$scope.email = user.email;
-		$scope.fullName=user.fullname;
-		$scope.website=user.website;
-		$scope.company=user.company;
-		$scope.address=user.address;
-		$scope.title=user.title;
-		$scope.industry=user.industry;
-		$scope.number=user.phone;
-	}, function() {
+	$scope.revert = function() {
+		socket.rpc('GET_USER', {
+		}, function(user) {
+			$scope.email = user.email;
+			$scope.fullName = user.fullname;
+			$scope.website = user.website;
+			$scope.company = user.company;
+			$scope.address = user.address;
+			$scope.title = user.title;
+			$scope.industry = user.industry;
+			$scope.number = user.phone;
+		}, function() {
 
-	});
+		});
+	};
+	
+	$scope.revert();
 
 	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		var fullname =$scope.fullName;
-		var website=$scope.website;
-		var company=$scope.company;
-		var address=$scope.address;
-		var title=$scope.title;
-		var industry=$scope.industry;
-		var phone=$scope.number;
+		var fullname = $scope.fullName;
+		var website = $scope.website;
+		var company = $scope.company;
+		var address = $scope.address;
+		var title = $scope.title;
+		var industry = $scope.industry;
+		var phone = $scope.number;
 		var isReset;
-		if(!$scope.oldPassword){
+		if (!$scope.oldPassword) {
 			isReset = false;
-		}else{
+		} else {
 			isReset = true;
 		}
 		socket.rpc('USER_UPDATE', {
-			isReset:isReset,
+			isReset : isReset,
 			oldPass : sha3($scope.oldPassword),
 			update : {
 				email : email,
 				passHash : pwHash,
-				fullname:fullname,
-				website:website,
-				company:company,
-				title:title,
-				industry:industry,
-				phone:phone,
-				address:address
+				fullname : fullname,
+				website : website,
+				company : company,
+				title : title,
+				industry : industry,
+				phone : phone,
+				address : address
 			}
 		}, function() {
 			alert("Update successfully");
