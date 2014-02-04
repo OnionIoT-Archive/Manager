@@ -118,8 +118,17 @@ socketServer.sockets.on('connection', function(socket) {
 					});
 				} else {
 					userInfo.token = data.token;
-					if (session && session.userId)
+					if (session && session.userId) {
 						userInfo.userId = session.userId;
+						rpc.call('DB_GET_USER', {
+							_id : userInfo.userId
+						}, function(user) {
+							console.log('user.email');
+							console.log(user.email);
+							
+							userInfo.email = user.email;
+						});
+					}
 					socket.emit('CHECK_SESSION_PASS', {
 					});
 				}
@@ -293,17 +302,18 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('UPLOAD_SUPPORT', function(data) {
+
 		request.post('https://docs.google.com/a/onion.io/forms/d/14oz4l53ZnGv5EFnddhWDisp1kz0G_RXmYY8ahCXlfDw/formResponse', {
 			form : {
-				entry_1679870466 : userInfo.userId,
-				entry_1266873877:data.subject,
-				entry_1148148744:data.details
+				entry_1679870466 : userInfo.email,
+				entry_1266873877 : data.subject,
+				entry_1148148744 : data.details
 			}
 		}, function(err, response) {
-			if(err){
-				
-			}else{
-				socket.emit('UPLOAD_SUPPORT_PASS',{});
+			if (err) {
+
+			} else {
+				socket.emit('UPLOAD_SUPPORT_PASS', {});
 			}
 		});
 	});
