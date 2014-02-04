@@ -123,9 +123,6 @@ socketServer.sockets.on('connection', function(socket) {
 						rpc.call('DB_GET_USER', {
 							_id : userInfo.userId
 						}, function(user) {
-							console.log('user.email');
-							console.log(user.email);
-							
 							userInfo.email = user.email;
 						});
 					}
