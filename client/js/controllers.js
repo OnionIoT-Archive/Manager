@@ -121,12 +121,13 @@ function($scope, $timeout, $state, socket) {
 			angular.forEach($scope.devices, function(value, key) {
 				if (value.selected) {
 					deviceIds.push({
-						id : value._id
+						_id : value._id
 					});
 				}
 			});
 			socket.rpc('DELETE_DEVICES', deviceIds, function() {
 				socket.rpc('LIST_DEVICES', function(data) {
+					console.log('list new decice')
 					$scope.devices = data;
 				});
 			});

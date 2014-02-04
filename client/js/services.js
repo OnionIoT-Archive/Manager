@@ -16,11 +16,11 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 
 	// Get token and check against server to see if session has expired
 	var token = localStorageService.get('OnionSessionToken');
+	console.log('token');
 	console.log(token);
 	if (token) {
 		socket.on('CONNECTED', function () {
 			socket.removeAllListeners('CONNECTED');
-
 			socket.rpc('CHECK_SESSION', {
 				token: token
 			}, function () {
@@ -42,7 +42,7 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 			hash: passwordHash
 		}, function (data) {
 			localStorageService.add('OnionSessionToken', data.token);
-			console.log(localStorageService.get('OnionSessionToken'));
+		
 			$rootScope.loggedIn = true;
 			passCallback();
 		}, function (data) {
@@ -51,6 +51,7 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 	};
 
 	var logout = function () {
+		var token = localStorageService.get('OnionSessionToken');
 		console.log(token);
 		socket.rpc('LOGOUT', {
 			token: token

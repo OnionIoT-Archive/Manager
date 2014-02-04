@@ -62,10 +62,8 @@ socketServer.sockets.on('connection', function(socket) {
 			if (result != null) {
 				var _token = uuid.v1().replace(/-/g, "");
 				//var _result = JSON.parse(result);
-				if (!userInfo.userId) {
-					userInfo.userId = result._id;
-					userInfo.email = result.email;
-				}
+				userInfo.userId = result._id;
+				userInfo.email = result.email;
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId : result._id
@@ -199,16 +197,17 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('DELETE_DEVICE', function(data) {
-		rpc.call('DB_DELETE_DEVICE', data, function(data) {
-			socket.emit('DELETE_DEVICE_PASS', {});
-		});
-	});
+	// socket.on('DELETE_DEVICE', function(data) {
+		// rpc.call('DB_DELETE_DEVICE', data, function(data) {
+			// socket.emit('DELETE_DEVICE_PASS', {});
+		// });
+	// });
 
 	socket.on('DELETE_DEVICES', function(data) {
+		console.log(data);
 		for (var i = 0; i < data.length; i++) {
 			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
-				socket.emit('DELETE_DEVICE_PASS', {});
+				socket.emit('DELETE_DEVICES_PASS', {});
 			});
 		}
 	});
@@ -264,11 +263,13 @@ socketServer.sockets.on('connection', function(socket) {
 			_id : userInfo.userId,
 			passHash : data.oldPass
 		}, function(_user) {
-			if (!data.isReset||_user) {
+			if (!data.isReset || _user) {
 				rpc.call('DB_UPDATE_USER', data, function(user) {
 					socket.emit('USER_UPDATE_PASS', {});
 				});
 
+			}else if(data.isReset&&!data.update.passHash){
+				socket.emit('USER_UPDATE_FAIL', {});
 			} else {
 				socket.emit('USER_UPDATE_FAIL', {});
 			}
