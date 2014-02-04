@@ -181,11 +181,14 @@ function($scope, $state, $stateParams, socket) {
 	};
 
 	$scope.deleteDevice = function() {
-		socket.rpc('DELETE_DEVICES', [{
-			id : $stateParams.deviceId
-		}], function() {
-			$state.go('cp.devices.list');
-		});
+		if (confirm("Are you sure you would like to delete the device?")) {
+			socket.rpc('DELETE_DEVICES', [{
+				_id : $stateParams.deviceId
+			}], function() {
+				$state.go('cp.devices.list');
+			});
+		}
+
 	};
 }]);
 
@@ -252,7 +255,7 @@ function($scope, $state, socket, auth, sha3) {
 
 		});
 	};
-	
+
 	$scope.revert();
 
 	$scope.userUpdate = function() {
