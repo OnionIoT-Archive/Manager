@@ -237,20 +237,11 @@ function($scope, socket) {
 }]);
 
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
-function($scope, $state, socket, auth, sha3,md5) {
+function($scope, $state, socket, auth, sha3) {
 	
 	$scope.revert = function() {
 		socket.rpc('GET_USER', {
 		}, function(user) {
-			console.log(user);
-			// $scope.email = user.email;
-			// $scope.user.fullName = user.fullname;
-			// $scope.website = user.website;
-			// $scope.company = user.company;
-			// $scope.address = user.address;
-			// $scope.title = user.title;
-			// $scope.industry = user.industry;
-			// $scope.number = user.phone;
 			$scope.user = user;
 		}, function() {
 			
