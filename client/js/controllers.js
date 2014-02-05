@@ -174,7 +174,7 @@ function($scope, $state, $stateParams, socket) {
 
 	$scope.renewKey = function() {
 		socket.rpc('RENEW_KEY', {
-			id : $stateParams.deviceId
+			_id : $stateParams.deviceId
 		}, function(data) {
 			$scope.device.key = data.key;
 		});
