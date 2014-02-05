@@ -111,18 +111,21 @@ socketServer.sockets.on('connection', function(socket) {
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
 			}, function(session) {
-
 				if (session == null) {
 					socket.emit('CHECK_SESSION_FAIL', {
 					});
 				} else {
 					userInfo.token = data.token;
 					if (session && session.userId) {
+
 						userInfo.userId = session.userId;
+
 						rpc.call('DB_GET_USER', {
 							_id : userInfo.userId
 						}, function(user) {
-							userInfo.email = user.email;
+							if (user) {
+								userInfo.email = user.email;
+							}
 						});
 					}
 					socket.emit('CHECK_SESSION_PASS', {
@@ -198,9 +201,9 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	// socket.on('DELETE_DEVICE', function(data) {
-		// rpc.call('DB_DELETE_DEVICE', data, function(data) {
-			// socket.emit('DELETE_DEVICE_PASS', {});
-		// });
+	// rpc.call('DB_DELETE_DEVICE', data, function(data) {
+	// socket.emit('DELETE_DEVICE_PASS', {});
+	// });
 	// });
 
 	socket.on('DELETE_DEVICES', function(data) {
@@ -268,7 +271,7 @@ socketServer.sockets.on('connection', function(socket) {
 					socket.emit('USER_UPDATE_PASS', {});
 				});
 
-			}else if(data.isReset&&!data.update.passHash){
+			} else if (data.isReset && !data.update.passHash) {
 				socket.emit('USER_UPDATE_FAIL', {});
 			} else {
 				socket.emit('USER_UPDATE_FAIL', {});
