@@ -188,7 +188,6 @@ function($scope, $state, $stateParams, socket) {
 				$state.go('cp.devices.list');
 			});
 		}
-
 	};
 }]);
 
@@ -244,7 +243,7 @@ function($scope, $state, socket, auth, sha3) {
 		socket.rpc('GET_USER', {
 		}, function(user) {
 			$scope.email = user.email;
-			$scope.fullName = user.fullname;
+			$scope.user.fullName = user.fullname;
 			$scope.website = user.website;
 			$scope.company = user.company;
 			$scope.address = user.address;
@@ -252,17 +251,21 @@ function($scope, $state, socket, auth, sha3) {
 			$scope.industry = user.industry;
 			$scope.number = user.phone;
 		}, function() {
-
+			
 		});
 	};
-
+	
+	$scope.gravatarUrl = function(){
+		
+	}
+	
 	$scope.revert();
 
 	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		var fullname = $scope.fullName;
+		var fullname = $scope.user.fullName;
 		var website = $scope.website;
 		var company = $scope.company;
 		var address = $scope.address;
