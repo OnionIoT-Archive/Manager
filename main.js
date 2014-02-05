@@ -9,11 +9,12 @@ var rpc = require('./server/amqp-rpc/amqp_rpc');
 var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 var request = require('request');
-var idgen = require('idgen');
+// var CryptoJS = require('crypto-js');
+var idgen = require('idgen'); 
 // Create servers
 var expressServer = express();
 var httpServer = http.createServer(expressServer);
-var socketServer = socket.listen(httpServer);
+var socketServer = socket.listen(httpServer,{log:false});
 
 expressServer.use(express.cookieParser());
 expressServer.use(express.session({
@@ -174,9 +175,15 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_DEVICE', function(data) {
-		var _key = idgen().toString();
+		var _key = idgen(16);
+		var id = idgen();
+		// var words = CryptoJS.enc.Hex.parse(_key);
+		// var base64Key = CryptoJS.enc.Base64.stringify(words);
 		data.key = _key;
-		data.id = idgen().toString();
+		data.id = id;
+		// console.log(_key);
+		// console.log(base64Key);
+
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
@@ -247,7 +254,7 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('RENEW_KEY', function(data) {
 		var Data = {};
 		Data.condition = data;
-		var _key = idgen().toString();
+		var _key = idgen(16);
 		Data.update = {
 			key : _key
 		};

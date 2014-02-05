@@ -3,7 +3,7 @@
     	<li><a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a></li>
     	<li><a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a></li>
     	<li ng-if="!addMode"><a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a></li>
-    	<li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li>
+    	<!-- <li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li> -->
     </ul>
 </div>
 
@@ -29,7 +29,7 @@
 										<td><a tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
 										<td>
 											{{device.key}}
-											<button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button>
+											<!-- <button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button> -->
 										</td>
 									</tr>
 									<tr>
