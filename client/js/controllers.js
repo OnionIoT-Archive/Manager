@@ -174,7 +174,7 @@ function($scope, $state, $stateParams, socket) {
 
 	$scope.renewKey = function() {
 		socket.rpc('RENEW_KEY', {
-			id : $stateParams.deviceId
+			_id : $stateParams.deviceId
 		}, function(data) {
 			$scope.device.key = data.key;
 		});
@@ -188,7 +188,6 @@ function($scope, $state, $stateParams, socket) {
 				$state.go('cp.devices.list');
 			});
 		}
-
 	};
 }]);
 
@@ -238,42 +237,53 @@ function($scope, socket) {
 }]);
 
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
-function($scope, $state, socket, auth, sha3) {
-
+function($scope, $state, socket, auth, sha3,md5) {
+	
 	$scope.revert = function() {
 		socket.rpc('GET_USER', {
 		}, function(user) {
-			$scope.email = user.email;
-			$scope.fullName = user.fullname;
-			$scope.website = user.website;
-			$scope.company = user.company;
-			$scope.address = user.address;
-			$scope.title = user.title;
-			$scope.industry = user.industry;
-			$scope.number = user.phone;
+			console.log(user);
+			// $scope.email = user.email;
+			// $scope.user.fullName = user.fullname;
+			// $scope.website = user.website;
+			// $scope.company = user.company;
+			// $scope.address = user.address;
+			// $scope.title = user.title;
+			// $scope.industry = user.industry;
+			// $scope.number = user.phone;
+			$scope.user = user;
 		}, function() {
-
+			
 		});
 	};
-
+	
+	$scope.gravatarUrl = function(){
+		
+	}
+	
 	$scope.revert();
 
 	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
-		var email = $scope.email.toLowerCase();
+		var email = $scope.user.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-		var fullname = $scope.fullName;
-		var website = $scope.website;
-		var company = $scope.company;
-		var address = $scope.address;
-		var title = $scope.title;
-		var industry = $scope.industry;
-		var phone = $scope.number;
+		var fullname = $scope.user.fullname;
+		var website = $scope.user.website;
+		var company = $scope.user.company;
+		var address = $scope.user.address;
+		var title = $scope.user.title;
+		var industry = $scope.user.industry;
+		var phone = $scope.user.phone;
 		var isReset;
+		$scope.isDisable = true;
 		if (!$scope.oldPassword) {
 			isReset = false;
 		} else {
 			isReset = true;
+			if(!$scope.password){
+				alert('Please put your new password');
+				return
+			}
 		}
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
