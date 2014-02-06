@@ -9,7 +9,6 @@ var rpc = require('./server/amqp-rpc/amqp_rpc');
 var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 var request = require('request');
-// var CryptoJS = require('crypto-js');
 var idgen = require('idgen');
 // Create servers
 var expressServer = express();
@@ -45,7 +44,10 @@ var userInfo = {};
 
 /***** WebSocket server *****/
 
+var connections = {};
+
 socketServer.sockets.on('connection', function(socket) {
+	connections = socket;
 	socket.emit('CONNECTED', {});
 
 	userInfo.socketId = socket.id;
@@ -164,7 +166,11 @@ socketServer.sockets.on('connection', function(socket) {
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			socket.emit('LIST_DEVICES_PASS', devicLists)
+			socket.emit('LIST_DEVICES_PASS', devicLists);
+
+			// foreach (device in deviceLists)
+			// connections[device.id] = socket;
+			//TODO:
 		});
 	});
 
@@ -303,14 +309,13 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_HISTORY', function(data) {
 		console.log(data);
-		rpc.call('DB_ADD_HISTORY',data,function(result){
+		rpc.call('DB_ADD_HISTORY', data, function(result) {
 			console.log('result');
 			socket.emit('ADD_HISTORY_PASS', result);
 		});
 	});
 
 	socket.on('UPLOAD_SUPPORT', function(data) {
-
 		request.post('https://docs.google.com/a/onion.io/forms/d/14oz4l53ZnGv5EFnddhWDisp1kz0G_RXmYY8ahCXlfDw/formResponse', {
 			form : {
 				entry_1679870466 : userInfo.email,
@@ -326,7 +331,21 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
+	// rpc.call('TEST_MANAGER', {}, function(data) {
+// 
+	// });
+
 });
+
+// rpc.register('TEST_MANAGER', function(p, callback) {
+	// var data = {
+		// userId : userInfo.userId
+	// };
+	// console.log(userInfo);
+	// rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+		// connections.emit('LIST_DEVICES_PASS', devicLists);
+	// });
+// });
 
 /***** HTTP server *****/
 
