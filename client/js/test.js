@@ -129,8 +129,8 @@ function($scope, socket) {
 		socket.emit('GET_HISTORY', {
 			_id : $scope.deviceId
 		});
-		socket.on('RENEW_KEY_PASS', function(data){
-			console.log(data.key);
+		socket.on('GET_HISTORY_PASS', function(data){
+			console.log(data);
 		});	
 	};
 

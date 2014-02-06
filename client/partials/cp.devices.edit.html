@@ -153,14 +153,14 @@
 							</tr>
 						</thead>
 						<tbody>
-							<!--<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>-->
-							<tr>
-								<td colspan="3">No activity history found.</td>
+							<tr ng-repeat="history in his">
+								<td>{{history.action}}</td>
+								<td>{{history.endpoint}}</td>
+								<td>{{history.timestamp}}</td>
 							</tr>
+							<!-- <tr>
+								<td colspan="3">No activity history found.</td>
+							</tr> -->
 						</tbody>
 					</table>
 				</div>

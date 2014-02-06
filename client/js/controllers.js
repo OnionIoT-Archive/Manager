@@ -153,6 +153,13 @@ function($scope, $state, $stateParams, socket) {
 	}, function(data) {
 		$scope.device = data;
 	});
+	
+	socket.rpc('GET_HISTORY', {
+		deviceId : $stateParams.deviceId
+	}, function(data) {
+		console.log(data);
+		$scope.his = data;
+	});
 
 	$scope.toggleEdit = function() {
 		if ($scope.editMode) {
