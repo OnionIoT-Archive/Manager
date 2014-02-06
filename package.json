@@ -9,7 +9,8 @@
     "mongoose": "~3.8.4",
     "nodemailer": "~0.6.0",
     "node-uuid": "~1.4.1",
-    "angular-md5": "~0.1.7"
+    "angular-md5": "~0.1.7",
+    "idgen": "~1.3.0"
   },
   "devDependencies": {},
   "scripts": {
