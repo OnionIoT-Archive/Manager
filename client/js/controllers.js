@@ -90,7 +90,7 @@ function($scope, $state, socket, auth) {
 
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
 function($scope, $timeout, $state, socket) {
-	
+
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
 		$scope.devices = data;
@@ -154,7 +154,7 @@ function($scope, $state, $stateParams, socket) {
 	}, function(data) {
 		$scope.device = data;
 	});
-	
+
 	socket.rpc('GET_HISTORY', {
 		deviceId : $stateParams.deviceId
 	}, function(data) {
@@ -199,8 +199,8 @@ function($scope, $state, $stateParams, socket) {
 	};
 }]);
 
-controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI',
-function($scope, $state, $stateParams, socket,blockUI) {
+controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI',
+function($scope, $state, $stateParams, socket, blockUI) {
 	$scope.device = {
 		id : 'new_device',
 		key : 'N/A',
@@ -248,20 +248,20 @@ function($scope, socket) {
 
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
 function($scope, $state, socket, auth, sha3) {
-	
+
 	$scope.revert = function() {
 		socket.rpc('GET_USER', {
 		}, function(user) {
 			$scope.user = user;
 		}, function() {
-			
+
 		});
 	};
-	
-	$scope.gravatarUrl = function(){
-		
+
+	$scope.gravatarUrl = function() {
+
 	}
-	
+
 	$scope.revert();
 
 	$scope.userUpdate = function() {
@@ -281,7 +281,7 @@ function($scope, $state, socket, auth, sha3) {
 			isReset = false;
 		} else {
 			isReset = true;
-			if(!$scope.password){
+			if (!$scope.password) {
 				alert('Please put your new password');
 				return
 			}
@@ -309,27 +309,32 @@ function($scope, $state, socket, auth, sha3) {
 
 }]);
 
-controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3', '$http',
-function($scope, $state, socket, auth, sha3, $http) {
+controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3', '$http', 'blockUI',
+function($scope, $state, socket, auth, sha3, $http, blockUI) {
 	$scope.click = false;
 	$scope.send = function($event) {
+		
 		if (!$scope.subject || !$scope.details) {
 			$scope.click = true;
 			$scope.sumbitted = false;
 			$event.preventDefault();
 			return
+		} else {
+			blockUI.start();
+			$event.preventDefault();
+			socket.rpc('UPLOAD_SUPPORT', {
+				subject : $scope.subject,
+				details : $scope.details
+			}, function(data) {
+				blockUI.stop();
+				$scope.sumbitted = true;
+				$scope.subject = '';
+				$scope.details = '';
+			}, function(data) {
+				blockUI.stop();
+				$scope.sumbitted = false;
+			})
 		}
-		$event.preventDefault();
-		socket.rpc('UPLOAD_SUPPORT', {
-			subject : $scope.subject,
-			details : $scope.details
-		}, function(data) {
-			$scope.sumbitted = true;
-			$scope.subject = '';
-			$scope.details = '';
-		}, function(data) {
-			$scope.sumbitted = false;
-		})
 	};
 
 }]);
