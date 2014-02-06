@@ -10,11 +10,13 @@ var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 var request = require('request');
 // var CryptoJS = require('crypto-js');
-var idgen = require('idgen'); 
+var idgen = require('idgen');
 // Create servers
 var expressServer = express();
 var httpServer = http.createServer(expressServer);
-var socketServer = socket.listen(httpServer,{log:false});
+var socketServer = socket.listen(httpServer, {
+	log : false
+});
 
 expressServer.use(express.cookieParser());
 expressServer.use(express.session({
@@ -177,13 +179,8 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('ADD_DEVICE', function(data) {
 		var _key = idgen(16);
 		var id = idgen();
-		// var words = CryptoJS.enc.Hex.parse(_key);
-		// var base64Key = CryptoJS.enc.Base64.stringify(words);
 		data.key = _key;
 		data.id = id;
-		// console.log(_key);
-		// console.log(base64Key);
-
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
@@ -293,6 +290,22 @@ socketServer.sockets.on('connection', function(socket) {
 			_id : userInfo.userId
 		}, function(user) {
 			socket.emit('GET_USER_PASS', user);
+		});
+	});
+
+	socket.on('GET_HISTORY', function(data) {
+		rpc.call('DB_GET_HISTORY', {
+			deviceId : data.deviceId
+		}, function(his) {
+			socket.emit('GET_HISTORY_PASS', his);
+		});
+	});
+
+	socket.on('ADD_HISTORY', function(data) {
+		console.log(data);
+		rpc.call('DB_ADD_HISTORY',data,function(result){
+			console.log('result');
+			socket.emit('ADD_HISTORY_PASS', result);
 		});
 	});
 

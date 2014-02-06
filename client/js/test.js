@@ -109,8 +109,29 @@ function($scope, socket) {
 		});
 		socket.on('RENEW_KEY_PASS', function(data){
 			console.log(data.key);
+		});	
+	};
+	
+	$scope.add_history = function() {
+		console.log('data');
+		socket.emit('ADD_HISTORY', {
+			action : 'action',
+			endpoint:'endpoint',
+			deviceId:$scope.deviceId,
+			payload:'test'
 		});
-		
+		socket.on('ADD_HISTORY_PASS', function(data){
+			console.log(data);
+		});	
+	};
+	
+	$scope.get_history = function() {
+		socket.emit('GET_HISTORY', {
+			_id : $scope.deviceId
+		});
+		socket.on('RENEW_KEY_PASS', function(data){
+			console.log(data.key);
+		});	
 	};
 
 }]);
