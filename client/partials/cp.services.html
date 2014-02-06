@@ -3,3 +3,52 @@
 </div>
 
 <div ui-view></div>
+<div class="content" style="padding-left: 20px">
+	<h2>Onion tutorial </h2>
+	<p>
+		This simple tutorial will show you how to set up an Onion API to control a device over HTTP.
+	</p>
+	<h4>Materials </h4>
+	<p>
+		An internet-enabled Arduino (we prefer the Arduino Yun, but any Arduino with an Ethernet shield will work)
+	</p>
+	<p>
+		Jumper cables
+	</p>
+	<h4>Materials </h4>
+	<p>
+		Set up your Arduino to connect to the Internet using the Arduino Getting Started guide.
+	</p>
+	<h4>Connecting with Onion </h4>
+	<p>
+		<a>Download the Onion example code</a>
+	</p>
+	<p>
+		Set the device id generated in your Onion dashboard, for example, “d001”.
+	</p>
+	<p>
+		Notice in the setup() function in the example code how the get and post requests are set up to map to local Arduino functions.
+	</p>
+	<p>
+		You should now be able to control the LED by visiting
+	</p>
+	<p>
+		http://dev.onion.io/api/devices/
+		<your_device_id>
+			/on and
+	</p>
+	<p>
+		http://dev.onion.io/api/devices/
+		<your_device_id>
+			/on in your browser.
+	</p>
+	<h4>Controlling a device with Onion </h4>
+	<p>
+		Now we will try sending data to a
+		<LCD display? lamp? printer?>
+			.
+	</p>
+	<p>
+		We use the Postman chrome extension to quickly test POST requests.
+	</p>
+</div>

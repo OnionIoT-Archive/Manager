@@ -90,6 +90,7 @@ function($scope, $state, socket, auth) {
 
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
 function($scope, $timeout, $state, socket) {
+	
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
 		$scope.devices = data;
@@ -198,8 +199,8 @@ function($scope, $state, $stateParams, socket) {
 	};
 }]);
 
-controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket',
-function($scope, $state, $stateParams, socket) {
+controllers.controller('DevicesAddCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI',
+function($scope, $state, $stateParams, socket,blockUI) {
 	$scope.device = {
 		id : 'new_device',
 		key : 'N/A',
@@ -214,6 +215,7 @@ function($scope, $state, $stateParams, socket) {
 	$scope.addMode = true;
 
 	$scope.toggleEdit = function() {
+		blockUI.start();
 		socket.rpc('ADD_DEVICE', {
 			meta : {
 				name : $scope.device.meta.name,
@@ -221,6 +223,7 @@ function($scope, $state, $stateParams, socket) {
 				deviceType : $scope.device.meta.deviceType
 			}
 		}, function(data) {
+			blockUI.stop();
 			$state.go('cp.devices.edit', {
 				deviceId : data.id
 			});

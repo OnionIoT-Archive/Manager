@@ -64,7 +64,7 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 	};
 }]);
 
-services.factory('socket', ['$rootScope', function ($rootScope) {
+services.factory('socket', ['$rootScope','blockUI', function ($rootScope,blockUI) {
 	if (angular.isDefined(window.io)) {
 		var socket = io.connect();
 
@@ -117,7 +117,6 @@ services.factory('socket', ['$rootScope', function ($rootScope) {
 				});
 				removeListeners();
 			});
-
 			socket.emit(functionName, data);
 		};
 

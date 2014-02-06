@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('manager', ['ui.router', 'ui.bootstrap', 'LocalStorageModule','manager.controllers', 'manager.services', 'manager.directives', 'manager.filters','manager.test','md5','ui-gravatar']);
+var app = angular.module('manager', ['ui.router', 'ui.bootstrap', 'LocalStorageModule','manager.controllers', 'manager.services', 'manager.directives', 'manager.filters','manager.test','md5','ui-gravatar','blockUI']);
 
 app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', function ($locationProvider, $stateProvider, $urlRouterProvider) {
     // Enable HTML5 mode
@@ -39,7 +39,7 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     });
 
     $stateProvider.state('cp.services', {   
-    	url: '^/services',
+    	url: '^/documentation',
     	templateUrl: './partials/cp.services.html'
     });
 
