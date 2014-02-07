@@ -152,6 +152,7 @@ function($scope, $state, $stateParams, socket) {
 	socket.rpc('GET_DEVICE', {
 		_id : $stateParams.deviceId
 	}, function(data) {
+		console.log(data);
 		$scope.device = data;
 	});
 

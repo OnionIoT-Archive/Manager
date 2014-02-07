@@ -241,6 +241,22 @@ socketServer.sockets.on('connection', function(socket) {
 		}
 	});
 
+	socket.on('GET_PROCEDURE', function(data) {
+		console.log('call procedure');
+		rpc.call('DB_GET_PROCEDURE', {}, function(data) {
+			console.log('rpc procedure');
+			socket.emit('GET_PROCEDURE_PASS', data);
+		});
+	});
+
+	socket.on('GET_STATE', function(data) {
+		console.log('call GET_STATE');
+		rpc.call('DB_GET_STATE', {}, function(data) {
+			console.log('rpc GET_STATE');
+			socket.emit('GET_STATE_PASS', data);
+		});
+	});
+
 	socket.on('ADD_STATES', function(data) {
 		if (data && data._id) {
 
@@ -332,19 +348,19 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	// rpc.call('TEST_MANAGER', {}, function(data) {
-// 
+	//
 	// });
 
 });
 
 // rpc.register('TEST_MANAGER', function(p, callback) {
-	// var data = {
-		// userId : userInfo.userId
-	// };
-	// console.log(userInfo);
-	// rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-		// connections.emit('LIST_DEVICES_PASS', devicLists);
-	// });
+// var data = {
+// userId : userInfo.userId
+// };
+// console.log(userInfo);
+// rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+// connections.emit('LIST_DEVICES_PASS', devicLists);
+// });
 // });
 
 /***** HTTP server *****/
