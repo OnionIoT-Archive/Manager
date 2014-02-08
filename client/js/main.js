@@ -38,9 +38,9 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
         controller: 'DevicesEditCtrl'
     });
 
-    $stateProvider.state('cp.services', {   
-    	url: '^/documentation',
-    	templateUrl: './partials/cp.services.html'
+    $stateProvider.state('cp.docs', {   
+    	url: '^/docs',
+    	templateUrl: './partials/cp.docs.html'
     });
 
     $stateProvider.state('cp.support', {
