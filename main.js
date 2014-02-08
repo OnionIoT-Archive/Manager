@@ -242,17 +242,13 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('GET_PROCEDURE', function(data) {
-		console.log('call procedure');
 		rpc.call('DB_GET_PROCEDURE', {}, function(data) {
-			console.log('rpc procedure');
 			socket.emit('GET_PROCEDURE_PASS', data);
 		});
 	});
 
 	socket.on('GET_STATE', function(data) {
-		console.log('call GET_STATE');
 		rpc.call('DB_GET_STATE', {}, function(data) {
-			console.log('rpc GET_STATE');
 			socket.emit('GET_STATE_PASS', data);
 		});
 	});
