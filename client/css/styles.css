@@ -234,6 +234,9 @@ a:hover {
 	#content .wrapper h5 {
 		margin-top: 0;
 	}
+	#content .wrapper > h4 .fa {
+		margin-right: 10px;
+	}
 
 .panel {
 	-webkit-box-shadow: none;
