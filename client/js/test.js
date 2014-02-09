@@ -137,7 +137,7 @@ function($scope, socket) {
 	$scope.get_procedure = function() {
 		console.log('click procedure');
 		socket.emit('GET_PROCEDURE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 		socket.on('GET_PROCEDURE_PASS', function(data){
 			console.log('GET_PROCEDURE_PASS');
@@ -147,7 +147,7 @@ function($scope, socket) {
 	
 	$scope.get_states = function() {
 		socket.emit('GET_STATE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 		socket.on('GET_STATE_PASS', function(data){
 			console.log(data);

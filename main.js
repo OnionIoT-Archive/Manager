@@ -191,7 +191,7 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_PASS', {
-				id : data._id
+				id : data.id
 			});
 			rpc.call('DB_ADD_HISTORY', {
 				deviceId : data._id,
@@ -206,7 +206,8 @@ socketServer.sockets.on('connection', function(socket) {
 		data.update = {
 			$set : {
 				'meta.name' : data.update.name,
-				'meta.description' : data.update.description
+				'meta.description' : data.update.description,
+				'meta.deviceType' : data.update.deviceType
 			}
 		};
 

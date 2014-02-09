@@ -164,6 +164,7 @@ function($scope, $state, $stateParams, socket) {
 	});
 
 	$scope.toggleEdit = function() {
+		console.log('toggleEdit save');
 		if ($scope.editMode) {
 			socket.rpc('DEVICE_UPDATE', {
 				condition : {
@@ -171,7 +172,8 @@ function($scope, $state, $stateParams, socket) {
 				},
 				update : {
 					name : $scope.device.meta.name,
-					description : $scope.device.meta.description
+					description : $scope.device.meta.description,
+					deviceType:$scope.device.meta.deviceType
 				}
 			}, function(data) {
 				$scope.device = data;
@@ -216,6 +218,7 @@ function($scope, $state, $stateParams, socket, blockUI) {
 	$scope.addMode = true;
 
 	$scope.toggleEdit = function() {
+		console.log('toggle edit save');
 		blockUI.start();
 		socket.rpc('ADD_DEVICE', {
 			meta : {
@@ -224,6 +227,7 @@ function($scope, $state, $stateParams, socket, blockUI) {
 				deviceType : $scope.device.meta.deviceType
 			}
 		}, function(data) {
+			console.log(data);
 			blockUI.stop();
 			$state.go('cp.devices.edit', {
 				deviceId : data.id
