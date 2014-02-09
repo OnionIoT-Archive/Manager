@@ -148,9 +148,10 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 function($scope, $state, $stateParams, socket) {
 	$scope.device = {};
 	$scope.editMode = false;
-
+	console.log(typeof $stateParams.deviceId);
+	console.log('$stateParams.deviceId');
 	socket.rpc('GET_DEVICE', {
-		_id : $stateParams.deviceId
+		id : $stateParams.deviceId
 	}, function(data) {
 		console.log(data);
 		$scope.device = data;
@@ -159,7 +160,6 @@ function($scope, $state, $stateParams, socket) {
 	socket.rpc('GET_HISTORY', {
 		deviceId : $stateParams.deviceId
 	}, function(data) {
-		console.log(data);
 		$scope.his = data;
 	});
 
@@ -167,7 +167,7 @@ function($scope, $state, $stateParams, socket) {
 		if ($scope.editMode) {
 			socket.rpc('DEVICE_UPDATE', {
 				condition : {
-					_id : $stateParams.deviceId
+					id : $stateParams.deviceId
 				},
 				update : {
 					name : $scope.device.meta.name,
@@ -258,11 +258,6 @@ function($scope, $state, socket, auth, sha3) {
 
 		});
 	};
-
-	$scope.gravatarUrl = function() {
-
-	}
-
 	$scope.revert();
 
 	$scope.userUpdate = function() {

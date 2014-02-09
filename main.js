@@ -217,12 +217,6 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	// socket.on('DELETE_DEVICE', function(data) {
-	// rpc.call('DB_DELETE_DEVICE', data, function(data) {
-	// socket.emit('DELETE_DEVICE_PASS', {});
-	// });
-	// });
-
 	socket.on('DELETE_DEVICES', function(data) {
 		console.log(data);
 		for (var i = 0; i < data.length; i++) {
@@ -234,12 +228,12 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_PROCEDURE', function(data) {
 
-		if (data && data._id) {
+		if (data && data._id||data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
 				path : '/test',
 				fuctionId : 1002,
 				verb : 'post',
-				deviceId : data._id,
+				deviceId : data.id,
 				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()
 			}, function(data) {
@@ -260,12 +254,12 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_STATES', function(data) {
-		if (data && data._id) {
+		if (data && data._id||data.id) {
 
 			rpc.call('DB_ADD_STATE', {
 				path : '/statePath',
 				value : 333,
-				deviceId : data._id,
+				deviceId : data.id,
 				timeStamp : new Date()
 			}, function(data) {
 			});

@@ -56,14 +56,14 @@ function($scope, socket) {
 	$scope.add_procedures = function() {
 		console.log($scope.deviceId);
 		socket.emit('ADD_PROCEDURE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 	};
 
 	$scope.add_states = function() {
 		console.log('$scope.deviceId');
 		socket.emit('ADD_STATES', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 	};
 

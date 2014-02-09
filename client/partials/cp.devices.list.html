@@ -33,7 +33,7 @@
 				<tr ng-repeat="device in devices | filter:searchText">
 					<td class="listing-checkbox"><input type="checkbox" ng-model="device.selected" /></td>
 					<td class="listing-name">
-						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device._id})">{{device.meta.name}}</a>
+						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device.id})">{{device.meta.name}}</a>
 					</td>
 					<td class="listing-id"><a>{{device.id}}</a></td>
 					<td class="listing-description">{{device.meta.description}}</td>
