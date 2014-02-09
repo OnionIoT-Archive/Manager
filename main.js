@@ -193,6 +193,12 @@ socketServer.sockets.on('connection', function(socket) {
 			socket.emit('ADD_DEVICE_PASS', {
 				id : data._id
 			});
+			rpc.call('DB_ADD_HISTORY', {
+				deviceId : data._id,
+				action:'Device created'
+			}, function(data) {
+
+			});
 		});
 	});
 
