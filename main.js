@@ -168,10 +168,6 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('LIST_DEVICES_PASS', devicLists);
-
-			// foreach (device in deviceLists)
-			// connections[device.id] = socket;
-			//TODO:
 		});
 	});
 
@@ -190,12 +186,13 @@ socketServer.sockets.on('connection', function(socket) {
 		data.id = id;
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
+			
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_PASS', {
 				id : data.id
 			});
 			rpc.call('DB_ADD_HISTORY', {
-				deviceId : data._id,
+				deviceId : data.id,
 				action : 'Device created'
 			}, function(data) {
 
