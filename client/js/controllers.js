@@ -93,6 +93,7 @@ function($scope, $timeout, $state, socket) {
 
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
+		console.log('LIST_DEVICES_PASS');
 		$scope.devices = data;
 	});
 

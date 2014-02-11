@@ -154,5 +154,9 @@ function($scope, socket) {
 		});	
 	};
 	
+	$scope.realtimeupdate = function(){
+		socket.emit('realtime',{});
+	}
+	
 
 }]);
