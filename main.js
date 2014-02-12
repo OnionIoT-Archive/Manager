@@ -397,7 +397,7 @@ rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 
 // Configure the express server
 expressServer.configure(function() {
-	expressServer.use(express.basicAuth('dev', 'philosophy'));
+	//expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
 	expressServer.get('*', function(req, res) {
 		res.redirect('/');
