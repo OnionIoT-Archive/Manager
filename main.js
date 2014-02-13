@@ -40,14 +40,13 @@ var mailOptions = {
 	html : "<b>Click <a href='#'>here</a> to reset your password</b>" // html body
 };
 
-var userInfo = {};
-
 /***** WebSocket server *****/
 
 var connections = {};
 
 socketServer.sockets.on('connection', function(socket) {
-	connections = socket;
+	var userInfo = {};
+	//connections = socket;
 	socket.emit('CONNECTED', {});
 
 	userInfo.socketId = socket.id;
@@ -69,6 +68,7 @@ socketServer.sockets.on('connection', function(socket) {
 				//var _result = JSON.parse(result);
 				userInfo.userId = result._id;
 				userInfo.email = result.email;
+				connections[userInfo.userId] = socket;
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId : result._id
@@ -85,7 +85,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('LOGOUT', function(data) {
-		console.log(data);
+
 		rpc.call('DB_REMOVE_SESSION', data, function(data) {
 			socket.emit('LOGOUT_PASS', {});
 		});
@@ -124,12 +124,13 @@ socketServer.sockets.on('connection', function(socket) {
 					if (session && session.userId) {
 
 						userInfo.userId = session.userId;
-
+						connections[userInfo.userId] = socket;
 						rpc.call('DB_GET_USER', {
 							_id : userInfo.userId
 						}, function(user) {
 							if (user) {
 								userInfo.email = user.email;
+
 							}
 						});
 					}
@@ -167,10 +168,6 @@ socketServer.sockets.on('connection', function(socket) {
 			data.userId = userInfo.userId;
 		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 			socket.emit('LIST_DEVICES_PASS', devicLists);
-
-			// foreach (device in deviceLists)
-			// connections[device.id] = socket;
-			//TODO:
 		});
 	});
 
@@ -189,9 +186,16 @@ socketServer.sockets.on('connection', function(socket) {
 		data.id = id;
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
+			
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_PASS', {
-				id : data._id
+				id : data.id
+			});
+			rpc.call('DB_ADD_HISTORY', {
+				deviceId : data.id,
+				action : 'Device created'
+			}, function(data) {
+
 			});
 		});
 	});
@@ -200,7 +204,8 @@ socketServer.sockets.on('connection', function(socket) {
 		data.update = {
 			$set : {
 				'meta.name' : data.update.name,
-				'meta.description' : data.update.description
+				'meta.description' : data.update.description,
+				'meta.deviceType' : data.update.deviceType
 			}
 		};
 
@@ -211,14 +216,8 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	// socket.on('DELETE_DEVICE', function(data) {
-	// rpc.call('DB_DELETE_DEVICE', data, function(data) {
-	// socket.emit('DELETE_DEVICE_PASS', {});
-	// });
-	// });
-
 	socket.on('DELETE_DEVICES', function(data) {
-		console.log(data);
+
 		for (var i = 0; i < data.length; i++) {
 			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
 				socket.emit('DELETE_DEVICES_PASS', {});
@@ -228,12 +227,12 @@ socketServer.sockets.on('connection', function(socket) {
 
 	socket.on('ADD_PROCEDURE', function(data) {
 
-		if (data && data._id) {
+		if (data && data._id || data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
 				path : '/test',
 				fuctionId : 1002,
 				verb : 'post',
-				deviceId : data._id,
+				deviceId : data.id,
 				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()
 			}, function(data) {
@@ -254,12 +253,12 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_STATES', function(data) {
-		if (data && data._id) {
+		if (data && data._id || data.id) {
 
 			rpc.call('DB_ADD_STATE', {
 				path : '/statePath',
 				value : 333,
-				deviceId : data._id,
+				deviceId : data.id,
 				timeStamp : new Date()
 			}, function(data) {
 			});
@@ -320,9 +319,9 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('ADD_HISTORY', function(data) {
-		console.log(data);
+
 		rpc.call('DB_ADD_HISTORY', data, function(result) {
-			console.log('result');
+
 			socket.emit('ADD_HISTORY_PASS', result);
 		});
 	});
@@ -342,28 +341,63 @@ socketServer.sockets.on('connection', function(socket) {
 			}
 		});
 	});
+	socket.on('realtime', function(e) {
 
-	// rpc.call('TEST_MANAGER', {}, function(data) {
-	//
-	// });
+		rpc.call('REALTIME_UPDATE_HISTORY', {
+			deviceId : 'AbYrsuO2'
+		}, function(data) {
+
+		});
+	});
 
 });
 
-// rpc.register('TEST_MANAGER', function(p, callback) {
-// var data = {
-// userId : userInfo.userId
-// };
-// console.log(userInfo);
-// rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-// connections.emit('LIST_DEVICES_PASS', devicLists);
-// });
-// });
+rpc.register('REALTIME_UPDATE_HISTORY', function(p, callback) {
+	var email;
+	var userId;
+	rpc.call('DB_GET_DEVICE', {
+		id : p.deviceId
+	}, function(device) {
+		userId = device.userId;
+		
+		rpc.call('DB_GET_HISTORY', {
+			deviceId : p.deviceId
+		}, function(his) {
+			connections[userId].emit('GET_HISTORY_PASS', his);
+		});
+	});
+	callback({});
+});
+
+rpc.register('REALTIME_UPDATE_PROCEDURE', function(p, callback) {
+	var email;
+	var userId;
+	rpc.call('DB_GET_DEVICE', {
+		id : p.deviceId
+	}, function(device) {
+		userId = device.userId;
+		connections[userId].emit('GET_DEVICE_PASS', device);
+	});
+	callback({});
+});
+
+rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
+	var email;
+	var userId;
+	rpc.call('DB_GET_DEVICE', {
+		id : p.deviceId
+	}, function(device) {
+		userId = device.userId;
+		connections[userId].emit('GET_DEVICE_PASS', device);
+	});
+	callback({});
+});
 
 /***** HTTP server *****/
 
 // Configure the express server
 expressServer.configure(function() {
-	expressServer.use(express.basicAuth('dev', 'philosophy'));
+	//expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
 	expressServer.get('*', function(req, res) {
 		res.redirect('/');

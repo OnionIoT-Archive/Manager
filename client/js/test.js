@@ -56,14 +56,14 @@ function($scope, socket) {
 	$scope.add_procedures = function() {
 		console.log($scope.deviceId);
 		socket.emit('ADD_PROCEDURE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 	};
 
 	$scope.add_states = function() {
 		console.log('$scope.deviceId');
 		socket.emit('ADD_STATES', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 	};
 
@@ -137,7 +137,7 @@ function($scope, socket) {
 	$scope.get_procedure = function() {
 		console.log('click procedure');
 		socket.emit('GET_PROCEDURE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 		socket.on('GET_PROCEDURE_PASS', function(data){
 			console.log('GET_PROCEDURE_PASS');
@@ -147,12 +147,16 @@ function($scope, socket) {
 	
 	$scope.get_states = function() {
 		socket.emit('GET_STATE', {
-			_id : $scope.deviceId
+			id : $scope.deviceId
 		});
 		socket.on('GET_STATE_PASS', function(data){
 			console.log(data);
 		});	
 	};
+	
+	$scope.realtimeupdate = function(){
+		socket.emit('realtime',{});
+	}
 	
 
 }]);
