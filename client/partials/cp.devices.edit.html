@@ -9,7 +9,7 @@
 
 <div class="wrapper">
 	<h4 ng-if="!addMode"><span class="fa fa-puzzle-piece"></span>{{device.meta.name}}</h4>
-	<h4 ng-if="addMode"><span class="fa fa-add"></span>Add New Device</h4>
+	<h4 ng-if="addMode"><span class="fa fa-plus"></span>Add New Device</h4>
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			<div class="panel panel-dark" id="summary">
@@ -95,6 +95,9 @@
 							</tr>
 						</thead>
 						<tbody>
+							<tr ng-if="device.procedures.length === 0">
+								<td colspan="3">No precedure registered.</td>
+							</tr>
 							<tr ng-repeat="procedure in device.procedures">
 								<td>
 									<div class="verb" ng-class="'verb-' + procedure.verb"></div>
@@ -102,9 +105,6 @@
 								<td>
 									{{procedure.path}}
 								</td>
-							</tr>
-							<tr ng-if="device.procedures.length === 0">
-								<td colspan="3">No precedure registered.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -125,13 +125,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							<tr ng-if="device.states.length === 0">
+								<td colspan="3">No state registered.</td>
+							</tr>
 							<tr ng-repeat="state in device.states">
 								<td>{{state.path}}</td>
 								<td>{{state.value}}</td>
 								<td>{{state.timeStamp}}</td>
-							</tr>
-							<tr ng-if="device.states.length === 0">
-								<td colspan="3">No state registered.</td>
 							</tr>
 						</tbody>
 					</table>
@@ -152,13 +152,13 @@
 							</tr>
 						</thead>
 						<tbody>
+							<tr ng-if="his.length === 0">
+								<td colspan="3">No activity history found.</td>
+							</tr>
 							<tr ng-repeat="history in his">
 								<td>{{history.action}}</td>
 								<td>{{history.timestamp}}</td>
 							</tr>
-							<!-- <tr>
-								<td colspan="3">No activity history found.</td>
-							</tr> -->
 						</tbody>
 					</table>
 				</div>

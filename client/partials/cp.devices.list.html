@@ -30,6 +30,9 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr ng-if="devices.length === 0">
+					<td colspan="6">No device registered.</td>
+				</tr>
 				<tr ng-repeat="device in devices | filter:searchText">
 					<td class="listing-checkbox"><input type="checkbox" ng-model="device.selected" /></td>
 					<td class="listing-name">

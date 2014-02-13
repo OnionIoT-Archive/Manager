@@ -130,6 +130,23 @@ services.factory('socket', ['$rootScope','blockUI', function ($rootScope,blockUI
 	}
 }]);
 
+services.factory('marked', [function () {
+	if (angular.isDefined(window.marked)) {
+		var marked = window.marked;
+		marked.setOptions({
+			renderer: new marked.Renderer(),
+			gfm: true,
+			tables: true,
+			breaks: true,
+			pedantic: false,
+			sanitize: true,
+			smartLists: true,
+			smartypants: true
+		});
+		return marked;
+	}
+}]);
+
 services.factory('sha3', [function () {
 	if (angular.isDefined(window.CryptoJS.SHA3)) {
 		return function (message) {

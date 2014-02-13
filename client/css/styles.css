@@ -3,6 +3,13 @@ html, body {
 	color: #505458;
 }
 
+pre {
+	background-color: #ecf0f2;
+	border-radius: 0;
+	border: 0;
+	padding: 15px;
+}
+
 a,
 a:visited {
 	color: #736086;
