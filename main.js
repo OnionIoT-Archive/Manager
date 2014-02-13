@@ -186,7 +186,7 @@ socketServer.sockets.on('connection', function(socket) {
 		data.id = id;
 		if (userInfo && userInfo.userId)
 			data.userId = userInfo.userId;
-			
+
 		rpc.call('DB_ADD_DEVICE', data, function(data) {
 			socket.emit('ADD_DEVICE_PASS', {
 				id : data.id
@@ -217,16 +217,16 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('DELETE_DEVICES', function(data) {
-
+		//console.log(data);
 		for (var i = 0; i < data.length; i++) {
 			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
 				socket.emit('DELETE_DEVICES_PASS', {});
 			});
 		}
+
 	});
 
 	socket.on('ADD_PROCEDURE', function(data) {
-
 		if (data && data._id || data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
 				path : '/test',
@@ -359,7 +359,7 @@ rpc.register('REALTIME_UPDATE_HISTORY', function(p, callback) {
 		id : p.deviceId
 	}, function(device) {
 		userId = device.userId;
-		
+
 		rpc.call('DB_GET_HISTORY', {
 			deviceId : p.deviceId
 		}, function(his) {

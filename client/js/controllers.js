@@ -145,8 +145,8 @@ function($scope, $timeout, $state, socket) {
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket',
-function($scope, $state, $stateParams, socket) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI',
+function($scope, $state, $stateParams, socket,blockUI) {
 	$scope.device = {};
 	$scope.editMode = false;
 	console.log(typeof $stateParams.deviceId);
@@ -194,9 +194,11 @@ function($scope, $state, $stateParams, socket) {
 
 	$scope.deleteDevice = function() {
 		if (confirm("Are you sure you would like to delete the device?")) {
+			blockUI.start();
 			socket.rpc('DELETE_DEVICES', [{
-				_id : $stateParams.deviceId
+				id : $stateParams.deviceId
 			}], function() {
+				blockUI.stop();
 				$state.go('cp.devices.list');
 			});
 		}
