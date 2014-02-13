@@ -245,6 +245,10 @@ a:hover {
 		margin-right: 10px;
 	}
 
+.markdown {
+	width: 800px;
+}
+
 .panel {
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -267,6 +271,10 @@ a:hover {
 
 	.panel > * {
 		border-radius: 0;
+	}
+
+	.panel-body > *:last-child {
+		margin-bottom: 0;
 	}
 
 	.panel.panel-dark > .panel-heading {

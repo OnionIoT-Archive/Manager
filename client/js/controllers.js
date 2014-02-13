@@ -341,3 +341,16 @@ function($scope, $state, socket, auth, sha3, $http, blockUI) {
 	};
 
 }]);
+
+controllers.controller('DocsCtrl', ['$scope', '$templateCache',
+function($scope, $templateCache) {
+	var currentChapter = 'intro';
+	$scope.docText = $templateCache.get('docs.intro');
+
+	$scope.changeDoc = function (chapter) {
+		if (currentChapter !== chapter) {
+			$scope.docText = $templateCache.get('docs.' + chapter);
+			currentChapter = chapter;
+		}
+	};
+}]);
