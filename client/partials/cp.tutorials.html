@@ -1,0 +1,103 @@
+<div class="navbar navbar-onion">
+	<ul class="nav navbar-nav nav-onion">
+		<li><a ng-click="changeDoc('intro')"><span class="fa fa-info-circle"></span>Introduction</a></li>
+    	<li><a ng-click="changeDoc('led')"><span class="fa fa-lightbulb-o"></span>Smart LED</a></li>
+    	<li><a ng-click="changeDoc('printer')"><span class="fa fa-print"></span>Smart Printer</a></li>
+    </ul>
+    <ul class="nav navbar-nav nav-onion pull-right">
+		<li><a ng-click="changeDoc('api')"><span class="fa fa-book"></span>API Documentation</a></li>
+    </ul>
+</div>
+
+<div class="wrapper">
+	<h4><span class="fa fa-book"></span>Tutorials</h4>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="markdown" ng-bind-html="docText | gfm"></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="tutorials.intro">
+## Introduction
+
+The Onion Platform makes it extremely easy to integrate your Arduino Yún based devices with the Web. The platform maps each hardware device to the cloud as a set of REST APIs, which can then be accessed from anywhere in the world. We will be building two "smart" devices in this tutorial, each illustrating how to use the Onion Arduino Yún Client Library to integrate your devices to the web and to use the URLs created to integrate with the devices. 
+
+### How Does Onion Work?
+
+![](./img/intro1.png)
+
+Onion works by mapping physical devices to the web as URLs. Once the device connects to the cloud, developers can write local functions and register them as REST API endpoints. Then, it becomes possible to interact with the devices by performing GET or POST requests on the API endpoints. Allowing developers to write local functions natively means that it is super easy to get started. In total, there are only about 5 lines of code a developer has to learn to get started.
+
+### 1. Device Setup
+
+For our tutorials, we will be using the Arduino Yún. To get started, make sure you have connected the Arduino Yún to the Internet either using Ethernet or WiFi. For more information, please check out [this tutorial](http://arduino.cc/en/Guide/ArduinoYun#toc13).
+
+### 2. Registering Device on the Onion Cloud
+
+Once the Arduino Yún has been connected to the Internet, we need to have a way to uniquely address it. To do this, we need to  On the Onion Platform, each device is treated as an URL identified by an unique device ID. 
+
+To create the unique device ID for your device, go to __Devices__, and click on __New__:
+
+>![](./img/intro2.png)
+
+Enter optional informations to describe your device and click on __Save__:
+
+>![](./img/intro3.png)
+
+Once the information has been saved, the new device will be assigned an unique ID and a randomly generated key. Think of them as the username and password for your Arduino Yún log into the Onion Cloud. Take note of where you can find these information, we will be needing them very soon.
+
+>![](./img/intro4.png)
+
+### 3. Installing the Onion Client Library
+
+Please make sure you have installed the latest version of the Arduino IDE (You will need at least version 1.5.0, which supports Arduino Yún). You can download the Arduino IDE from [here](http://arduino.cc/en/main/software#.Uv6SgUJdXDQ).
+
+Once you have installed the Arduino IDE, you need to download the [Onion Client Library](http://google.com) and install it by navigating to __Sketch__ > __Import Library...__ > __Add Library...__. 
+
+>![](./img/intro5.png)
+
+You will be prompted to select the library you would like to add. Navigate to the .zip file and open it.
+
+__NB__ : the library will be available to use in sketches, but examples for the library will not be exposed in the File > Examples until after the IDE has restarted.
+
+
+### 4. Connecting to the Onion Cloud
+
+Connecting your Arduino Yún to the Onion Cloud is as easy as copying and pasting the __Device ID__ and __Device Key__ assigned to you in _Step 1_ in your sketch to log into the platform.
+
+```
+#include <Bridge.h>
+#include <YunClient.h> 
+#include <OnionYunClient.h>
+
+OnionYunClient client("DpOExgL6", "NfoTRREprRKPfuf8"); 
+
+void setup() {
+  Bridge.begin();
+  client.begin();
+}
+
+void loop() {
+  client.loop();
+}
+```
+
+Compile and Load into your Arduino Yún.
+
+Congratulations! You have just connected your Arduino Yún to the Onion Cloud!
+
+</script>
+
+<script type="text/ng-template" id="tutorials.led">
+### Building a "Smart LED"
+</script>
+
+<script type="text/ng-template" id="tutorials.printer">
+### Building a "Smart Printer"
+</script>
+
+<script type="text/ng-template" id="tutorials.api">
+### API Documentation
+</script>

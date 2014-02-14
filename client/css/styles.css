@@ -231,7 +231,12 @@ a:focus, a:active, a:hover {
 }
 
 .markdown {
-	width: 800px;
+	max-width: 800px;
+	width: 100%;
+}
+
+.markdown img {
+	max-width: 100%;
 }
 
 .panel {
