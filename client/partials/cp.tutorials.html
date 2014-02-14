@@ -1,7 +1,7 @@
 <div class="navbar navbar-onion">
 	<ul class="nav navbar-nav nav-onion">
 		<li><a ng-click="changeDoc('intro')"><span class="fa fa-info-circle"></span>Introduction</a></li>
-    	<li><a ng-click="changeDoc('lamp')"><span class="fa fa-lightbulb-o"></span>Smart Lamp</a></li>
+    	<li><a ng-click="changeDoc('led')"><span class="fa fa-lightbulb-o"></span>Smart LED</a></li>
     	<li><a ng-click="changeDoc('printer')"><span class="fa fa-print"></span>Smart Printer</a></li>
     </ul>
     <ul class="nav navbar-nav nav-onion pull-right">
@@ -10,7 +10,7 @@
 </div>
 
 <div class="wrapper">
-	<h4><span class="fa fa-book"></span>Documentations</h4>
+	<h4><span class="fa fa-book"></span>Tutorials</h4>
 
 	<div class="panel panel-default">
 		<div class="panel-body">
@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<script type="text/ng-template" id="docs.intro">
+<script type="text/ng-template" id="tutorials.intro">
 ## Introduction
 
 The Onion Platform makes it extremely easy to integrate your Arduino Yún based devices with the Web. The platform maps each hardware device to the cloud as a set of REST APIs, which can then be accessed from anywhere in the world. We will be building two "smart" devices in this tutorial, each illustrating how to use the Onion Arduino Yún Client Library to integrate your devices to the web and to use the URLs created to integrate with the devices. 
@@ -90,14 +90,14 @@ Congratulations! You have just connected your Arduino Yún to the Onion Cloud!
 
 </script>
 
-<script type="text/ng-template" id="docs.lamp">
-### Building a "Smart Lamp"
+<script type="text/ng-template" id="tutorials.led">
+### Building a "Smart LED"
 </script>
 
-<script type="text/ng-template" id="docs.printer">
+<script type="text/ng-template" id="tutorials.printer">
 ### Building a "Smart Printer"
 </script>
 
-<script type="text/ng-template" id="docs.api">
+<script type="text/ng-template" id="tutorials.api">
 ### API Documentation
 </script>
