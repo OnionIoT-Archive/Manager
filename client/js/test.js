@@ -118,7 +118,7 @@ function($scope, socket) {
 			action : 'action',
 			endpoint:'endpoint',
 			deviceId:$scope.deviceId,
-			payload:'test'
+			payload:'gon'
 		});
 		socket.on('ADD_HISTORY_PASS', function(data){
 			console.log(data);

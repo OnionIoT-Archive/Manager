@@ -1,10 +1,16 @@
 <div class="navbar navbar-onion">
 	<ul class="nav navbar-nav nav-onion">
-    	<li><a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a></li>
-    	<li><a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a></li>
-    	<li ng-if="!addMode"><a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a></li>
-    	<!-- <li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li> -->
-    </ul>
+		<li>
+			<a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a>
+		</li>
+		<li>
+			<a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a>
+		</li>
+		<li ng-if="!addMode">
+			<a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a>
+		</li>
+		<!-- <li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li> -->
+	</ul>
 </div>
 
 <div class="wrapper">
@@ -27,23 +33,18 @@
 									</tr>
 									<tr>
 										<td><a tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
-										<td>
-											{{device.key}}
-											<!-- <button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button> -->
-										</td>
+										<td> {{device.key}} <!-- <button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button> --></td>
 									</tr>
 									<tr>
 										<td><strong>Canonical Name</strong></td>
-										<td>
-											<span ng-if="!editMode">{{device.meta.name}}</span>
-											<input type="text" ng-if="editMode" ng-model="device.meta.name" />
+										<td><span ng-if="!editMode">{{device.meta.name}}</span>
+										<input type="text" ng-if="editMode" ng-model="device.meta.name" />
 										</td>
 									</tr>
 									<tr>
 										<td><strong>Description</strong></td>
-										<td>
-											<span ng-if="!editMode">{{device.meta.description}}</span>
-											<input type="text" ng-if="editMode" ng-model="device.meta.description" />
+										<td><span ng-if="!editMode">{{device.meta.description}}</span>
+										<input type="text" ng-if="editMode" ng-model="device.meta.description" />
 										</td>
 									</tr>
 								</tbody>
@@ -58,19 +59,17 @@
 									</tr>
 									<tr>
 										<td><a tooltip-placement="right" tooltip="URL to access the API"><strong>API Endpoint</strong></a></td>
-										<td><a>http://dev.onion.io/api/{{device.id}}</a></td>
+										<td><a>http://api.onion.io/v1/devices/{{device.id}}</a></td>
 									</tr>
 									<tr>
 										<td><strong>Device Type</strong></td>
-										<td>
-											<span ng-if="!editMode">{{device.meta.deviceType}}</span>
-											<div ng-if="editMode" class="select-wrapper">
-												<select ng-model="device.meta.deviceType">
-													<option value="private">Private</option>
-													<option value="public">Public</option>
-												</select>
-											</div>
-										</td>
+										<td><span ng-if="!editMode">{{device.meta.deviceType}}</span>
+										<div ng-if="editMode" class="select-wrapper">
+											<select ng-model="device.meta.deviceType">
+												<option value="private">Private</option>
+												<option value="public">Public</option>
+											</select>
+										</div></td>
 									</tr>
 								</tbody>
 							</table>
@@ -92,6 +91,7 @@
 							<tr>
 								<th>Method</th>
 								<th>End Point</th>
+								<th>Test</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -99,12 +99,9 @@
 								<td colspan="3">No precedure registered.</td>
 							</tr>
 							<tr ng-repeat="procedure in device.procedures">
-								<td>
-									<div class="verb" ng-class="'verb-' + procedure.verb"></div>
-								</td>
-								<td>
-									{{procedure.path}}
-								</td>
+								<td><div ng-click="testProcedure()" class="verb" ng-class="'verb-' + procedure.verb"></div></td>
+								<td><div class="endPointEdit">http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}} </div></td>
+								<td><button class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path)" ng-class="'verb-' + procedure.verb+'click'">Test</button>  </td>
 							</tr>
 						</tbody>
 					</table>

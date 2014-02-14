@@ -229,9 +229,9 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('ADD_PROCEDURE', function(data) {
 		if (data && data._id || data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
-				path : '/test',
+				path : '/gon',
 				fuctionId : 1002,
-				verb : 'post',
+				verb : 'get',
 				deviceId : data.id,
 				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()

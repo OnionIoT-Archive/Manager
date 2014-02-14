@@ -145,8 +145,8 @@ function($scope, $timeout, $state, socket) {
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI',
-function($scope, $state, $stateParams, socket,blockUI) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI','$http',
+function($scope, $state, $stateParams, socket,blockUI,$http) {
 	$scope.device = {};
 	$scope.editMode = false;
 	console.log(typeof $stateParams.deviceId);
@@ -163,7 +163,13 @@ function($scope, $state, $stateParams, socket,blockUI) {
 	}, function(data) {
 		$scope.his = data;
 	});
-
+	$scope.testProcedure = function(path){
+		console.log($scope.device.id);
+		console.log('http://api.onion.io/v1/devices/'+$scope.device.id+path);
+		$http.get('http://api.onion.io/v1/devices/'+$scope.device.id+path).success(function(e){
+			console.log(e);
+		});
+	};
 	$scope.toggleEdit = function() {
 		console.log('toggleEdit save');
 		if ($scope.editMode) {
