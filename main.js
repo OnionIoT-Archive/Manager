@@ -217,7 +217,7 @@ socketServer.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('DELETE_DEVICES', function(data) {
-		//console.log(data);
+
 		for (var i = 0; i < data.length; i++) {
 			rpc.call('DB_DELETE_DEVICE', data[i], function(data) {
 				socket.emit('DELETE_DEVICES_PASS', {});
