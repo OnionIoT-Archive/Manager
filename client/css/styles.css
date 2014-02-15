@@ -20,7 +20,6 @@ a:focus,
 a:active,
 a:hover {
 	color: #7761a7;
-	text-decoration: none;
 	cursor: pointer;
 }
 

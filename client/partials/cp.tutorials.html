@@ -54,7 +54,7 @@ Once the information has been saved, the new device will be assigned an unique I
 
 Please make sure you have installed the latest version of the Arduino IDE (You will need at least version 1.5.0, which supports Arduino Yún). You can download the Arduino IDE from [here](http://arduino.cc/en/main/software#.Uv6SgUJdXDQ).
 
-Once you have installed the Arduino IDE, you need to download the [Onion Client Library](http://google.com) and install it by navigating to __Sketch__ > __Import Library...__ > __Add Library...__. 
+Once you have installed the Arduino IDE, you need to download either the [OnionYunClient Library](./files/OnionYunClient.zip) (for Arduino Yún) or the [OnionClient Library](./files/OnionClient.zip) (for Arduino + Ethernet Shield) and install it by navigating to __Sketch__ > __Import Library...__ > __Add Library...__. 
 
 >![](./img/intro5.png)
 
@@ -324,7 +324,17 @@ The ```client.post()``` method takes three parameters, first is a char array tha
 
 In this case, firstArg will become the first argument to the local function, and secondArg will become the second argument to the local function. However, before you can use these arguments in the local functions, they need to be converted back into C/C++ types using the ```params->getChar(0)``` and ```params->getInt(1)``` statements, for the first and second parameters, respectively.
 
-That's it! You have just registered a local function as remote POST endpoints! Now, whenever you POST on the /print endpoint it will print whatever string you put as the "msg" element within the POST body.
+That's it! You have just registered a local function as remote POST endpoints! You can use jQuery to ask the printer to print something:
+
+```
+$.post('http://api.onion.io/v1/devices/deviceId/print', {
+	msg: 'Print me!'
+}, function () {
+	console.log('done');
+});
+```
+
+The above request would print ```Print me!``` on the printer.
 
 For more information regarding registering POST endpoints, please visit the API Documentation.
 </script>
