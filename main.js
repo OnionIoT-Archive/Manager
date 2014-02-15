@@ -10,6 +10,7 @@ var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 var request = require('request');
 var idgen = require('idgen');
+
 // Create servers
 var expressServer = express();
 var httpServer = http.createServer(expressServer);
@@ -51,9 +52,6 @@ socketServer.sockets.on('connection', function(socket) {
 
 	userInfo.socketId = socket.id;
 
-	socket.emit('news', {
-		hello : 'world'
-	});
 	socket.emit('test', {
 		data : 'socket io works'
 	});
@@ -399,7 +397,7 @@ rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 expressServer.configure(function() {
 	//expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
-	expressServer.get('*', function(req, res) {
+	expressServer.get('*', function (req, res) {
 		res.redirect('/');
 	});
 });
