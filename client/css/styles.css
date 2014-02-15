@@ -27,6 +27,10 @@ a:hover {
 	outline: none!important;
 }
 
+.block-ui-message-container {
+	margin-top: -34px!important;
+}
+
 #sidebar, #content {
 	position: relative;
 	height: 100%;
