@@ -1,38 +1,14 @@
-<div class="navbar navbar-onion">
-	<ul class="nav navbar-nav nav-onion">
-    	<li><a href="#" ng-click="send($event)"><span class="fa fa-rocket"></span>Send!</a></li>
-    	<li><a href="#"><span class="fa fa-times"></span>Cancel</a></li>
-    </ul>
-</div>
-
 <div class="wrapper">
-	<h4><span class="fa fa-ticket"></span>Submit Support Ticket</h4>
+	<style>
+		#forums {
+			position: absolute;
+			left: 0;
+			top: 0;
+			border: none;
+			height: 100%;
+			width: 100%;
+		}
+	</style>
 
-	<div class="row">
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<div ng-if="sumbitted" class="alert alert-success">
-				Your ticket has been submitted successfully.
-			</div>
-			<div ng-if="!sumbitted&&click" class="alert alert-danger">
-				Please fill in all information and try again.
-			</div>
-		</div>
-	</div>
-
-	<form id="support-contact" role="form">
-		<div class="row">
-			<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-				<div class="form-group">
-					<input type="text" class="form-control" id="subject" placeholder="Subject" ng-model="subject" />
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-				<div class="form-group">
-					<textarea id="details" placeholder="Please detail your issue or question..." ng-model="details"></textarea>
-				</div>
-			</div>
-		</div>
-	</form>
+	<iframe id="forums" ng-src="{{forumsUrl}}"></iframe>
 </div>

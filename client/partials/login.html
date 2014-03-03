@@ -24,10 +24,10 @@
 				<input required type="password" id="password" class="form-control" placeholder="Password" ng-model="password" ng-disabled="mode === 'forgot'" />
 			</div>
 			<div class="form-group">
-				<button ng-disabled="loginForm.$invalid" ng-if="mode === 'login'" type="submit" class="btn btn-default btn-block" ng-click='login()'>
+				<button ng-if="mode === 'login'" type="submit" class="btn btn-default btn-block" ng-click='login()'>
 					Login<span class="fa fa-sign-in pull-right"></span>
 				</button>
-				<button ng-disabled="loginForm.$invalid" ng-if="mode === 'signup'" type="submit" class="btn btn-blue btn-block" ng-click='signUp()'>
+				<button ng-if="mode === 'signup'" type="submit" class="btn btn-blue btn-block" ng-click='signUp()'>
 					Sign Up<span class="fa fa-user pull-right"></span>
 				</button>
 				<button ng-if="mode === 'forgot'" type="submit" class="btn btn-green btn-block" ng-click='forgotPassword()'>

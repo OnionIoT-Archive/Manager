@@ -318,34 +318,12 @@ function($scope, $state, socket, auth, sha3) {
 
 }]);
 
-controllers.controller('SupportCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3', '$http', 'blockUI',
-function($scope, $state, socket, auth, sha3, $http, blockUI) {
-	$scope.click = false;
-	$scope.send = function($event) {
-		
-		if (!$scope.subject || !$scope.details) {
-			$scope.click = true;
-			$scope.sumbitted = false;
-			$event.preventDefault();
-			return
-		} else {
-			blockUI.start();
-			$event.preventDefault();
-			socket.rpc('UPLOAD_SUPPORT', {
-				subject : $scope.subject,
-				details : $scope.details
-			}, function(data) {
-				blockUI.stop();
-				$scope.sumbitted = true;
-				$scope.subject = '';
-				$scope.details = '';
-			}, function(data) {
-				blockUI.stop();
-				$scope.sumbitted = false;
-			})
-		}
-	};
-
+controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
+function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
+	socket.rpc('FORUMS_SETUP', function (forumsInfo) {
+		console.log('here');
+		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
+	});
 }]);
 
 controllers.controller('DocsCtrl', ['$scope', '$templateCache',

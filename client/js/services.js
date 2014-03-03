@@ -100,8 +100,8 @@ services.factory('socket', ['$rootScope','blockUI', function ($rootScope,blockUI
 			}
 
 			var removeListeners = function () {
-				// socket.removeAllListeners(functionName + '_PASS');
-				// socket.removeAllListeners(functionName + '_FAIL');
+				socket.removeAllListeners(functionName + '_PASS');
+				socket.removeAllListeners(functionName + '_FAIL');
 			};
 
 			socket.on(functionName + '_PASS', function (data) {

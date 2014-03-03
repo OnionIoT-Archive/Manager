@@ -4,12 +4,12 @@
 var express = require('express');
 var socket = require('socket.io');
 var http = require('http');
-var manager = require('./server/main');
 var rpc = require('./server/amqp-rpc/amqp_rpc');
 var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 var request = require('request');
 var idgen = require('idgen');
+var crypto = require('crypto');
 
 // Create servers
 var expressServer = express();
@@ -45,7 +45,7 @@ var mailOptions = {
 
 var connections = {};
 
-socketServer.sockets.on('connection', function(socket) {
+socketServer.sockets.on('connection', function (socket) {
 	var userInfo = {};
 	//connections = socket;
 	socket.emit('CONNECTED', {});
@@ -56,28 +56,28 @@ socketServer.sockets.on('connection', function(socket) {
 		data : 'socket io works'
 	});
 
-	socket.on('LOGIN', function(data) {
+	socket.on('LOGIN', function (data) {
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
-		}, function(result) {
+		}, function (result) {
 			if (result != null) {
 				var _token = uuid.v1().replace(/-/g, "");
 				//var _result = JSON.parse(result);
 				userInfo.userId = result._id;
 				userInfo.email = result.email;
 				connections[userInfo.userId] = socket;
+
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId : result._id
-				}, function(data) {
+				}, function (data) {
 					socket.emit('LOGIN_PASS', {
 						token : _token
 					});
 				});
 			} else {
-				socket.emit('LOGIN_FAIL', {
-				});
+				socket.emit('LOGIN_FAIL');
 			}
 		});
 	});
@@ -324,21 +324,38 @@ socketServer.sockets.on('connection', function(socket) {
 		});
 	});
 
-	socket.on('UPLOAD_SUPPORT', function(data) {
-		request.post('https://docs.google.com/a/onion.io/forms/d/14oz4l53ZnGv5EFnddhWDisp1kz0G_RXmYY8ahCXlfDw/formResponse', {
-			form : {
-				entry_1679870466 : userInfo.email,
-				entry_1266873877 : data.subject,
-				entry_1148148744 : data.details
-			}
-		}, function(err, response) {
-			if (err) {
+	socket.on('FORUMS_SETUP', function () {
+		rpc.call('DB_GET_USER', {
+			_id : userInfo.userId
+		}, function(user) {
+			var timestamp = Math.round(+new Date / 1000);
 
-			} else {
-				socket.emit('UPLOAD_SUPPORT_PASS', {});
-			}
+			var gravatarHash = crypto.createHash('md5');
+			gravatarHash.update(user.email);
+			var gravatarUrl = '//gravatar.com/avatar/' + gravatarHash.digest('hex') + '?d=identicon';
+
+			var message = (new Buffer(JSON.stringify({
+			   user: {
+			      id: user.email,
+			      displayname: user.fullname || user.email,
+			      email: user.email,
+			      avatar: gravatarUrl,
+			      is_admin: !!user.admin
+			   }
+			}))).toString('base64');
+
+			var signatureHash = crypto.createHash('sha1');
+			signatureHash.update('vV8MtWdvEJ2lpBanvYhUpNwJ' + ' ' + message + ' ' + timestamp);
+			var signature = signatureHash.digest('hex');
+
+			socket.emit('FORUMS_SETUP_PASS', {
+				timestamp: timestamp,
+				message: message,
+				signature: signature
+			});
 		});
 	});
+
 	socket.on('realtime', function(e) {
 
 		rpc.call('REALTIME_UPDATE_HISTORY', {
@@ -397,6 +414,9 @@ rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 expressServer.configure(function() {
 	//expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
+	expressServer.get('/forums/:message/:timestamp/:signature', function (req, res) {
+		res.end('<!doctype html><html><head><link rel="stylesheet" type="text/css" href="//cdn.moot.it/1/moot.css" /><link rel="stylesheet" type="text/css" href="/css/forums.css" /><meta name="viewport" content="width=device-width" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//cdn.moot.it/1/moot.min.js"></script></head><body><a id="moot" href="https://moot.it/i/onion">Onion Forums</a><script>$("#moot").moot({api: {key: "aaFn5b4rnM", signature: "' + req.params.signature + '", message: "' + req.params.message + '", timestamp: "' + req.params.timestamp + '"}});</script></body></html>');
+	});
 	expressServer.get('*', function (req, res) {
 		res.redirect('/');
 	});
