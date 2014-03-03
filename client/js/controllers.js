@@ -321,8 +321,7 @@ function($scope, $state, socket, auth, sha3) {
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
 	socket.rpc('FORUMS_SETUP', function (forumsInfo) {
-		console.log('here');
-		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
+		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + ($location.port() === 80 ? '' : ':' + $location.port()) + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
 	});
 }]);
 
