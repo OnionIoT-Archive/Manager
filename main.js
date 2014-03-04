@@ -120,7 +120,6 @@ socketServer.sockets.on('connection', function (socket) {
 				} else {
 					userInfo.token = data.token;
 					if (session && session.userId) {
-
 						userInfo.userId = session.userId;
 						connections[userInfo.userId] = socket;
 						rpc.call('DB_GET_USER', {

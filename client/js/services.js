@@ -67,7 +67,8 @@ services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket
 services.factory('socket', ['$rootScope','blockUI', function ($rootScope,blockUI) {
 	if (angular.isDefined(window.io)) {
 		var socket = io.connect();
-
+		
+		//use this if you need the socket listening all the time
 		var on = function (eventName, callback) {
 			socket.on(eventName, function (data) {
 				callback(data);
@@ -87,7 +88,7 @@ services.factory('socket', ['$rootScope','blockUI', function ($rootScope,blockUI
 				callback(data);
 			})
 		};
-
+		//use this functions to register the socket once only
 		var rpc = function (functionName, data, passCallback, failCallback) {
 			if (typeof data === 'function') {
 				failCallback = passCallback;
