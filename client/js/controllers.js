@@ -93,7 +93,7 @@ function($scope, $timeout, $state, socket) {
 
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
-		
+		console.log('LIST_DEVICES_PASS');
 		$scope.devices = data;
 	});
 
@@ -129,7 +129,7 @@ function($scope, $timeout, $state, socket) {
 			});
 			socket.rpc('DELETE_DEVICES', deviceIds, function() {
 				socket.rpc('LIST_DEVICES', function(data) {
-					
+					console.log('list new decice')
 					$scope.devices = data;
 				});
 			});
@@ -149,30 +149,29 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 function($scope, $state, $stateParams, socket,blockUI,$http) {
 	$scope.device = {};
 	$scope.editMode = false;
-	
+	console.log(typeof $stateParams.deviceId);
+	console.log('$stateParams.deviceId');
 	socket.rpc('GET_DEVICE', {
 		id : $stateParams.deviceId
 	}, function(data) {
+		console.log(data);
 		$scope.device = data;
 	});
-	
-	socket.emit('GET_HISTORY', {
+
+	socket.rpc('GET_HISTORY', {
 		deviceId : $stateParams.deviceId
-	});
-	
-	socket.on('GET_HISTORY_PASS', function(data) {
-		console.log('ddd');
+	}, function(data) {
 		$scope.his = data;
 	});
 	$scope.testProcedure = function(path){
-		
-		
+		console.log($scope.device.id);
+		console.log('http://api.onion.io/v1/devices/'+$scope.device.id+path);
 		$http.get('http://api.onion.io/v1/devices/'+$scope.device.id+path).success(function(e){
-			
+			console.log(e);
 		});
 	};
 	$scope.toggleEdit = function() {
-		
+		console.log('toggleEdit save');
 		if ($scope.editMode) {
 			socket.rpc('DEVICE_UPDATE', {
 				condition : {
@@ -228,7 +227,7 @@ function($scope, $state, $stateParams, socket, blockUI) {
 	$scope.addMode = true;
 
 	$scope.toggleEdit = function() {
-		
+		console.log('toggle edit save');
 		blockUI.start();
 		socket.rpc('ADD_DEVICE', {
 			meta : {
@@ -237,7 +236,7 @@ function($scope, $state, $stateParams, socket, blockUI) {
 				deviceType : $scope.device.meta.deviceType
 			}
 		}, function(data) {
-			
+			console.log(data);
 			blockUI.stop();
 			$state.go('cp.devices.edit', {
 				deviceId : data.id
@@ -322,8 +321,7 @@ function($scope, $state, socket, auth, sha3) {
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
 	socket.rpc('FORUMS_SETUP', function (forumsInfo) {
-		
-		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
+		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + ($location.port() === 80 ? '' : ':' + $location.port()) + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
 	});
 }]);
 
