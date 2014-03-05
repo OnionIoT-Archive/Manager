@@ -45,7 +45,7 @@ var mailOptions = {
 
 var connections = {};
 
-socketServer.sockets.on('connection', function (socket) {
+socketServer.sockets.on('connection', function(socket) {
 	var userInfo = {};
 	//connections = socket;
 	socket.emit('CONNECTED', {});
@@ -56,11 +56,11 @@ socketServer.sockets.on('connection', function (socket) {
 		data : 'socket io works'
 	});
 
-	socket.on('LOGIN', function (data) {
+	socket.on('LOGIN', function(data) {
 		rpc.call('DB_GET_USER', {
 			email : data.email,
 			passHash : data.hash
-		}, function (result) {
+		}, function(result) {
 			if (result != null) {
 				var _token = uuid.v1().replace(/-/g, "");
 				//var _result = JSON.parse(result);
@@ -71,7 +71,7 @@ socketServer.sockets.on('connection', function (socket) {
 				rpc.call('DB_ADD_SESSION', {
 					token : _token,
 					userId : result._id
-				}, function (data) {
+				}, function(data) {
 					socket.emit('LOGIN_PASS', {
 						token : _token
 					});
@@ -109,7 +109,7 @@ socketServer.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('CHECK_SESSION', function(data) {
-		
+
 		if (data && data.token) {
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
@@ -160,11 +160,13 @@ socketServer.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('LIST_DEVICES', function(data) {
-		if (userInfo && userInfo.userId)
-			data.userId = userInfo.userId;
-		rpc.call('DB_GET_DEVICE', data, function(devicLists) {
-			socket.emit('LIST_DEVICES_PASS', devicLists);
-		});
+		if (userInfo && userInfo.userId) {
+			console.log(userInfo.userId);
+			data['userId'] = userInfo.userId;
+			rpc.call('DB_GET_DEVICE', data, function(devicLists) {
+				socket.emit('LIST_DEVICES_PASS', devicLists);
+			});
+		}
 	});
 
 	socket.on('GET_DEVICE', function(data) {
@@ -311,7 +313,7 @@ socketServer.sockets.on('connection', function (socket) {
 		rpc.call('DB_GET_HISTORY', {
 			deviceId : data.deviceId
 		}, function(his) {
-			
+
 			socket.emit('GET_HISTORY_PASS', his);
 		});
 	});
@@ -324,7 +326,7 @@ socketServer.sockets.on('connection', function (socket) {
 		});
 	});
 
-	socket.on('FORUMS_SETUP', function () {
+	socket.on('FORUMS_SETUP', function() {
 		rpc.call('DB_GET_USER', {
 			_id : userInfo.userId
 		}, function(user) {
@@ -335,13 +337,13 @@ socketServer.sockets.on('connection', function (socket) {
 			var gravatarUrl = '//gravatar.com/avatar/' + gravatarHash.digest('hex') + '?d=identicon';
 
 			var message = (new Buffer(JSON.stringify({
-			   user: {
-			      id: user.email,
-			      displayname: user.fullname || user.email,
-			      email: user.email,
-			      avatar: gravatarUrl,
-			      is_admin: !!user.admin
-			   }
+				user : {
+					id : user.email,
+					displayname : user.fullname || user.email,
+					email : user.email,
+					avatar : gravatarUrl,
+					is_admin : !!user.admin
+				}
 			}))).toString('base64');
 
 			var signatureHash = crypto.createHash('sha1');
@@ -349,9 +351,9 @@ socketServer.sockets.on('connection', function (socket) {
 			var signature = signatureHash.digest('hex');
 
 			socket.emit('FORUMS_SETUP_PASS', {
-				timestamp: timestamp,
-				message: message,
-				signature: signature
+				timestamp : timestamp,
+				message : message,
+				signature : signature
 			});
 		});
 	});
@@ -415,10 +417,10 @@ rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 expressServer.configure(function() {
 	//expressServer.use(express.basicAuth('dev', 'philosophy'));
 	expressServer.use('/', express.static(__dirname + '/client'));
-	expressServer.get('/forums/:message/:timestamp/:signature', function (req, res) {
+	expressServer.get('/forums/:message/:timestamp/:signature', function(req, res) {
 		res.end('<!doctype html><html><head><link rel="stylesheet" type="text/css" href="//cdn.moot.it/1/moot.css" /><link rel="stylesheet" type="text/css" href="/css/forums.css" /><meta name="viewport" content="width=device-width" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><script src="//code.jquery.com/jquery-1.11.0.min.js"></script><script src="//cdn.moot.it/1/moot.min.js"></script></head><body><a id="moot" href="https://moot.it/i/onion">Onion Forums</a><script>$("#moot").moot({api: {key: "aaFn5b4rnM", signature: "' + req.params.signature + '", message: "' + req.params.message + '", timestamp: "' + req.params.timestamp + '"}});</script></body></html>');
 	});
-	expressServer.get('*', function (req, res) {
+	expressServer.get('*', function(req, res) {
 		res.redirect('/');
 	});
 });
