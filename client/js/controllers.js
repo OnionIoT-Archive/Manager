@@ -149,8 +149,6 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 function($scope, $state, $stateParams, socket,blockUI,$http) {
 	$scope.device = {};
 	$scope.editMode = false;
-	
-	
 	socket.rpc('GET_DEVICE', {
 		id : $stateParams.deviceId
 	}, function(data) {
@@ -158,11 +156,21 @@ function($scope, $state, $stateParams, socket,blockUI,$http) {
 		$scope.device = data;
 	});
 
-	socket.rpc('GET_HISTORY', {
-		deviceId : $stateParams.deviceId
-	}, function(data) {
-		$scope.his = data;
+	// socket.rpc('GET_HISTORY', {
+		// deviceId : $stateParams.deviceId
+	// }, function(data) {
+		// $scope.his = data;
+	// });
+	
+	socket.emit('GET_HISTORY',{deviceId : $stateParams.deviceId});
+	
+	socket.on('GET_HISTORY_PASS',function(data){
+		$scope.$apply(function () {
+            $scope.his = data;
+        });
 	});
+	
+	
 	$scope.testProcedure = function(path){
 		
 		console.log('http://api.onion.io/v1/devices/'+$scope.device.id+path);

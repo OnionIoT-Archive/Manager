@@ -109,7 +109,7 @@ socketServer.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('CHECK_SESSION', function(data) {
-
+		
 		if (data && data.token) {
 			rpc.call('DB_GET_SESSION', {
 				token : data.token
@@ -308,9 +308,11 @@ socketServer.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('GET_HISTORY', function(data) {
+		console.log('GET_HISTORY');
 		rpc.call('DB_GET_HISTORY', {
 			deviceId : data.deviceId
 		}, function(his) {
+			
 			socket.emit('GET_HISTORY_PASS', his);
 		});
 	});
@@ -377,6 +379,7 @@ rpc.register('REALTIME_UPDATE_HISTORY', function(p, callback) {
 		rpc.call('DB_GET_HISTORY', {
 			deviceId : p.deviceId
 		}, function(his) {
+			console.log('history pass');
 			connections[userId].emit('GET_HISTORY_PASS', his);
 		});
 	});
