@@ -127,7 +127,6 @@ socketServer.sockets.on('connection', function (socket) {
 						}, function(user) {
 							if (user) {
 								userInfo.email = user.email;
-
 							}
 						});
 					}

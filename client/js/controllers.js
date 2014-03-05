@@ -87,14 +87,12 @@ function($scope, $state, socket, auth) {
 		auth.logout();
 	};
 }]);
-
+//TODO:shouldn't go back to login page everytime.
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket',
 function($scope, $timeout, $state, socket) {
-
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
-		
-		$scope.devices = data;
+		if($state.current.controller=='DevicesListCtrl')$scope.devices = data;
 	});
 
 	$scope.toggleSelection = function() {
@@ -147,21 +145,14 @@ function($scope, $timeout, $state, socket) {
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI','$http',
 function($scope, $state, $stateParams, socket,blockUI,$http) {
+	
 	$scope.device = {};
 	$scope.editMode = false;
 	socket.rpc('GET_DEVICE', {
 		id : $stateParams.deviceId
 	}, function(data) {
-		
 		$scope.device = data;
 	});
-
-	// socket.rpc('GET_HISTORY', {
-		// deviceId : $stateParams.deviceId
-	// }, function(data) {
-		// $scope.his = data;
-	// });
-	
 	socket.emit('GET_HISTORY',{deviceId : $stateParams.deviceId});
 	
 	socket.on('GET_HISTORY_PASS',function(data){
