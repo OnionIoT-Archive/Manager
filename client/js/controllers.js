@@ -93,7 +93,7 @@ function($scope, $timeout, $state, socket) {
 
 	$scope.devices = [];
 	socket.rpc('LIST_DEVICES', function(data) {
-		console.log('LIST_DEVICES_PASS');
+		
 		$scope.devices = data;
 	});
 
@@ -129,7 +129,7 @@ function($scope, $timeout, $state, socket) {
 			});
 			socket.rpc('DELETE_DEVICES', deviceIds, function() {
 				socket.rpc('LIST_DEVICES', function(data) {
-					console.log('list new decice')
+					
 					$scope.devices = data;
 				});
 			});
@@ -149,12 +149,12 @@ controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', '
 function($scope, $state, $stateParams, socket,blockUI,$http) {
 	$scope.device = {};
 	$scope.editMode = false;
-	console.log(typeof $stateParams.deviceId);
-	console.log('$stateParams.deviceId');
+	
+	
 	socket.rpc('GET_DEVICE', {
 		id : $stateParams.deviceId
 	}, function(data) {
-		console.log(data);
+		
 		$scope.device = data;
 	});
 
@@ -164,7 +164,7 @@ function($scope, $state, $stateParams, socket,blockUI,$http) {
 		$scope.his = data;
 	});
 	$scope.testProcedure = function(path){
-		console.log($scope.device.id);
+		
 		console.log('http://api.onion.io/v1/devices/'+$scope.device.id+path);
 		$http.get('http://api.onion.io/v1/devices/'+$scope.device.id+path).success(function(e){
 			console.log(e);
