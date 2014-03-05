@@ -227,8 +227,8 @@ socketServer.sockets.on('connection', function (socket) {
 		if (data && data._id || data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
 				path : '/gon',
-				fuctionId : 1002,
-				verb : 'get',
+				functionId : 1,
+				verb : 'GET',
 				deviceId : data.id,
 				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()
