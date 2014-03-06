@@ -381,7 +381,9 @@ rpc.register('REALTIME_UPDATE_HISTORY', function(p, callback) {
 			deviceId : p.deviceId
 		}, function(his) {
 			console.log('history pass');
-			connections[userId].emit('GET_HISTORY_PASS', his);
+			if(connections&&connections[userId]){
+				connections[userId].emit('GET_HISTORY_PASS', his);
+			}
 		});
 	});
 	callback({});
