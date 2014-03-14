@@ -90,12 +90,7 @@ function($scope, $state, socket, auth) {
 //TODO:shouldn't go back to login page everytime.
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket','auth',
 function($scope, $timeout, $state, socket,auth) {
-	$scope.devices = [];
-	
-	// socket.rpc('LIST_DEVICES', function(data) {
-// 		
-	// });
-	
+	$scope.devices = [];	
 	socket.emit('LIST_DEVICES',{});
 	socket.on('LIST_DEVICES_PASS',function(data){
 		$scope.$apply(function () {

@@ -15,7 +15,7 @@ var crypto = require('crypto');
 var expressServer = express();
 var httpServer = http.createServer(expressServer);
 var socketServer = socket.listen(httpServer, {
-	log : false
+	log : true
 });
 
 expressServer.use(express.cookieParser());
