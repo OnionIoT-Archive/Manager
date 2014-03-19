@@ -24,9 +24,13 @@ function($scope, $state, socket, auth, sha3) {
 
 	// Login
 	$scope.login = function() {
-		$scope.email = $scope.email || '';
-		var email = $scope.email.toLowerCase();
-		var password = $scope.password;
+		
+		var myemail = document.querySelector('#email').value;
+		var mypassword = document.querySelector('#password').value;
+		
+		//$scope.email = $scope.email || '';
+		var email = myemail.toLowerCase();
+		var password = mypassword;
 
 		auth.login(email, password, function() {
 			clearFields();
