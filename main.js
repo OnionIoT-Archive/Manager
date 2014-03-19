@@ -227,9 +227,9 @@ socketServer.sockets.on('connection', function(socket) {
 	socket.on('ADD_PROCEDURE', function(data) {
 		if (data && data._id || data.id) {
 			rpc.call('DB_ADD_PROCEDURE', {
-				path : '/gon',
-				functionId : 1,
-				verb : 'GET',
+				path : data.path,
+				functionId : data.functionId,
+				verb : data.verb,
 				deviceId : data.id,
 				postParams : ['temp', 'altitude'],
 				lastAccess : new Date()
@@ -390,11 +390,13 @@ rpc.register('REALTIME_UPDATE_HISTORY', function(p, callback) {
 });
 
 rpc.register('REALTIME_UPDATE_PROCEDURE', function(p, callback) {
+	
 	var email;
 	var userId;
 	rpc.call('DB_GET_DEVICE', {
 		id : p.deviceId
 	}, function(device) {
+		console.log( p.deviceId);
 		userId = device.userId;
 		connections[userId].emit('GET_DEVICE_PASS', device);
 	});

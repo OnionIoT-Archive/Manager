@@ -152,11 +152,20 @@ function($scope, $state, $stateParams, socket,blockUI,$http) {
 	
 	$scope.device = {};
 	$scope.editMode = false;
-	socket.rpc('GET_DEVICE', {
-		id : $stateParams.deviceId
-	}, function(data) {
-		$scope.device = data;
+	// socket.rpc('GET_DEVICE', {
+		// id : $stateParams.deviceId
+	// }, function(data) {
+		// $scope.device = data;
+	// });
+	
+	socket.emit('GET_DEVICE',{id : $stateParams.deviceId});
+	
+	socket.on('GET_DEVICE_PASS',function(data){
+		$scope.$apply(function () {
+            $scope.device = data;
+        });
 	});
+	
 	socket.emit('GET_HISTORY',{deviceId : $stateParams.deviceId});
 	
 	socket.on('GET_HISTORY_PASS',function(data){
@@ -167,9 +176,9 @@ function($scope, $state, $stateParams, socket,blockUI,$http) {
 	
 	
 	$scope.testProcedure = function(path){
-		
-		console.log('http://api.onion.io/v1/devices/'+$scope.device.id+path);
-		$http.get('http://api.onion.io/v1/devices/'+$scope.device.id+path).success(function(e){
+		//TODO: use a config file to change this end point
+		console.log('http://http://192.241.191.6//v1/devices/'+$scope.device.id+path);
+		$http.get('http://192.241.191.6/v1/devices/'+$scope.device.id+path).success(function(e){
 			console.log(e);
 		});
 	};

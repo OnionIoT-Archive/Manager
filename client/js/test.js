@@ -54,9 +54,12 @@ function($scope, socket) {
 	};
 
 	$scope.add_procedures = function() {
-		console.log($scope.deviceId);
 		socket.emit('ADD_PROCEDURE', {
-			id : $scope.deviceId
+			id : $scope.deviceId,
+			path : '/gon',
+			functionId : 1,
+			verb : $scope.verb,
+			postParams : ['temp', 'altitude']
 		});
 	};
 
@@ -107,56 +110,54 @@ function($scope, socket) {
 		socket.emit('RENEW_KEY', {
 			_id : $scope.deviceId
 		});
-		socket.on('RENEW_KEY_PASS', function(data){
+		socket.on('RENEW_KEY_PASS', function(data) {
 			console.log(data.key);
-		});	
+		});
 	};
-	
+
 	$scope.add_history = function() {
 		console.log('data');
 		socket.emit('ADD_HISTORY', {
 			action : 'action',
-			endpoint:'endpoint',
-			deviceId:$scope.deviceId,
-			payload:'gon'
+			endpoint : 'endpoint',
+			deviceId : $scope.deviceId,
+			payload : 'gon'
 		});
-		socket.on('ADD_HISTORY_PASS', function(data){
+		socket.on('ADD_HISTORY_PASS', function(data) {
 			console.log(data);
-		});	
+		});
 	};
-	
+
 	$scope.get_history = function() {
 		socket.emit('GET_HISTORY', {
 			_id : $scope.deviceId
 		});
-		socket.on('GET_HISTORY_PASS', function(data){
+		socket.on('GET_HISTORY_PASS', function(data) {
 			console.log(data);
-		});	
+		});
 	};
-	
+
 	$scope.get_procedure = function() {
 		console.log('click procedure');
 		socket.emit('GET_PROCEDURE', {
 			id : $scope.deviceId
 		});
-		socket.on('GET_PROCEDURE_PASS', function(data){
+		socket.on('GET_PROCEDURE_PASS', function(data) {
 			console.log('GET_PROCEDURE_PASS');
 			console.log(data);
-		});	
+		});
 	};
-	
+
 	$scope.get_states = function() {
 		socket.emit('GET_STATE', {
 			id : $scope.deviceId
 		});
-		socket.on('GET_STATE_PASS', function(data){
+		socket.on('GET_STATE_PASS', function(data) {
 			console.log(data);
-		});	
+		});
 	};
-	
-	$scope.realtimeupdate = function(){
-		socket.emit('realtime',{});
-	}
-	
 
+	$scope.realtimeupdate = function() {
+		socket.emit('realtime', {});
+	}
 }]);
