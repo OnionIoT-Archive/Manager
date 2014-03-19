@@ -24,10 +24,10 @@ function($scope, $state, socket, auth, sha3) {
 
 	// Login
 	$scope.login = function() {
-		
+
 		var myemail = document.querySelector('#email').value;
 		var mypassword = document.querySelector('#password').value;
-		
+
 		//$scope.email = $scope.email || '';
 		var email = myemail.toLowerCase();
 		var password = mypassword;
@@ -92,16 +92,15 @@ function($scope, $state, socket, auth) {
 	};
 }]);
 //TODO:shouldn't go back to login page everytime.
-controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket','auth',
-function($scope, $timeout, $state, socket,auth) {
-	$scope.devices = [];	
-	socket.emit('LIST_DEVICES',{});
-	socket.on('LIST_DEVICES_PASS',function(data){
-		$scope.$apply(function () {
-            $scope.devices = data;
-        });
+controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', 'auth',
+function($scope, $timeout, $state, socket, auth) {
+	$scope.devices = [];
+	socket.emit('LIST_DEVICES', {});
+	socket.on('LIST_DEVICES_PASS', function(data) {
+		$scope.$apply(function() {
+			$scope.devices = data;
+		});
 	});
-	
 
 	$scope.toggleSelection = function() {
 		var selectedAll = true;
@@ -135,7 +134,7 @@ function($scope, $timeout, $state, socket,auth) {
 			});
 			socket.rpc('DELETE_DEVICES', deviceIds, function() {
 				socket.rpc('LIST_DEVICES', function(data) {
-					
+
 					$scope.devices = data;
 				});
 			});
@@ -151,40 +150,50 @@ function($scope, $timeout, $state, socket,auth) {
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket','blockUI','$http',
-function($scope, $state, $stateParams, socket,blockUI,$http) {
-	
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI', '$http',
+function($scope, $state, $stateParams, socket, blockUI, $http) {
+
 	$scope.device = {};
+	$scope.paras={};
 	$scope.editMode = false;
 	// socket.rpc('GET_DEVICE', {
-		// id : $stateParams.deviceId
+	// id : $stateParams.deviceId
 	// }, function(data) {
-		// $scope.device = data;
+	// $scope.device = data;
 	// });
-	
-	socket.emit('GET_DEVICE',{id : $stateParams.deviceId});
-	
-	socket.on('GET_DEVICE_PASS',function(data){
-		$scope.$apply(function () {
-            $scope.device = data;
-        });
+
+	socket.emit('GET_DEVICE', {
+		id : $stateParams.deviceId
 	});
-	
-	socket.emit('GET_HISTORY',{deviceId : $stateParams.deviceId});
-	
-	socket.on('GET_HISTORY_PASS',function(data){
-		$scope.$apply(function () {
-            $scope.his = data;
-        });
-	});
-	
-	
-	$scope.testProcedure = function(path){
-		//TODO: use a config file to change this end point
-		console.log('http://http://192.241.191.6//v1/devices/'+$scope.device.id+path);
-		$http.get('http://192.241.191.6/v1/devices/'+$scope.device.id+path).success(function(e){
-			console.log(e);
+
+	socket.on('GET_DEVICE_PASS', function(data) {
+		$scope.$apply(function() {
+			$scope.device = data;
 		});
+	});
+
+	socket.emit('GET_HISTORY', {
+		deviceId : $stateParams.deviceId
+	});
+
+	socket.on('GET_HISTORY_PASS', function(data) {
+		$scope.$apply(function() {
+			$scope.his = data;
+		});
+	});
+
+	$scope.testProcedure = function(path,postData) {
+		//TODO: use a config file to change this end point
+		if (!postData) {
+			$http.get('http://192.241.191.6/v1/devices/' + $scope.device.id + path).success(function(e) {
+				console.log(e);
+			});
+		} else {
+			$http.post('http://192.241.191.6/v1/devices/' + $scope.device.id + path,postData).success(function(e) {
+				console.log(e);
+			});
+		}
+
 	};
 	$scope.toggleEdit = function() {
 		console.log('toggleEdit save');
@@ -196,7 +205,7 @@ function($scope, $state, $stateParams, socket,blockUI,$http) {
 				update : {
 					name : $scope.device.meta.name,
 					description : $scope.device.meta.description,
-					deviceType:$scope.device.meta.deviceType
+					deviceType : $scope.device.meta.deviceType
 				}
 			}, function(data) {
 				$scope.device = data;
@@ -336,7 +345,7 @@ function($scope, $state, socket, auth, sha3) {
 
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
-	socket.rpc('FORUMS_SETUP', function (forumsInfo) {
+	socket.rpc('FORUMS_SETUP', function(forumsInfo) {
 		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + ($location.port() === 80 ? '' : ':' + $location.port()) + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
 	});
 }]);
@@ -346,10 +355,10 @@ function($scope, $templateCache) {
 	var currentChapter = 'intro';
 	$scope.docText = $templateCache.get('tutorials.intro');
 
-	$scope.changeDoc = function (chapter) {
+	$scope.changeDoc = function(chapter) {
 		if (currentChapter !== chapter) {
 			$scope.docText = $templateCache.get('tutorials.' + chapter);
 			currentChapter = chapter;
 		}
 	};
-}]);
+}]); 

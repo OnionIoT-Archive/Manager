@@ -100,8 +100,28 @@
 							</tr>
 							<tr ng-repeat="procedure in device.procedures">
 								<td><div ng-click="testProcedure()" class="verb" ng-class="'verb-' + procedure.verb"></div></td>
-								<td><div class="endPointEdit">http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}} </div></td>
-								<td><button class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path)" ng-class="'verb-' + procedure.verb+'click'">Test</button>  </td>
+
+								<td>
+								<accordion ng-if="procedure.verb=='POST'">
+									<accordion-group is-open="isopen">
+										<accordion-heading>
+											<div class="endPointEdit">
+												http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}
+											</div>
+										</accordion-heading>
+										<input class="remoteProcedureInput" ng-repeat="para in procedure.postParams" placeholder="{{para}}" ng-model="paras[para]" />
+										<button ng-if="procedure.verb=='POST'" class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path,paras)" ng-class="'verb-' + procedure.verb+'click'">
+											Test
+										</button>
+									</accordion-group>
+								</accordion>
+								<div ng-if="procedure.verb=='GET'" class="endPointEdit">
+									http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}
+								</div></td>
+								<td>
+								<button ng-if="procedure.verb=='GET'" class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path)" ng-class="'verb-' + procedure.verb+'click'">
+									Test
+								</button></td>
 							</tr>
 						</tbody>
 					</table>

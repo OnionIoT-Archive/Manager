@@ -231,7 +231,7 @@ socketServer.sockets.on('connection', function(socket) {
 				functionId : data.functionId,
 				verb : data.verb,
 				deviceId : data.id,
-				postParams : ['temp', 'altitude'],
+				postParams : data.postParams,
 				lastAccess : new Date()
 			}, function(data) {
 			});
