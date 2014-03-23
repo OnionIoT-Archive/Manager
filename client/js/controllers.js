@@ -25,6 +25,7 @@ function($scope, $state, socket, auth, sha3) {
 	// Login
 	$scope.login = function() {
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 		var myemail = document.querySelector('#email').value;
 		var mypassword = document.querySelector('#password').value;
@@ -32,6 +33,11 @@ function($scope, $state, socket, auth, sha3) {
 		//$scope.email = $scope.email || '';
 		var email = myemail.toLowerCase();
 		var password = mypassword;
+=======
+		$scope.email = $scope.email || '';
+		var email = $scope.email.toLowerCase();
+		var password = $scope.password;
+>>>>>>> parent of 39720d4... autofill password works.
 =======
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
