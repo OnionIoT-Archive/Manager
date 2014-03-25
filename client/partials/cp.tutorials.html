@@ -1,20 +1,22 @@
-<div class="navbar navbar-onion">
-	<ul class="nav navbar-nav nav-onion">
-		<li><a ng-click="changeDoc('intro')"><span class="fa fa-info-circle"></span>Introduction</a></li>
-    	<li><a ng-click="changeDoc('led')"><span class="fa fa-lightbulb-o"></span>Smart LED</a></li>
-    	<li><a ng-click="changeDoc('printer')"><span class="fa fa-print"></span>Smart Printer</a></li>
-    </ul>
-    <ul class="nav navbar-nav nav-onion pull-right">
-		<li><a ng-click="changeDoc('api')"><span class="fa fa-book"></span>API Documentation</a></li>
-    </ul>
-</div>
+<div class="content">
+	<div class="navbar navbar-onion">
+		<ul class="nav navbar-nav nav-onion">
+			<li><a ng-click="changeDoc('intro')"><span class="fa fa-info-circle"></span>Introduction</a></li>
+	    	<li><a ng-click="changeDoc('led')"><span class="fa fa-lightbulb-o"></span>Smart LED</a></li>
+	    	<li><a ng-click="changeDoc('printer')"><span class="fa fa-print"></span>Smart Printer</a></li>
+	    </ul>
+	    <ul class="nav navbar-nav nav-onion pull-right">
+			<li><a ng-click="changeDoc('api')"><span class="fa fa-book"></span>API Documentation</a></li>
+	    </ul>
+	</div>
 
-<div class="wrapper">
-	<h4><span class="fa fa-book"></span>Tutorials</h4>
+	<div class="wrapper">
+		<h4><span class="fa fa-book"></span>Tutorials</h4>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<div class="markdown" ng-bind-html="docText | gfm"></div>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="markdown" ng-bind-html="docText | gfm"></div>
+			</div>
 		</div>
 	</div>
 </div>

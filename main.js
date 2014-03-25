@@ -12,7 +12,8 @@ var express = require('express'),
 // creating SSL options
 var sslOptions = {
     key: fs.readFileSync('/etc/onion-ssl/onion.io.key.pem'),
-    cert: fs.readFileSync('/etc/onion-ssl/onion.io.crt.pem')
+    cert: fs.readFileSync('/etc/onion-ssl/onion.io.crt.pem'),
+    ca: fs.readFileSync('/etc/onion-ssl/gd_bundle-g2-g1.crt')
 };
 
 // Create servers

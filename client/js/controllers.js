@@ -176,8 +176,17 @@ function($scope, $state, $stateParams, socket, blockUI, $http) {
 		deviceId : $stateParams.deviceId
 	});
 
-	socket.on('GET_HISTORY_PASS', function(data) {
-		$scope.$apply(function() {
+	socket.on('GET_HISTORY_PASS', function (data) {
+		var formatTime = function (timestamp) {
+		    return (new Date(timestamp)).toLocaleString();
+		}
+
+		$scope.$apply(function () {
+			// Format the time
+			for (var i = 0; i < data.length; i++) {
+				data[i].timestamp = formatTime(data[i].timestamp);
+			}
+
 			$scope.his = data;
 		});
 	});

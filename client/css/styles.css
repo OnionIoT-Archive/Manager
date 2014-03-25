@@ -27,13 +27,15 @@ a:focus, a:active, a:hover {
 .block-ui-message-container {
 	margin-top: -34px !important;
 }
-.endPointEdit {
-	font-size: 14px;
-	color: rgb(80, 84, 88);
-	line-height: 20px;
-	font-weight: normal;
+
+#main {
+	position: relative;
+	height: 100%;
+	overflow: hidden;
+	background-color: #ecf0f2;
 }
-#sidebar, #content {
+
+#sidebar, .content {
 	position: relative;
 	height: 100%;
 	overflow-x: hidden;
@@ -100,8 +102,8 @@ a:focus, a:active, a:hover {
 	color: rgba(0, 0, 0, 0.5);
 }
 
-#content {
-	background-color: #ecf0f2;
+.content {
+	
 }
 
 .gravatar {
@@ -138,7 +140,7 @@ a:focus, a:active, a:hover {
 #sidebar .navbar-onion {
 	background-color: #22262e;
 }
-#content .navbar-onion {
+.content .navbar-onion {
 	background-color: #fff;
 }
 
@@ -209,32 +211,32 @@ a:focus, a:active, a:hover {
 	margin: 0 10px;
 }
 
-#content .navbar-onion .btn-onion {
+.content .navbar-onion .btn-onion {
 	color: #50545A;
 	background: transparent;
 	border: none;
 	height: 100%;
 }
-#content .navbar-onion .btn-onion:hover, #content .navbar-onion .btn-onion:active, #content .navbar-onion .btn-onion:focus {
+.content .navbar-onion .btn-onion:hover, .content .navbar-onion .btn-onion:active, .content .navbar-onion .btn-onion:focus {
 	color: #50545A;
 	background: transparent;
 	border: none;
 }
-#content .navbar-onion .fa {
+.content .navbar-onion .fa {
 	margin-right: 10px;
 }
-#content .wrapper {
+.content .wrapper {
 	padding: 15px;
 	height: 100%;
 	overflow: auto;
 }
-#content .wrapper > *:last-child {
+.content .wrapper > *:last-child {
 	margin-bottom: 0;
 }
-#content .wrapper h3, #content .wrapper h4, #content .wrapper h5 {
+.content .wrapper h3, .content .wrapper h4, .content .wrapper h5 {
 	margin-top: 0;
 }
-#content .wrapper > h4 .fa {
+.content .wrapper > h4 .fa {
 	margin-right: 10px;
 }
 
@@ -637,55 +639,58 @@ form#support-contact #details {
 	content: '\f084';
 }
 
-.login-form .btn {
+.btn {
 	border-radius: 0;
-	height: 45px;
-	line-height: 12px;
 	border: none;
 	box-shadow: none;
-	background-color: #22262e;
 	color: #fff;
+	background-color: #22262e;
+}
+
+.login-form .btn {
+	height: 45px;
+	line-height: 12px;
 	text-align: left;
 	padding: 0 20px;
 }
 
-.login-form .btn:hover, .login-form .btn:active, .login-form .btn:focus {
+.btn:hover, .btn:active, .btn:focus {
 	background-color: #1b1e24;
 	color: #fff;
 }
 
-.login-form .btn-blue {
+.btn-blue {
 	background-color: #0090d9;
 	color: #fff;
 }
 .btn[disabled] {
 	pointer-events: auto;
 }
-.login-form .btn-blue:hover, .login-form .btn-blue:active, .login-form .btn-blue:focus {
+.btn-blue:hover, .btn-blue:active, .btn-blue:focus {
 	background-color: #3489ce;
 	color: #fff;
 }
-.login-form .btn-red {
+.btn-red {
 	background-color: #f35958;
 	color: #fff;
 }
-.login-form .btn-red:hover, .login-form .btn-red:active, .login-form .btn-red:focus {
+.btn-red:hover, .btn-red:active, .btn-red:focus {
 	background-color: #d75a53;
 	color: #fff;
 }
-.login-form .btn-purple {
+.btn-purple {
 	background-color: #736086;
 	color: #fff;
 }
-.login-form .btn-purple:hover, .login-form .btn-purple:active, .login-form .btn-purple:focus {
+.btn-purple:hover, .btn-purple:active, .btn-purple:focus {
 	background-color: #4f4860;
 	color: #fff;
 }
-.login-form .btn-green {
+.btn-green {
 	background-color: #4da297;
 	color: #fff;
 }
-.login-form .btn-green:hover, .login-form .btn-green:active, .login-form .btn-green:focus {
+.btn-green:hover, .btn-green:active, .btn-green:focus {
 	background-color: #48988d;
 	color: #fff;
 }
@@ -745,4 +750,12 @@ form#support-contact #details {
 .verb.verb-post:before {
 	background-color: #FDD01C;
 	content: 'POST';
+}
+
+#test-toolbar {
+	position: fixed;
+	height: 300px;
+	width: 100%;
+	bottom: 0;
+	background: #fff;
 }

@@ -1,54 +1,56 @@
-<div class="navbar navbar-onion">
-	<ul class="nav navbar-nav nav-onion">
-    	<li><a ng-click="toggleSelection()"><span class="fa fa-check"></span>Select</a></li>
-    	<li><a ui-sref="cp.devices.add"><span class="fa fa-plus"></span>New</a></li>
-    	<li><a ng-click="deleteSelected()"><span class="fa fa-minus"></span>Delete</a></li>
-    </ul>
+<div class="content">
+	<div class="navbar navbar-onion">
+		<ul class="nav navbar-nav nav-onion">
+	    	<li><a ng-click="toggleSelection()"><span class="fa fa-check"></span>Select</a></li>
+	    	<li><a ui-sref="cp.devices.add"><span class="fa fa-plus"></span>New</a></li>
+	    	<li><a ng-click="deleteSelected()"><span class="fa fa-minus"></span>Delete</a></li>
+	    </ul>
 
-	<form role="search" class="navbar-form navbar-right">
-		<div class="form-group">
-			<label for="search" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-search"></span></label>
-			<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
-				<input type="text" class="form-control" id="search" placeholder="Search Devices" ng-model="searchText">
+		<form role="search" class="navbar-form navbar-right">
+			<div class="form-group">
+				<label for="search" class="col-lg-1 col-md-1 col-sm-1 col-xs-1 control-label"><span class="fa fa-search"></span></label>
+				<div class="col-lg-11 col-md-11 col-sm-11 col-xs-11">
+					<input type="text" class="form-control" id="search" placeholder="Search Devices" ng-model="searchText">
+				</div>
 			</div>
-		</div>
-	</form>
-</div>
-
-<div class="wrapper">
-	<h4><span class="fa fa-tasks"></span>Device Listing</h4>
-	<div class="table-wrapper">
-		<table class="table table-onion table-striped">
-			<thead>
-				<tr>
-					<th></th>
-					<th>Name</th>
-					<th>ID</th>
-					<th>Description</th>
-					<th>Status</th>
-					<th>Last Activity</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-if="devices.length === 0">
-					<td colspan="6">No device registered.</td>
-				</tr>
-				<tr ng-repeat="device in devices | filter:searchText">
-					<td class="listing-checkbox"><input type="checkbox" ng-model="device.selected" /></td>
-					<td class="listing-name">
-						<a class="device-name" ui-sref="cp.devices.edit({deviceId: device.id})">{{device.meta.name}}</a>
-					</td>
-					<td class="listing-id"><a>{{device.id}}</a></td>
-					<td class="listing-description">{{device.meta.description}}</td>
-					<td class="listing-status">{{device.status}}</td>
-					<td class="listing-last">{{device.lastUpdate}}</td>
-				</tr>
-			</tbody>
-		</table>
+		</form>
 	</div>
-</div>
 
-<div ng-show="state.blockCount > 0" class="block-ui-overlay" ng-class="{ 'block-ui-visible': state.blocking }"></div>
-<div ng-show="state.blocking" class="block-ui-message-container">
-  <div class="block-ui-message">{{ state.message }}</div>  
+	<div class="wrapper">
+		<h4><span class="fa fa-tasks"></span>Device Listing</h4>
+		<div class="table-wrapper">
+			<table class="table table-onion table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>ID</th>
+						<th>Description</th>
+						<th>Status</th>
+						<th>Last Activity</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-if="devices.length === 0">
+						<td colspan="6">No device registered.</td>
+					</tr>
+					<tr ng-repeat="device in devices | filter:searchText">
+						<td class="listing-checkbox"><input type="checkbox" ng-model="device.selected" /></td>
+						<td class="listing-name">
+							<a class="device-name" ui-sref="cp.devices.edit({deviceId: device.id})">{{device.meta.name}}</a>
+						</td>
+						<td class="listing-id"><a>{{device.id}}</a></td>
+						<td class="listing-description">{{device.meta.description}}</td>
+						<td class="listing-status">{{device.status}}</td>
+						<td class="listing-last">{{device.lastUpdate}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div ng-show="state.blockCount > 0" class="block-ui-overlay" ng-class="{ 'block-ui-visible': state.blocking }"></div>
+	<div ng-show="state.blocking" class="block-ui-message-container">
+	  <div class="block-ui-message">{{ state.message }}</div>  
+	</div>
 </div>
