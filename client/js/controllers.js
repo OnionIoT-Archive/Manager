@@ -291,7 +291,7 @@ function($scope, $state, socket, auth, sha3) {
 	$scope.revert = function() {
 		socket.rpc('GET_USER', {
 		}, function(user) {
-			$scope.user = user;
+			//$scope.user = user;
 		}, function() {
 
 		});
@@ -301,7 +301,8 @@ function($scope, $state, socket, auth, sha3) {
 	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.user.email.toLowerCase();
-		var pwHash = sha3($scope.password);
+		var pwHash = ($scope.password?sha3($scope.password):sha3($scope.oldPassword));
+		debugger
 		var fullname = $scope.user.fullname;
 		var website = $scope.user.website;
 		var company = $scope.user.company;
