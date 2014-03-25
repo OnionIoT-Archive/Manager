@@ -1,185 +1,177 @@
-<div class="navbar navbar-onion">
-	<ul class="nav navbar-nav nav-onion">
-		<li>
-			<a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a>
-		</li>
-		<li>
-			<a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a>
-		</li>
-		<li ng-if="!addMode">
-			<a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a>
-		</li>
-		<!-- <li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li> -->
-	</ul>
-</div>
+<div class="content test-enabled" test-on="{{something}}">
+	<div class="navbar navbar-onion">
+		<ul class="nav navbar-nav nav-onion">
+			<li>
+				<a ui-sref="cp.devices.list"><span class="fa fa-arrow-left"></span>Back</a>
+			</li>
+			<li>
+				<a ng-click="toggleEdit()"><span class="fa" ng-class="{'fa-save': editMode, 'fa-pencil': !editMode}"></span>{{editMode ? 'Save' : 'Edit'}}</a>
+			</li>
+			<li ng-if="!addMode">
+				<a ng-click="deleteDevice()"><span class="fa fa-minus"></span>Delete</a>
+			</li>
+			<li ng-if="!addMode">
+				<a ng-click="showTest()"><span class="fa fa-minus"></span>Delete</a>
+			</li>
+			<!-- <li ng-if="!addMode"><a ng-click="renewKey()"><span class="fa fa-key"></span>Renew Secret Key</a></li> -->
+		</ul>
+	</div>
 
-<div class="wrapper">
-	<h4 ng-if="!addMode"><span class="fa fa-puzzle-piece"></span>{{device.meta.name}}</h4>
-	<h4 ng-if="addMode"><span class="fa fa-plus"></span>Add New Device</h4>
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			<div class="panel panel-dark" id="summary">
-				<div class="panel-heading">
-					<h3 class="panel-title">Device Information</h3>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							<table class="table table-onion">
-								<tbody>
-									<tr>
-										<td><a tooltip-placement="right" tooltip="Unique identifier"><strong>Device ID</strong></a></td>
-										<td>{{device.id}}</td>
-									</tr>
-									<tr>
-										<td><a tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
-										<td> {{device.key}} <!-- <button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button> --></td>
-									</tr>
-									<tr>
-										<td><strong>Canonical Name</strong></td>
-										<td><span ng-if="!editMode">{{device.meta.name}}</span>
-										<input type="text" ng-if="editMode" ng-model="device.meta.name" />
-										</td>
-									</tr>
-									<tr>
-										<td><strong>Description</strong></td>
-										<td><span ng-if="!editMode">{{device.meta.description}}</span>
-										<input type="text" ng-if="editMode" ng-model="device.meta.description" />
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-							<table class="table table-onion">
-								<tbody>
-									<tr>
-										<td><strong>Status</strong></td>
-										<td>{{device.status}}</td>
-									</tr>
-									<tr>
-										<td><a tooltip-placement="right" tooltip="URL to access the API"><strong>API Endpoint</strong></a></td>
-										<td><a>http://api.onion.io/v1/devices/{{device.id}}</a></td>
-									</tr>
-									<tr>
-										<td><strong>Device Type</strong></td>
-										<td><span ng-if="!editMode">{{device.meta.deviceType}}</span>
-										<div ng-if="editMode" class="select-wrapper">
-											<select ng-model="device.meta.deviceType">
-												<option value="private">Private</option>
-												<option value="public">Public</option>
-											</select>
-										</div></td>
-									</tr>
-								</tbody>
-							</table>
+	<div class="wrapper">
+		<h4 ng-if="!addMode"><span class="fa fa-puzzle-piece"></span>{{device.meta.name}}</h4>
+		<h4 ng-if="addMode"><span class="fa fa-plus"></span>Add New Device</h4>
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+				<div class="panel panel-dark" id="summary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Device Information</h3>
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<table class="table table-onion">
+									<tbody>
+										<tr>
+											<td><a tooltip-placement="right" tooltip="Unique identifier"><strong>Device ID</strong></a></td>
+											<td>{{device.id}}</td>
+										</tr>
+										<tr>
+											<td><a tooltip-placement="right" tooltip="Secret key for authentication"><strong>Device Key</strong></a></td>
+											<td> {{device.key}} <!-- <button ng-if="editMode && !addMode" class="btn btn-onion pull-right" ng-click="renewKey()"><span class="fa fa-key"></span></button> --></td>
+										</tr>
+										<tr>
+											<td><strong>Canonical Name</strong></td>
+											<td><span ng-if="!editMode">{{device.meta.name}}</span>
+											<input type="text" ng-if="editMode" ng-model="device.meta.name" />
+											</td>
+										</tr>
+										<tr>
+											<td><strong>Description</strong></td>
+											<td><span ng-if="!editMode">{{device.meta.description}}</span>
+											<input type="text" ng-if="editMode" ng-model="device.meta.description" />
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+								<table class="table table-onion">
+									<tbody>
+										<tr>
+											<td><strong>Status</strong></td>
+											<td>{{device.status}}</td>
+										</tr>
+										<tr>
+											<td><a tooltip-placement="right" tooltip="URL to access the API"><strong>API Endpoint</strong></a></td>
+											<td><a>http://api.onion.io/v1/devices/{{device.id}}</a></td>
+										</tr>
+										<tr>
+											<td><strong>Device Type</strong></td>
+											<td><span ng-if="!editMode">{{device.meta.deviceType}}</span>
+											<div ng-if="editMode" class="select-wrapper">
+												<select ng-model="device.meta.deviceType">
+													<option value="private">Private</option>
+													<option value="public">Public</option>
+												</select>
+											</div></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row" ng-if="!addMode">
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<div class="panel panel-purple">
-				<div class="panel-heading">
-					<h3 class="panel-title">Remote Procedures</h3>
-				</div>
-				<div class="panel-body">
-					<table class="table table-onion table-striped">
-						<thead>
-							<tr>
-								<th>Method</th>
-								<th>End Point</th>
-								<th>Test</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-if="device.procedures.length === 0">
-								<td colspan="3">No precedure registered.</td>
-							</tr>
-							<tr ng-repeat="procedure in device.procedures">
-								<td><div ng-click="testProcedure()" class="verb" ng-class="'verb-' + procedure.verb"></div></td>
+		<div class="row" ng-if="!addMode">
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="panel panel-purple">
+					<div class="panel-heading">
+						<h3 class="panel-title">Remote Procedures</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-onion table-striped">
+							<thead>
+								<tr>
+									<th>Method</th>
+									<th>End Point</th>
+									<th>Test</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-if="device.procedures.length === 0">
+									<td colspan="3">No precedure registered.</td>
+								</tr>
+								<tr ng-repeat="procedure in device.procedures">
+									<td><div class="verb" ng-class="'verb-' + procedure.verb"></div></td>
+									<td>http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}</td>
 
-								<td>
-								<accordion ng-if="procedure.verb=='POST'">
-									<accordion-group is-open="isopen">
-										<accordion-heading>
-											<div class="endPointEdit">
-												http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}
-											</div>
-										</accordion-heading>
-										<input class="remoteProcedureInput" ng-repeat="para in procedure.postParams" placeholder="{{para}}" ng-model="paras[para]" />
-										<button ng-if="procedure.verb=='POST'" class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path,paras)" ng-class="'verb-' + procedure.verb+'click'">
-											Test
-										</button>
-									</accordion-group>
-								</accordion>
-								<div ng-if="procedure.verb=='GET'" class="endPointEdit">
-									http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}
-								</div></td>
-								<td>
-								<button ng-if="procedure.verb=='GET'" class="btn btn-default btn-sm" ng-click="testProcedure(procedure.path)" ng-class="'verb-' + procedure.verb+'click'">
-									Test
-								</button></td>
-							</tr>
-						</tbody>
-					</table>
+									<td>
+										<button class="btn btn-blue btn-xs" ng-class="'verb-' + procedure.verb+'click'">Test</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div class="panel panel-purple">
+					<div class="panel-heading">
+						<h3 class="panel-title">Remote States</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-onion table-striped">
+							<thead>
+								<tr>
+									<th>End Point</th>
+									<th>Value</th>
+									<th>Time Stamp</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-if="device.states.length === 0">
+									<td colspan="3">No state registered.</td>
+								</tr>
+								<tr ng-repeat="state in device.states">
+									<td>{{state.path}}</td>
+									<td>{{state.value}}</td>
+									<td>{{state.timeStamp}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
-
-			<div class="panel panel-purple">
-				<div class="panel-heading">
-					<h3 class="panel-title">Remote States</h3>
-				</div>
-				<div class="panel-body">
-					<table class="table table-onion table-striped">
-						<thead>
-							<tr>
-								<th>End Point</th>
-								<th>Value</th>
-								<th>Time Stamp</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-if="device.states.length === 0">
-								<td colspan="3">No state registered.</td>
-							</tr>
-							<tr ng-repeat="state in device.states">
-								<td>{{state.path}}</td>
-								<td>{{state.value}}</td>
-								<td>{{state.timeStamp}}</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-			<div class="panel panel-purple">
-				<div class="panel-heading">
-					<h3 class="panel-title">History</h3>
-				</div>
-				<div class="panel-body">
-					<table class="table table-onion table-striped">
-						<thead>
-							<tr>
-								<th>Action</th>
-								<th>Time Stamp</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr ng-if="his.length === 0">
-								<td colspan="3">No activity history found.</td>
-							</tr>
-							<tr ng-repeat="history in his">
-								<td>{{history.action}}</td>
-								<td>{{history.timestamp}}</td>
-							</tr>
-						</tbody>
-					</table>
+			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				<div class="panel panel-purple">
+					<div class="panel-heading">
+						<h3 class="panel-title">History</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-onion table-striped">
+							<thead>
+								<tr>
+									<th>Action</th>
+									<th>Time Stamp</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-if="his.length === 0">
+									<td colspan="3">No activity history found.</td>
+								</tr>
+								<tr ng-repeat="history in his">
+									<td>{{history.action}}</td>
+									<td>{{history.timestamp}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	<test-toolbar>
+
+	</test-toolbar>
 </div>

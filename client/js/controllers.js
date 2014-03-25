@@ -176,8 +176,17 @@ function($scope, $state, $stateParams, socket, blockUI, $http) {
 		deviceId : $stateParams.deviceId
 	});
 
-	socket.on('GET_HISTORY_PASS', function(data) {
-		$scope.$apply(function() {
+	socket.on('GET_HISTORY_PASS', function (data) {
+		var formatTime = function (timestamp) {
+		    return (new Date(timestamp)).toLocaleString();
+		}
+
+		$scope.$apply(function () {
+			// Format the time
+			for (var i = 0; i < data.length; i++) {
+				data[i].timestamp = formatTime(data[i].timestamp);
+			}
+
 			$scope.his = data;
 		});
 	});
@@ -347,7 +356,7 @@ function($scope, $state, socket, auth, sha3) {
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
 	socket.rpc('FORUMS_SETUP', function(forumsInfo) {
-		$scope.forumsUrl = $sce.trustAsResourceUrl('http://' + $location.host() + ($location.port() === 80 ? '' : ':' + $location.port()) + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
+		$scope.forumsUrl = $sce.trustAsResourceUrl('//' + $location.host() + ($location.port() === 80 ? '' : ':' + $location.port()) + '/forums/' + encodeURIComponent(forumsInfo.message) + '/' + forumsInfo.timestamp + '/' + forumsInfo.signature);
 	});
 }]);
 
@@ -362,4 +371,4 @@ function($scope, $templateCache) {
 			currentChapter = chapter;
 		}
 	};
-}]); 
+}]);

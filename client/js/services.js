@@ -2,6 +2,10 @@
 
 var services = angular.module('manager.services', []);
 
+services.factory('test', ['$rootScope', function ($rootScope) {
+
+}]);
+
 services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket', 'sha3', function ($rootScope, $state, localStorageService, socket, sha3) {
 	$rootScope.loggedIn = false;
 
