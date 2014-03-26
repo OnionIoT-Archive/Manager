@@ -153,6 +153,11 @@ function($scope, $timeout, $state, socket, auth) {
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI', '$http',
 function($scope, $state, $stateParams, socket, blockUI, $http) {
 
+	$scope.testOn = false;
+	$scope.toggleTest = function () {
+		$scope.testOn = !$scope.testOn;
+	};
+
 	$scope.device = {};
 	$scope.paras={};
 	$scope.editMode = false;
