@@ -323,6 +323,12 @@ var init = function (socketServer) {
 			});
 		});
 
+		socket.on('ADD_TRIGGER', function(data) {
+			rpc.call('ADD_TRIGGER',data,function(e){
+				
+			});
+		});
+		
 		socket.on('realtime', function(e) {
 
 			rpc.call('REALTIME_UPDATE_HISTORY', {
