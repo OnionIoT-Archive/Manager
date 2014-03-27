@@ -5,7 +5,7 @@ var dev_config = {
 };
 var pro_config = {
 	dbUrl:"mongodb://onion:!<684ygrJ51Vx)3@db.onion.io:27017/onion",
-	mqServerUrl:"amqp://onionCore:p@mq.onion.io"
+	mqServerUrl:"amqp://onionCore:p@test.onion.io"
 };
 var init = function(){
 	
