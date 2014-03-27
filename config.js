@@ -9,14 +9,14 @@ var pro_config = {
 };
 var init = function(){
 	
-	if(process.env.NODE_EVN == 'development'){
+	if(process.env.MANAGER_EVN == 'development'){
 		return dev_config;
-	}else if(process.env.NODE_EVN == 'production'){
+	}else if(process.env.MANAGER_EVN == 'production'){
 		return pro_config
 	}else{
 		console.log('please specify the mode using:'.red);
-		console.log('NODE_EVN="development" node main.js'.red);
-		console.log('NODE_EVN="production" node main.js'.red);
+		console.log('MANAGER_EVN="development" node main.js'.red);
+		console.log('MANAGER_EVN="production" node main.js'.red);
 		process.exit();
 	}
 }
