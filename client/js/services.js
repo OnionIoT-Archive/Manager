@@ -2,8 +2,39 @@
 
 var services = angular.module('manager.services', []);
 
-services.factory('test', ['$rootScope', function ($rootScope) {
+services.factory('test', ['$rootScope', '$http', function ($rootScope, $http) {
+	var logs = [];
 
+	$rootScope.logs = logs;
+
+	var doTest = function (path, data) {
+		if (path.indexOf('api.onion.io') !== -1) {
+			var timestamp = new Date();
+
+			if (angular.equals(data, {})) {
+				// GET
+				$http.get(path).success(function (data, status) {
+					logs.push({
+						timestamp: timestamp.toLocaleString(),
+						data: JSON.stringify(data)
+					});
+				});
+			} else {
+				// POST
+				$http.post(path, data).success(function (data, status) {
+					logs.push({
+						timestamp: timestamp.toLocaleString(),
+						data: JSON.stringify(data)
+					});
+				});
+			}
+		}
+	};
+
+	return {
+		doTest: doTest,
+		logs: logs
+	};
 }]);
 
 services.factory('auth', ['$rootScope', '$state', 'localStorageService', 'socket', 'sha3', function ($rootScope, $state, localStorageService, socket, sha3) {
