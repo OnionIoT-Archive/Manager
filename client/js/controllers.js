@@ -150,22 +150,28 @@ function($scope, $timeout, $state, socket, auth) {
 	};
 }]);
 
-controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI', '$http',
-function($scope, $state, $stateParams, socket, blockUI, $http) {
+controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI', 'test',
+function($scope, $state, $stateParams, socket, blockUI, test) {
 
 	$scope.testOn = false;
+
 	$scope.toggleTest = function () {
 		$scope.testOn = !$scope.testOn;
 	};
 
+	$scope.currentProcedure = {};
+
+	$scope.initTest = function (procedure) {
+		$scope.testOn = true;
+		$scope.currentProcedure = angular.copy(procedure);
+		$scope.currentProcedure.data = {};
+	};
+
+	$scope.test = test;
+
 	$scope.device = {};
-	$scope.paras={};
+	$scope.paras = {};
 	$scope.editMode = false;
-	// socket.rpc('GET_DEVICE', {
-	// id : $stateParams.deviceId
-	// }, function(data) {
-	// $scope.device = data;
-	// });
 
 	socket.emit('GET_DEVICE', {
 		id : $stateParams.deviceId
@@ -184,7 +190,7 @@ function($scope, $state, $stateParams, socket, blockUI, $http) {
 	socket.on('GET_HISTORY_PASS', function (data) {
 		var formatTime = function (timestamp) {
 		    return (new Date(timestamp)).toLocaleString();
-		}
+		};
 
 		$scope.$apply(function () {
 			// Format the time
@@ -196,19 +202,6 @@ function($scope, $state, $stateParams, socket, blockUI, $http) {
 		});
 	});
 
-	$scope.testProcedure = function(path,postData) {
-		//TODO: use a config file to change this end point
-		if (!postData) {
-			$http.get('http://192.241.191.6/v1/devices/' + $scope.device.id + path).success(function(e) {
-				console.log(e);
-			});
-		} else {
-			$http.post('http://192.241.191.6/v1/devices/' + $scope.device.id + path,postData).success(function(e) {
-				console.log(e);
-			});
-		}
-
-	};
 	$scope.toggleEdit = function() {
 		console.log('toggleEdit save');
 		if ($scope.editMode) {

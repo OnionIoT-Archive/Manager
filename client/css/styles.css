@@ -753,23 +753,74 @@ form#support-contact #details {
 }
 
 .content.test-enabled {
-	padding-bottom: 300px;
+	padding-bottom: 250px;
 }
 
 .test-toolbar {
 	position: fixed;
-	height: 0;
+	height: 250px;
 	left: 200px;
 	right: 0;
 	bottom: 0;
 	background: #fff;
 	overflow: hidden;
+	display: none;
+}
+
+.test-toolbar .close {
+	position: relative;
+	z-index: 100;
+}
+
+.test-toolbar > .panel {
+	position: relative;
+	height: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.test-toolbar > .panel > .panel-body {
+	padding-top: 0;
+	padding-bottom: 0;
+	position: absolute;
+	top: 0;
+	padding-top: 36px;
+	height: 100%;
+	width: 100%;
 }
 
 .test-toolbar .close {
 	height: 30px;
 }
 
+.test-toolbar .test-input {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 100%;
+	padding: 15px;
+}
+
+.test-toolbar .test-log {
+	height: 100%;
+	overflow: auto;
+	padding: 15px;
+	background-color: #ecf0f2;
+}
+
+.test-toolbar .log {
+	margin-bottom: 10px;
+}
+
+.test-toolbar .log:last-child {
+	margin-bottom: 0;
+}
+
+.test-toolbar .timestamp {
+	font-size: 12px;
+	opacity: 0.75;
+}
+
 .content.test-enabled .test-toolbar {
-	height: 300px;
+	display: block;
 }
