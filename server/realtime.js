@@ -7,10 +7,10 @@ var idgen = require('idgen');
 var uuid = require('node-uuid');
 var crypto = require('crypto');
 
-var init = function (socketServer) {
+var init = function(socketServer) {
 	var connections = {};
 
-	socketServer.sockets.on('connection', function (socket) {
+	socketServer.sockets.on('connection', function(socket) {
 		var userInfo = {};
 		//connections = socket;
 		socket.emit('CONNECTED', {});
@@ -104,7 +104,7 @@ var init = function (socketServer) {
 			}
 		});
 
-		socket.on('FORGOT_PASSWORD', function (data) {
+		socket.on('FORGOT_PASSWORD', function(data) {
 			// setup e-mail data with unicode symbols
 			var mailOptions = {
 				from : "Onion ✔ <harry@onion.io>", // sender address
@@ -115,7 +115,7 @@ var init = function (socketServer) {
 			}
 
 			// send mail with defined transport object
-			mail.smtpTransport.sendMail(mailOptions, function (error, response) {
+			mail.smtpTransport.sendMail(mailOptions, function(error, response) {
 				if (error) {
 					console.log(error);
 				} else {
@@ -324,11 +324,43 @@ var init = function (socketServer) {
 		});
 
 		socket.on('ADD_TRIGGER', function(data) {
-			rpc.call('ADD_TRIGGER',data,function(e){
-				
+			rpc.call('DB_ADD_TRIGGER', data, function(e) {
+				socket.emit('ADD_TRIGGER_PASS');
 			});
 		});
 		
+		socket.on('UPDATE_TRIGGER', function(data) {
+			
+		});
+		
+		socket.on('REMOVE_TRIGGER', function(data) {
+			rpc.call('DB_REMOVE_TRIGGER', data, function(e) {
+				console.log(e);
+				socket.emit('REMOVE_TRIGGER_PASS');
+			});
+		});
+		
+		socket.on('GET_TRIGGER', function(data) {
+			rpc.call('DB_GET_TRIGGER', data, function(e) {
+				
+				socket.emit('GET_TRIGGER_PASS',{
+					trigger:e
+				});
+			});
+		});
+
+		socket.on('TRIGGER', function(data) {
+			rpc.call('DB_GET_TRIGGER', data, function(e) {
+				if (e && e.postUrl) {
+					request(e.postUrl, function(error, response, body) {
+						if (!error && response.statusCode == 200) {
+							console.log(body) // Print the google web page.
+						};
+					});
+				};
+			});
+		});
+
 		socket.on('realtime', function(e) {
 
 			rpc.call('REALTIME_UPDATE_HISTORY', {
@@ -352,7 +384,7 @@ var init = function (socketServer) {
 				deviceId : p.deviceId
 			}, function(his) {
 				console.log('history pass');
-				if(connections&&connections[userId]){
+				if (connections && connections[userId]) {
 					connections[userId].emit('GET_HISTORY_PASS', his);
 				}
 			});
@@ -361,13 +393,13 @@ var init = function (socketServer) {
 	});
 
 	rpc.register('REALTIME_UPDATE_PROCEDURE', function(p, callback) {
-		
+
 		var email;
 		var userId;
 		rpc.call('DB_GET_DEVICE', {
 			id : p.deviceId
 		}, function(device) {
-			console.log( p.deviceId);
+			console.log(p.deviceId);
 			userId = device.userId;
 			connections[userId].emit('GET_DEVICE_PASS', device);
 		});
@@ -388,5 +420,5 @@ var init = function (socketServer) {
 };
 
 module.exports = {
-	init: init
+	init : init
 };

@@ -59,7 +59,7 @@ function($scope, socket) {
 			path : '/gon',
 			functionId : 1,
 			verb : $scope.verb,
-			postParams : ['temp', 'altitude','water level']
+			postParams : ['temp', 'altitude', 'water level']
 		});
 	};
 
@@ -159,5 +159,45 @@ function($scope, socket) {
 
 	$scope.realtimeupdate = function() {
 		socket.emit('realtime', {});
-	}
+	};
+
+	$scope.addTrigger = function() {
+		socket.emit('ADD_TRIGGER', {
+			value : $scope.triggerValue,
+			condition:$scope.triggerCondition,
+			postUrl:$scope.triggerPostUrl,
+			stateID:$scope.triggerStateId
+		});
+	};
+	socket.on('ADD_TRIGGER_PASS', function(e){
+		alert('Success!');
+	});
+	
+	$scope.removeTrigger = function() {
+		socket.emit('REMOVE_TRIGGER', {
+			_id:$scope.triggerId
+		});
+	};
+	socket.on('REMOVE_TRIGGER_PASS', function(e){
+		alert('Success!');	
+	});
+	$scope.triggerId = '';
+	$scope.triggerCondition = 'triggerCondition';
+	$scope.triggerValue = 'triggerValue';
+	$scope.triggerPostUrl = 'http://onion.io';
+	$scope.triggerStateId = 'triggerStateId';
+
+	$scope.trigger = function() {
+		console.log('click trigger')
+		socket.emit('TRIGGER', {
+		});
+	};
+	
+	$scope.getTrigger = function() {
+		socket.emit('GET_TRIGGER', {
+		});
+	};
+	socket.on('GET_TRIGGER_PASS',function(e){
+		console.log(e);
+	});
 }]);
