@@ -236,13 +236,9 @@ function($scope, socket) {
 	});
 	socket.on('GET_TRIGGER_PASS', function(e) {
 		console.log('get trigger');
+		$scope.triggers = e;
 		$scope.$apply(function() {
-			$scope.triggers = e.trigger;
-			$scope.triggerId = e.trigger[0]._id;
-			$scope.triggerCondition = e.trigger[0].condition;
-			$scope.triggerValue = e.trigger[0].value;
-			$scope.triggerPostUrl = e.trigger[0].postUrl;
-			$scope.triggerStateId = e.trigger[0].stateID;
+			
 		});
 
 	});

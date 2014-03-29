@@ -354,22 +354,21 @@ var init = function(socketServer) {
 				var k = 0;
 				pushState();
 				function pushState() {
-					//console.log(e[k]);
 					if (e[k] && e[k].stateID) {
 						rpc.call('DB_GET_STATE', {
 							_id : e[k].stateID
 						}, function(state) {
 							if (k < e.length) {
-
 								e[k].state = {};
 								e[k].state = state[0];
-								console.log(e[k]);
 								k++;
 								pushState();
 							} else {
-								//console.log(e);
+
 							}
 						});
+					} else {
+						socket.emit('GET_TRIGGER_PASS', e);
 					}
 				};
 

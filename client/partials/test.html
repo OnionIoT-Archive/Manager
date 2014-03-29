@@ -108,7 +108,7 @@
 <button class="btn btn-primary testPage" ng-click="getTrigger()">
 	getTrigger
 </button>
-<select ng-model="trigger" ng-options="s.path for s in triggers" ng-change="selecttrigger()">
+<select ng-model="trigger" ng-options="s.postUrl for s in triggers" ng-change="selecttrigger()">
 		 <option value="">-- click get trigger button first --</option>
   </select>
 <button class="btn btn-primary testPage" ng-click="updateTrigger()">
