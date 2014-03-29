@@ -167,6 +167,30 @@
 						</table>
 					</div>
 				</div>
+				<div class="panel panel-dark">
+					<div class="panel-heading">
+						<h3 class="panel-title">Trigger</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table table-onion table-striped">
+							<thead>
+								<tr>
+									<th>Trigger</th>
+									<th>Post Url</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-if="trigger.length === 0">
+									<td colspan="3">No activity history found.</td>
+								</tr>
+								<tr ng-repeat="tri in trigger">
+									<td>{{tri.action}}</td>
+									<td>{{tri.postUrl}}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

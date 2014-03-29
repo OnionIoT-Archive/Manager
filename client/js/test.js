@@ -70,6 +70,13 @@ function($scope, socket) {
 		});
 	};
 
+	$scope.removeState = function() {
+		console.log('removeState');
+		socket.emit('ADD_STATES', {
+			id : $scope.deviceId
+		});
+	};
+
 	$scope.add_device = function() {
 		socket.emit('ADD_DEVICE', {
 			id : 'id is here',
@@ -153,38 +160,48 @@ function($scope, socket) {
 			id : $scope.deviceId
 		});
 		socket.on('GET_STATE_PASS', function(data) {
-			console.log(data);
+			$scope.$apply(function(){
+				$scope.states = data;
+			});
 		});
 	};
-
+	
+	$scope.selectState = function(){
+		console.log($scope.state._id);
+		$scope.triggerStateId = $scope.state._id;
+	};
+	
 	$scope.realtimeupdate = function() {
 		socket.emit('realtime', {});
 	};
 
 	$scope.addTrigger = function() {
+		console.log($scope.deviceId);
 		socket.emit('ADD_TRIGGER', {
+			deviceId : $scope.deviceId,
 			value : $scope.triggerValue,
-			condition:$scope.triggerCondition,
-			postUrl:$scope.triggerPostUrl,
-			stateID:$scope.triggerStateId
+			condition : $scope.triggerCondition,
+			postUrl : $scope.triggerPostUrl,
+			stateID : $scope.triggerStateId
 		});
 	};
-	socket.on('ADD_TRIGGER_PASS', function(e){
+	socket.on('ADD_TRIGGER_PASS', function(e) {
 		alert('Success!');
 	});
-	
+
 	$scope.removeTrigger = function() {
 		socket.emit('REMOVE_TRIGGER', {
-			_id:$scope.triggerId
+			_id : $scope.triggerId
 		});
 	};
-	socket.on('REMOVE_TRIGGER_PASS', function(e){
-		alert('Success!');	
+	socket.on('REMOVE_TRIGGER_PASS', function(e) {
+		alert('Success!');
 	});
 	$scope.triggerId = '';
+
 	$scope.triggerCondition = 'triggerCondition';
 	$scope.triggerValue = 'triggerValue';
-	$scope.triggerPostUrl = 'http://onion.io';
+	$scope.triggerPostUrl = 'http://google.com';
 	$scope.triggerStateId = 'triggerStateId';
 
 	$scope.trigger = function() {
@@ -192,12 +209,41 @@ function($scope, socket) {
 		socket.emit('TRIGGER', {
 		});
 	};
-	
+	socket.on('TRIGGER_PASS', function(e) {
+		alert('trigger pass');
+	});
+
 	$scope.getTrigger = function() {
 		socket.emit('GET_TRIGGER', {
 		});
 	};
-	socket.on('GET_TRIGGER_PASS',function(e){
-		console.log(e);
+
+	$scope.updateTrigger = function() {
+		socket.emit('UPDATE_TRIGGER', {
+			condition : {
+				_id : $scope.triggerId
+			},
+			update : {
+				condition : $scope.triggerCondition,
+				value : $scope.triggerValue,
+				postUrl : $scope.triggerPostUrl,
+				stateID : $scope.triggerStateId
+			}
+		});
+	};
+	socket.on('UPDATE_TRIGGER_PASS', function(e) {
+		alert('update trigger success');
+	});
+	socket.on('GET_TRIGGER_PASS', function(e) {
+		console.log('get trigger');
+		$scope.$apply(function() {
+			$scope.triggers = e.trigger;
+			$scope.triggerId = e.trigger[0]._id;
+			$scope.triggerCondition = e.trigger[0].condition;
+			$scope.triggerValue = e.trigger[0].value;
+			$scope.triggerPostUrl = e.trigger[0].postUrl;
+			$scope.triggerStateId = e.trigger[0].stateID;
+		});
+
 	});
 }]);

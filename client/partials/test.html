@@ -62,6 +62,12 @@
 	<button class="btn btn-primary testPage" ng-click="add_states()">
 		ADD_STATES
 	</button>
+	<select ng-model="state" ng-options="s.path for s in states" ng-change="selectState()">
+		 <option value="">-- click get state button first --</option>
+  </select>
+	<button class="btn btn-primary testPage" ng-click="removeState()">
+		removeState
+	</button>
 
 	<button class="btn btn-primary testPage" ng-click="new_key()">
 		New_key
@@ -101,6 +107,12 @@
 </button>
 <button class="btn btn-primary testPage" ng-click="getTrigger()">
 	getTrigger
+</button>
+<select ng-model="trigger" ng-options="s.path for s in triggers" ng-change="selecttrigger()">
+		 <option value="">-- click get trigger button first --</option>
+  </select>
+<button class="btn btn-primary testPage" ng-click="updateTrigger()">
+	updateTrigger
 </button>
 
 <button class="btn btn-primary testPage" ng-click="trigger()">

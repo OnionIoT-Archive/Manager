@@ -201,7 +201,16 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			$scope.his = data;
 		});
 	});
-
+	socket.emit('GET_TRIGGER', {
+		deviceId : $stateParams.deviceId
+	});
+	
+	socket.on('GET_TRIGGER_PASS', function (data) {
+		$scope.$apply(function () {
+			$scope.trigger = data;
+		});
+	});
+	
 	$scope.toggleEdit = function() {
 		console.log('toggleEdit save');
 		if ($scope.editMode) {

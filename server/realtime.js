@@ -215,9 +215,15 @@ var init = function(socketServer) {
 			});
 		});
 
+		socket.on('REMOVE_STATE', function(data) {
+			rpc.call('DB_REMOVE_STATE', data, function(e) {
+				socket.emit('REMOVE_STATE_PASS', e);
+			});
+		});
+
 		socket.on('ADD_STATES', function(data) {
 			if (data && data._id || data.id) {
-
+				console.log('add state');
 				rpc.call('DB_ADD_STATE', {
 					path : '/statePath',
 					value : 333,
@@ -328,36 +334,64 @@ var init = function(socketServer) {
 				socket.emit('ADD_TRIGGER_PASS');
 			});
 		});
-		
+
 		socket.on('UPDATE_TRIGGER', function(data) {
-			
+			rpc.call('DB_UPDATE_TRIGGER', data, function(e) {
+				socket.emit('UPDATE_TRIGGER_PASS', {});
+			});
 		});
-		
+
 		socket.on('REMOVE_TRIGGER', function(data) {
 			rpc.call('DB_REMOVE_TRIGGER', data, function(e) {
 				console.log(e);
 				socket.emit('REMOVE_TRIGGER_PASS');
 			});
 		});
-		
+
 		socket.on('GET_TRIGGER', function(data) {
+			//TODO:try to use mapp, don't use for loop
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
-				
-				socket.emit('GET_TRIGGER_PASS',{
-					trigger:e
-				});
+				var k = 0;
+				pushState();
+				function pushState() {
+					//console.log(e[k]);
+					if (e[k] && e[k].stateID) {
+						rpc.call('DB_GET_STATE', {
+							_id : e[k].stateID
+						}, function(state) {
+							if (k < e.length) {
+
+								e[k].state = {};
+								e[k].state = state[0];
+								console.log(e[k]);
+								k++;
+								pushState();
+							} else {
+								//console.log(e);
+							}
+						});
+					}
+				};
+
 			});
 		});
 
 		socket.on('TRIGGER', function(data) {
+
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
-				if (e && e.postUrl) {
-					request(e.postUrl, function(error, response, body) {
-						if (!error && response.statusCode == 200) {
-							console.log(body) // Print the google web page.
-						};
-					});
+
+				for (var i = 0; i < e.length; i++) {
+
+					if (e[i] && e[i].postUrl) {
+
+						request(e[i].postUrl, function(error, response, body) {
+							if (!error && response.statusCode == 200) {
+								socket.emit('TRIGGER_PASS', {});
+							};
+						});
+					};
 				};
+
 			});
 		});
 
