@@ -188,23 +188,25 @@
 								<tr ng-repeat="tri in trigger">
 									<td>{{tri.state.path}}</td>
 									<td>{{tri.condition}}</td>
-									<td>{{tri.postUrl}}</td>
+									<td><span ng-if="!editMode">{{tri.postUrl}}</span>
+									<input ng-if="editMode" required type="url" ng-model="tri.postUrl" />
+									</td>
 									<td>
 									<button class="btn btn-blue btn-xs" ng-click="removeTrigger(tri._id)">
 										Remove
 									</button></td>
 								</tr>
 								<tr>
-									<td>
-									<select ng-model="newTrigger.state" ng-options="s.path for s in device.states" ng-change="selectState()">
-										
+									<td><select ng-model="newTrigger.state" ng-options="s.path for s in device.states" ng-change="selectState()">
+
 									</select></td>
 									<td>
 									<select ng-model='newTrigger.condition'>
 										<option value="change" >Change</option>
 									</select></td>
 									<td>
-									<input required type="url" ng-model="newTrigger.postUrl" /></td>
+									<input required type="url" ng-model="newTrigger.postUrl" />
+									</td>
 									<td>
 									<button class="btn btn-blue btn-xs" ng-click="addTrigger()">
 										Add
@@ -254,7 +256,8 @@
 								{{log.timestamp}}
 							</div>
 							<code>
-								{{log.data}}</code>
+								{{log.data}}
+							</code>
 						</div>
 					</div>
 				</div>

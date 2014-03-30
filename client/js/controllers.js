@@ -202,6 +202,7 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 		});
 	});
 	$scope.newTrigger = {};
+	$scope.updateTrigger = {};
 	$scope.addTrigger = function() {
 		if (!$scope.newTrigger.condition) {
 			alert('Please select condition');
@@ -225,7 +226,6 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			socket.emit('GET_TRIGGER', {
 				deviceId : $stateParams.deviceId
 			});
-			
 		});
 	};
 	
@@ -252,8 +252,12 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 	});
 
 	$scope.toggleEdit = function() {
+		
 		console.log('toggleEdit save');
+		
 		if ($scope.editMode) {
+			blockUI.start();
+			$scope.updateTriggers();
 			socket.rpc('DEVICE_UPDATE', {
 				condition : {
 					id : $stateParams.deviceId
@@ -264,11 +268,30 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 					deviceType : $scope.device.meta.deviceType
 				}
 			}, function(data) {
+				
+				blockUI.stop();
 				$scope.device = data;
 			});
-		}
-
+		};
 		$scope.editMode = !$scope.editMode;
+	};
+	
+	$scope.updateTriggers = function(){
+		for(var i=0;i<$scope.trigger.length;i++){
+			if(!$scope.trigger[i].postUrl){
+				alert('Please type post url');
+				return
+			}
+			socket.rpc('UPDATE_TRIGGER', {
+				condition : {
+					_id : $scope.trigger[i]._id
+				},
+				update : {
+					postUrl : $scope.trigger[i].postUrl
+				}
+			}, function(data) {
+			});
+		}
 	};
 
 	$scope.renewKey = function() {

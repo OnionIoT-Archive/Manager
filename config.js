@@ -1,11 +1,13 @@
 var colors = require('colors');
 var dev_config = {
 	dbUrl:"mongodb://onion:!<684ygrJ51Vx)3@192.241.191.6:27017/onion",
-	mqServerUrl:"amqp://onionCore:p@192.241.191.6"
+	mqServerUrl:"amqp://onionCore:p@192.241.191.6",
+	port:81
 };
 var pro_config = {
 	dbUrl:"mongodb://onion:!<684ygrJ51Vx)3@db.onion.io:27017/onion",
-	mqServerUrl:"amqp://onionCore:p@test.onion.io"
+	mqServerUrl:"amqp://onionCore:p@test.onion.io",
+	port:80
 };
 var init = function(){
 	

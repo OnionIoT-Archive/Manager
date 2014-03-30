@@ -4,10 +4,13 @@
 var express = require('express'),
 	socket = require('socket.io'),
 	http = require('http'),
+	url = require('url'),
 	https = require('https'),
 	fs = require('fs'),
 	forums = require('./server/forums'),
 	realtime = require('./server/realtime');
+	var config = require('./config');
+	var config = config.init();
 
 // creating SSL options
 var sslOptions = {
@@ -49,11 +52,13 @@ httpsExpressServer.configure(function() {
 // Redirect all traffic to https
 httpExpressServer.all('*', function (req, res, next) {
     if (req.headers['x-forwarded-proto'] !== 'https') {
-        res.redirect('https://' + req.headers['host'] + req.url);
+    	//Harry reomved the heades
+    	var hostname = url.parse('https://' + req.headers['host'] + req.url).hostname;
+        res.redirect('https://'+ hostname);
+       
     } else {
         next();
     }
 });
-
-httpServer.listen(80);
+httpServer.listen(config.port);
 httpsServer.listen(443);
