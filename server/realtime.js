@@ -381,11 +381,15 @@ var init = function(socketServer) {
 
 		socket.on('TRIGGER', function(data) {
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
+				console.log(e);
 				for (var i = 0; i < e.length; i++) {
 					if (e[i] && e[i].postUrl) {
 						request(e[i].postUrl, function(error, response, body) {
 							if (!error && response.statusCode == 200) {
-								socket.emit('TRIGGER_PASS', {});
+								console.log('Post success');
+								socket.emit('TRIGGER_PASS', {response:response,body:body});
+							}else{
+								console.log('Post fail');
 							};
 						});
 					};

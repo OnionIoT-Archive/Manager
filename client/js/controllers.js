@@ -228,6 +228,17 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			
 		});
 	};
+	
+	$scope.removeTrigger = function(triggerId){
+		blockUI.start();
+		socket.rpc('REMOVE_TRIGGER', {
+			_id : triggerId
+		},function(e){
+			socket.emit('GET_TRIGGER', {
+				deviceId : $stateParams.deviceId
+			});
+		});
+	};
 
 	socket.emit('GET_TRIGGER', {
 		deviceId : $stateParams.deviceId

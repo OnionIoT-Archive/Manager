@@ -190,8 +190,8 @@
 									<td>{{tri.condition}}</td>
 									<td>{{tri.postUrl}}</td>
 									<td>
-									<button class="btn btn-blue btn-xs" ng-click="">
-										Edit
+									<button class="btn btn-blue btn-xs" ng-click="removeTrigger(tri._id)">
+										Remove
 									</button></td>
 								</tr>
 								<tr>
@@ -204,7 +204,7 @@
 										<option value="change" >Change</option>
 									</select></td>
 									<td>
-									<input required ng-model="newTrigger.postUrl" /></td>
+									<input required type="url" ng-model="newTrigger.postUrl" /></td>
 									<td>
 									<button class="btn btn-blue btn-xs" ng-click="addTrigger()">
 										Add

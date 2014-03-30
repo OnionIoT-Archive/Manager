@@ -213,14 +213,19 @@ function($scope, socket) {
 	$scope.triggerPostUrl = 'http://google.com';
 	$scope.triggerStateId = 'triggerStateId';
 
-	$scope.trigger = function() {
-		
+	$scope.fireTrigger = function() {
 		socket.emit('TRIGGER', {
+			_id:$scope.trigger._id
 		});
 	};
 	socket.on('TRIGGER_PASS', function(e) {
+		console.log(e);
 		alert('trigger pass');
 	});
+	
+	$scope.selecttrigger = function(){
+		$scope.triggerId = $scope.trigger._id;
+	};
 
 	$scope.getTrigger = function() {
 		socket.emit('GET_TRIGGER', {
