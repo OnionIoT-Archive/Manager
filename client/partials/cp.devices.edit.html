@@ -107,8 +107,9 @@
 									<td>http://api.onion.io/v1/devices/{{device.id}}{{procedure.path}}</td>
 
 									<td>
-										<button class="btn btn-blue btn-xs" ng-click="initTest(procedure)">Test</button>
-									</td>
+									<button class="btn btn-blue btn-xs" ng-click="initTest(procedure)">
+										Test
+									</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -175,7 +176,8 @@
 						<table class="table table-onion table-striped">
 							<thead>
 								<tr>
-									<th>Trigger</th>
+									<th>State</th>
+									<th>Condition</th>
 									<th>Post Url</th>
 								</tr>
 							</thead>
@@ -184,8 +186,29 @@
 									<td colspan="3">No activity history found.</td>
 								</tr>
 								<tr ng-repeat="tri in trigger">
-									<td>{{tri.action}}</td>
+									<td>{{tri.state.path}}</td>
+									<td>{{tri.condition}}</td>
 									<td>{{tri.postUrl}}</td>
+									<td>
+									<button class="btn btn-blue btn-xs" ng-click="">
+										Edit
+									</button></td>
+								</tr>
+								<tr>
+									<td>
+									<select ng-model="newTrigger.state" ng-options="s.path for s in device.states" ng-change="selectState()">
+										
+									</select></td>
+									<td>
+									<select ng-model='newTrigger.condition'>
+										<option value="change" >Change</option>
+									</select></td>
+									<td>
+									<input required ng-model="newTrigger.postUrl" /></td>
+									<td>
+									<button class="btn btn-blue btn-xs" ng-click="addTrigger()">
+										Add
+									</button></td>
 								</tr>
 							</tbody>
 						</table>
@@ -198,19 +221,23 @@
 	<div class="test-toolbar">
 		<div class="panel panel-blue">
 			<div class="panel-heading">
-				<button type="button" class="close" ng-click="toggleTest()">×</button>
+				<button type="button" class="close" ng-click="toggleTest()">
+					×
+				</button>
 				<h3 class="panel-title">Testing Console</h3>
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="test-input col-lg-5 col-md-5 col-sm-5 col-xs-5">	
+					<div class="test-input col-lg-5 col-md-5 col-sm-5 col-xs-5">
 						<form class="form-horizontal" role="form">
 							<div class="form-group">
 								<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
 									<input type="text" class="form-control" placeholder="API Endpoint" value="{{(!currentProcedure.path) ? '' : 'https://api.onion.io/' + currentProcedure.apiVersion + '/devices/' + currentProcedure.deviceId + currentProcedure.path}}" />
 								</div>
 								<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
-									<button type="submit" class="btn btn-default btn-block" ng-click="test.doTest('https://api.onion.io/' + currentProcedure.apiVersion + '/devices/' + currentProcedure.deviceId + currentProcedure.path, currentProcedure.data)">Go!</button>
+									<button type="submit" class="btn btn-default btn-block" ng-click="test.doTest('https://api.onion.io/' + currentProcedure.apiVersion + '/devices/' + currentProcedure.deviceId + currentProcedure.path, currentProcedure.data)">
+										Go!
+									</button>
 								</div>
 							</div>
 							<div class="form-group" ng-repeat="param in currentProcedure.postParams">
@@ -223,8 +250,11 @@
 					</div>
 					<div class="test-log col-lg-7 col-md-7 col-sm-7 col-xs-7">
 						<div class="log" ng-repeat="log in test.logs">
-							<div class="timestamp">{{log.timestamp}}</div>
-							<code>{{log.data}}</code>
+							<div class="timestamp">
+								{{log.timestamp}}
+							</div>
+							<code>
+								{{log.data}}</code>
 						</div>
 					</div>
 				</div>

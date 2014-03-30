@@ -155,13 +155,13 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 
 	$scope.testOn = false;
 
-	$scope.toggleTest = function () {
+	$scope.toggleTest = function() {
 		$scope.testOn = !$scope.testOn;
 	};
 
 	$scope.currentProcedure = {};
 
-	$scope.initTest = function (procedure) {
+	$scope.initTest = function(procedure) {
 		$scope.testOn = true;
 		$scope.currentProcedure = angular.copy(procedure);
 		$scope.currentProcedure.data = {};
@@ -187,12 +187,12 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 		deviceId : $stateParams.deviceId
 	});
 
-	socket.on('GET_HISTORY_PASS', function (data) {
-		var formatTime = function (timestamp) {
-		    return (new Date(timestamp)).toLocaleString();
+	socket.on('GET_HISTORY_PASS', function(data) {
+		var formatTime = function(timestamp) {
+			return (new Date(timestamp)).toLocaleString();
 		};
 
-		$scope.$apply(function () {
+		$scope.$apply(function() {
 			// Format the time
 			for (var i = 0; i < data.length; i++) {
 				data[i].timestamp = formatTime(data[i].timestamp);
@@ -201,16 +201,45 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			$scope.his = data;
 		});
 	});
+	$scope.newTrigger = {};
+	$scope.addTrigger = function() {
+		if (!$scope.newTrigger.condition) {
+			alert('Please select condition');
+			return
+		}
+		if (!$scope.newTrigger.postUrl) {
+			alert('Please type post url');
+			return
+		}
+		if (!$scope.newTrigger.state._id) {
+			alert('Please select state');
+			return
+		}
+		blockUI.start();
+		socket.rpc('ADD_TRIGGER', {
+			deviceId : $stateParams.deviceId,
+			condition : $scope.newTrigger.condition,
+			postUrl : $scope.newTrigger.postUrl,
+			stateID : $scope.newTrigger.state._id
+		}, function(e) {
+			socket.emit('GET_TRIGGER', {
+				deviceId : $stateParams.deviceId
+			});
+			
+		});
+	};
+
 	socket.emit('GET_TRIGGER', {
 		deviceId : $stateParams.deviceId
 	});
-	
-	socket.on('GET_TRIGGER_PASS', function (data) {
-		$scope.$apply(function () {
+
+	socket.on('GET_TRIGGER_PASS', function(data) {
+		$scope.$apply(function() {
 			$scope.trigger = data;
+			blockUI.stop();
 		});
 	});
-	
+
 	$scope.toggleEdit = function() {
 		console.log('toggleEdit save');
 		if ($scope.editMode) {
@@ -303,7 +332,7 @@ function($scope, socket) {
 
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
 function($scope, $state, socket, auth, sha3) {
-	
+
 	$scope.revert = function() {
 		socket.rpc('GET_USER', {
 		}, function(user) {
@@ -317,7 +346,7 @@ function($scope, $state, socket, auth, sha3) {
 	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.user.email.toLowerCase();
-		var pwHash = ($scope.password?sha3($scope.password):sha3($scope.oldPassword));
+		var pwHash = ($scope.password ? sha3($scope.password) : sha3($scope.oldPassword));
 		var fullname = $scope.user.fullname;
 		var website = $scope.user.website;
 		var company = $scope.user.company;

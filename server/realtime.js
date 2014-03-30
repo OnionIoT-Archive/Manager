@@ -331,6 +331,7 @@ var init = function(socketServer) {
 
 		socket.on('ADD_TRIGGER', function(data) {
 			rpc.call('DB_ADD_TRIGGER', data, function(e) {
+				console.log('add trigger pass');
 				socket.emit('ADD_TRIGGER_PASS');
 			});
 		});
@@ -349,9 +350,11 @@ var init = function(socketServer) {
 		});
 
 		socket.on('GET_TRIGGER', function(data) {
+			console.log('get trigger');
 			//TODO:try to use mapp, don't use for loop
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
 				var k = 0;
+				console.log(e);
 				pushState();
 				function pushState() {
 					if (e[k] && e[k].stateID) {
@@ -368,6 +371,7 @@ var init = function(socketServer) {
 							}
 						});
 					} else {
+						console.log('get trigger pass');
 						socket.emit('GET_TRIGGER_PASS', e);
 					}
 				};
@@ -376,13 +380,9 @@ var init = function(socketServer) {
 		});
 
 		socket.on('TRIGGER', function(data) {
-
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
-
 				for (var i = 0; i < e.length; i++) {
-
 					if (e[i] && e[i].postUrl) {
-
 						request(e[i].postUrl, function(error, response, body) {
 							if (!error && response.statusCode == 200) {
 								socket.emit('TRIGGER_PASS', {});
@@ -390,7 +390,6 @@ var init = function(socketServer) {
 						});
 					};
 				};
-
 			});
 		});
 

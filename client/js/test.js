@@ -169,6 +169,7 @@ function($scope, socket) {
 	$scope.selectState = function(){
 		console.log($scope.state._id);
 		$scope.triggerStateId = $scope.state._id;
+		$scope.deviceId = $scope.state.deviceId;
 	};
 	
 	$scope.realtimeupdate = function() {
@@ -177,6 +178,14 @@ function($scope, socket) {
 
 	$scope.addTrigger = function() {
 		console.log($scope.deviceId);
+		if(!$scope.deviceId){
+			alert('please put deviceid');
+			return
+		}
+		if(!$scope.triggerStateId){
+			alert('please put stateId');
+			return
+		}
 		socket.emit('ADD_TRIGGER', {
 			deviceId : $scope.deviceId,
 			value : $scope.triggerValue,
@@ -199,13 +208,13 @@ function($scope, socket) {
 	});
 	$scope.triggerId = '';
 
-	$scope.triggerCondition = 'triggerCondition';
+	$scope.triggerCondition = 'change';
 	$scope.triggerValue = 'triggerValue';
 	$scope.triggerPostUrl = 'http://google.com';
 	$scope.triggerStateId = 'triggerStateId';
 
 	$scope.trigger = function() {
-		console.log('click trigger')
+		
 		socket.emit('TRIGGER', {
 		});
 	};
