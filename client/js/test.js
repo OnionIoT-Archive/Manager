@@ -231,6 +231,11 @@ function($scope, socket) {
 		socket.emit('GET_TRIGGER', {
 		});
 	};
+	
+	$scope.testServer = function() {
+		socket.emit('realtime', {
+		});
+	};
 
 	$scope.updateTrigger = function() {
 		socket.emit('UPDATE_TRIGGER', {

@@ -381,33 +381,29 @@ var init = function(socketServer) {
 
 		socket.on('TRIGGER', function(data) {
 			rpc.call('DB_GET_TRIGGER_WITHSTATE', data, function(e) {
-				
 				for (var i = 0; i < e.length; i++) {
 					if (e[i] && e[i].postUrl) {
-						request.post(e[i].postUrl, {form:e[i].state},function(error, response, body){
+						request.post(e[i].postUrl, {
+							form : e[i].state
+						}, function(error, response, body) {
 							if (!error && response.statusCode == 200) {
 								console.log('Post success');
-								socket.emit('TRIGGER_PASS', {response:response,body:body});
-							}else{
+								socket.emit('TRIGGER_PASS', {
+									response : response,
+									body : body
+								});
+							} else {
 								console.log('Post fail');
 							};
 						});
-						// request(e[i].postUrl, function(error, response, body) {
-							// if (!error && response.statusCode == 200) {
-								// console.log('Post success');
-								// socket.emit('TRIGGER_PASS', {response:response,body:body});
-							// }else{
-								// console.log('Post fail');
-							// };
-						// });
 					};
 				};
 			});
 		});
 
 		socket.on('realtime', function(e) {
-
-			rpc.call('REALTIME_UPDATE_HISTORY', {
+			console.log(Object.keys(connections).length)
+			rpc.call('DB_GET_TRIGGER_WITHSTATE', {
 				deviceId : 'AbYrsuO2'
 			}, function(data) {
 
@@ -449,7 +445,7 @@ var init = function(socketServer) {
 		});
 		callback({});
 	});
-
+	
 	rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 		var email;
 		var userId;
@@ -457,6 +453,7 @@ var init = function(socketServer) {
 			id : p.deviceId
 		}, function(device) {
 			userId = device.userId;
+			console.log(device);
 			connections[userId].emit('GET_DEVICE_PASS', device);
 		});
 		callback({});
