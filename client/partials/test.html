@@ -64,6 +64,9 @@
 	<button class="btn btn-primary testPage" ng-click="add_states()">
 		ADD_STATES
 	</button>
+	<button class="btn btn-primary testPage" ng-click="updateState()">
+		updateState
+	</button>
 	<select ng-model="state" ng-options="s.path for s in states" ng-change="selectState()">
 		<option value="">-- click get state button first --</option>
 	</select>

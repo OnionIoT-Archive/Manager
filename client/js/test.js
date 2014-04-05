@@ -62,12 +62,12 @@ function($scope, socket) {
 			postParams : ['temp', 'altitude', 'water level']
 		});
 	};
-	
+
 	$scope.path = 'statePath';
 	$scope.value = 'value';
 	$scope.add_states = function() {
 		console.log('$scope.deviceId');
-		
+
 		socket.emit('ADD_STATES', {
 			path : $scope.path,
 			value : $scope.value,
@@ -76,17 +76,40 @@ function($scope, socket) {
 		});
 	};
 
+	$scope.updateState = function() {
+		if (!$scope.state._id) {
+			alert('state id not found');
+			return
+		}
+		socket.emit('UPDATE_STATE', {
+			condition : {
+				_id : $scope.state._id
+			},
+			update : {
+				path : $scope.path,
+				value : $scope.value,
+				deviceId : $scope.deviceId,
+				timeStamp : new Date()
+			}
+		});
+	};
+
+	socket.on('UPDATE_STATE_PASS', function(e){
+		alert('state update success');
+	}
+	);
+
 	$scope.removeState = function() {
 		console.log('removeState');
 		socket.emit('REMOVE_STATE', {
 			_id : $scope.state._id
 		});
 	};
-	
-	socket.on('REMOVE_STATE_PASS', function(e){
+
+	socket.on('REMOVE_STATE_PASS', function(e) {
 		alert(e);
 	});
-	
+
 	$scope.add_device = function() {
 		socket.emit('ADD_DEVICE', {
 			id : 'id is here',

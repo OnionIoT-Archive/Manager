@@ -216,6 +216,12 @@ var init = function(socketServer) {
 			});
 		});
 
+		socket.on('UPDATE_STATE', function(data) {
+			rpc.call('DB_UPDATE_STATE', data, function(data) {
+				socket.emit('UPDATE_STATE_PASS', data);
+			});
+		});
+
 		socket.on('REMOVE_STATE', function(data) {
 			rpc.call('DB_REMOVE_STATE', data, function(e) {
 				socket.emit('REMOVE_STATE_PASS', e);
@@ -347,7 +353,7 @@ var init = function(socketServer) {
 
 		socket.on('GET_TRIGGER', function(data) {
 			console.log('get trigger');
-			//TODO:try to use mapp, don't use for loop
+			//TODO:use this DB_GET_TRIGGER_WITHSTATE
 			rpc.call('DB_GET_TRIGGER', data, function(e) {
 				var k = 0;
 				console.log(e);
@@ -441,17 +447,24 @@ var init = function(socketServer) {
 		});
 		callback({});
 	});
-	
+
 	rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 		var email;
 		var userId;
-		rpc.call('DB_GET_DEVICE', {
-			id : p.deviceId
-		}, function(device) {
-			console.log(device);
-			userId = device.userId;
-			connections[userId].emit('GET_DEVICE_PASS', device);
-		});
+		if(p.deviceId){
+			updateState(p.deviceId);
+		}else if(p.update&&p.update.deviceId){
+			updateState(p.update.deviceId);
+		}
+		function updateState(deviceid) {
+			rpc.call('DB_GET_DEVICE', {
+				id : deviceid
+			}, function(device) {
+				userId = device.userId;
+				if (userId && connections && connections[userId])
+					connections[userId].emit('GET_DEVICE_PASS', device);
+			});
+		}
 		callback({});
 	});
 };
