@@ -52,7 +52,7 @@ function($scope, socket) {
 		});
 
 	};
-
+	$scope.verb = "GET";
 	$scope.add_procedures = function() {
 		socket.emit('ADD_PROCEDURE', {
 			id : $scope.deviceId,
@@ -62,21 +62,31 @@ function($scope, socket) {
 			postParams : ['temp', 'altitude', 'water level']
 		});
 	};
-
+	
+	$scope.path = 'statePath';
+	$scope.value = 'value';
 	$scope.add_states = function() {
 		console.log('$scope.deviceId');
+		
 		socket.emit('ADD_STATES', {
-			id : $scope.deviceId
+			path : $scope.path,
+			value : $scope.value,
+			deviceId : $scope.deviceId,
+			timeStamp : new Date()
 		});
 	};
 
 	$scope.removeState = function() {
 		console.log('removeState');
-		socket.emit('ADD_STATES', {
-			id : $scope.deviceId
+		socket.emit('REMOVE_STATE', {
+			_id : $scope.state._id
 		});
 	};
-
+	
+	socket.on('REMOVE_STATE_PASS', function(e){
+		alert(e);
+	});
+	
 	$scope.add_device = function() {
 		socket.emit('ADD_DEVICE', {
 			id : 'id is here',
@@ -160,29 +170,29 @@ function($scope, socket) {
 			id : $scope.deviceId
 		});
 		socket.on('GET_STATE_PASS', function(data) {
-			$scope.$apply(function(){
+			$scope.$apply(function() {
 				$scope.states = data;
 			});
 		});
 	};
-	
-	$scope.selectState = function(){
+
+	$scope.selectState = function() {
 		console.log($scope.state._id);
 		$scope.triggerStateId = $scope.state._id;
 		$scope.deviceId = $scope.state.deviceId;
 	};
-	
+
 	$scope.realtimeupdate = function() {
 		socket.emit('realtime', {});
 	};
 
 	$scope.addTrigger = function() {
 		console.log($scope.deviceId);
-		if(!$scope.deviceId){
+		if (!$scope.deviceId) {
 			alert('please put deviceid');
 			return
 		}
-		if(!$scope.triggerStateId){
+		if (!$scope.triggerStateId) {
 			alert('please put stateId');
 			return
 		}
@@ -215,15 +225,15 @@ function($scope, socket) {
 
 	$scope.fireTrigger = function() {
 		socket.emit('TRIGGER', {
-			_id:$scope.trigger._id
+			_id : $scope.trigger._id
 		});
 	};
 	socket.on('TRIGGER_PASS', function(e) {
 		console.log(e);
 		alert('trigger pass');
 	});
-	
-	$scope.selecttrigger = function(){
+
+	$scope.selecttrigger = function() {
 		$scope.triggerId = $scope.trigger._id;
 	};
 
@@ -231,7 +241,7 @@ function($scope, socket) {
 		socket.emit('GET_TRIGGER', {
 		});
 	};
-	
+
 	$scope.testServer = function() {
 		socket.emit('realtime', {
 		});
@@ -257,7 +267,7 @@ function($scope, socket) {
 		console.log('get trigger');
 		$scope.triggers = e;
 		$scope.$apply(function() {
-			
+
 		});
 
 	});

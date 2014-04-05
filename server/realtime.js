@@ -6,6 +6,7 @@ var request = require('request');
 var idgen = require('idgen');
 var uuid = require('node-uuid');
 var crypto = require('crypto');
+var services = require('./services');
 
 var init = function(socketServer) {
 	var connections = {};
@@ -222,14 +223,9 @@ var init = function(socketServer) {
 		});
 
 		socket.on('ADD_STATES', function(data) {
-			if (data && data._id || data.id) {
+			if (data && data.deviceId || data.id) {
 				console.log('add state');
-				rpc.call('DB_ADD_STATE', {
-					path : '/statePath',
-					value : 333,
-					deviceId : data.id,
-					timeStamp : new Date()
-				}, function(data) {
+				rpc.call('DB_ADD_STATE', data, function(data) {
 				});
 			}
 		});
@@ -439,7 +435,7 @@ var init = function(socketServer) {
 		rpc.call('DB_GET_DEVICE', {
 			id : p.deviceId
 		}, function(device) {
-			console.log(p.deviceId);
+			console.log(device);
 			userId = device.userId;
 			connections[userId].emit('GET_DEVICE_PASS', device);
 		});
@@ -452,8 +448,8 @@ var init = function(socketServer) {
 		rpc.call('DB_GET_DEVICE', {
 			id : p.deviceId
 		}, function(device) {
-			userId = device.userId;
 			console.log(device);
+			userId = device.userId;
 			connections[userId].emit('GET_DEVICE_PASS', device);
 		});
 		callback({});
