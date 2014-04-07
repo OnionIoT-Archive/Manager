@@ -12,7 +12,8 @@
     "angular-md5": "~0.1.7",
     "idgen": "~1.3.0",
     "request": "~2.34.0",
-    "colors": "~0.6.2"
+    "colors": "~0.6.2",
+    "pushbullet": "~0.4.0"
   },
   "devDependencies": {},
   "scripts": {

@@ -395,7 +395,7 @@ var init = function(socketServer) {
 									body : body
 								});
 							} else {
-								console.log('Post fail');
+								console.log("Error: /n" +error);
 							};
 						});
 					};
@@ -460,6 +460,10 @@ var init = function(socketServer) {
 			rpc.call('DB_GET_DEVICE', {
 				id : deviceid
 			}, function(device) {
+				console.log(device);
+				services.pushBullet({
+					
+				})
 				userId = device.userId;
 				if (userId && connections && connections[userId])
 					connections[userId].emit('GET_DEVICE_PASS', device);
