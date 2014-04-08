@@ -42,8 +42,15 @@ httpsExpressServer.use(express.session({
 
 httpsExpressServer.configure(function() {
 	//httpsExpressServer.use(express.basicAuth('dev', 'philosophy'));
-
+	
+	
+	
 	httpsExpressServer.use('/', express.static(__dirname + '/client'));
+	httpsExpressServer.get('/milkscale', function(req, res) {		
+		res.json({
+			"weight":8
+		});
+	});
 	httpsExpressServer.get('/forums/:message/:timestamp/:signature', forums.static);
 
 	httpsExpressServer.get('*', function(req, res) {
@@ -55,12 +62,7 @@ httpsExpressServer.configure(function() {
 		console.log('trigger2');
 	});
 	
-	httpsExpressServer.post('/milkscale', function(req, res) {		
-		res.json({
-			weight:8,
-			status:full
-		})
-	});
+	
 });
 
 // Redirect all traffic to https
