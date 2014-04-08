@@ -3,6 +3,7 @@
 // SockJS with Express 3
 var express = require('express'), socket = require('socket.io'), http = require('http'), url = require('url'), https = require('https'), fs = require('fs'), forums = require('./server/forums'), realtime = require('./server/realtime');
 var config = {};
+var services = require('./server/services');
 try {
 	config = require('/etc/onionConfig.json').CP;
 } catch(err) {
@@ -38,13 +39,20 @@ httpsExpressServer.use(express.session({
 /***** HTTP server *****/
 
 // Configure the express server
+
 httpsExpressServer.configure(function() {
 	//httpsExpressServer.use(express.basicAuth('dev', 'philosophy'));
+
 	httpsExpressServer.use('/', express.static(__dirname + '/client'));
 	httpsExpressServer.get('/forums/:message/:timestamp/:signature', forums.static);
 
 	httpsExpressServer.get('*', function(req, res) {
 		res.redirect('/');
+	});
+
+	httpsExpressServer.post('/trigger', function(req, res) {		
+		services.pushBullet();
+		console.log('trigger2');
 	});
 });
 
@@ -52,9 +60,7 @@ httpsExpressServer.configure(function() {
 httpExpressServer.all('*', function(req, res, next) {
 	if (req.headers['x-forwarded-proto'] !== 'https') {
 		//Harry reomved the heades
-		httpExpressServer.get('/trigger', function(req, res) {
-			console.log('trigger');
-		});
+
 		var hostname = url.parse('https://' + req.headers['host'] + req.url).hostname;
 		res.redirect('https://' + hostname);
 
@@ -63,4 +69,4 @@ httpExpressServer.all('*', function(req, res, next) {
 	}
 });
 httpServer.listen(config.HTTP_PORT);
-httpsServer.listen(config.HTTPS_PORT); 
+httpsServer.listen(config.HTTPS_PORT);

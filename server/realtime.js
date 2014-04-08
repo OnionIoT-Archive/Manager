@@ -382,12 +382,17 @@ var init = function(socketServer) {
 		});
 
 		socket.on('TRIGGER', function(data) {
+
 			rpc.call('DB_GET_TRIGGER_WITHSTATE', data, function(e) {
 				for (var i = 0; i < e.length; i++) {
 					if (e[i] && e[i].postUrl) {
-						request.post(e[i].postUrl, {
+						var options = {
+							uri : e[i].postUrl,
+							strictSSL : false,
+							method : "POST",
 							form : e[i].state
-						}, function(error, response, body) {
+						};
+						request(options, function(error, response, body) {
 							if (!error && response.statusCode == 200) {
 								console.log('Post success');
 								socket.emit('TRIGGER_PASS', {
@@ -395,7 +400,7 @@ var init = function(socketServer) {
 									body : body
 								});
 							} else {
-								console.log("Error: /n" +error);
+								console.log(error);
 							};
 						});
 					};
@@ -451,24 +456,46 @@ var init = function(socketServer) {
 	rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
 		var email;
 		var userId;
-		if(p.deviceId){
+		if (p.deviceId) {
 			updateState(p.deviceId);
-		}else if(p.update&&p.update.deviceId){
+		} else if (p.update && p.update.deviceId) {
 			updateState(p.update.deviceId);
 		}
 		function updateState(deviceid) {
 			rpc.call('DB_GET_DEVICE', {
 				id : deviceid
 			}, function(device) {
-				console.log(device);
-				services.pushBullet({
+				rpc.call('DB_GET_TRIGGER', {
+					stateID : device.states._id
+				}, function(e) {
+					for(var k=0;k<e.length;k++){
+						pushBullet(e);
+						console.log(e.length);
+					}
 					
-				})
+				});
+				function pushBullet(e) {
+					var options = {
+						uri : e[0].postUrl,
+						strictSSL : false,
+						method : "POST",
+						form : e[0].state
+					};
+					request(options, function(error, response, body) {
+						if (!error && response.statusCode == 200) {
+							
+						} else {
+							console.log(error);
+						};
+					});
+				}
+
 				userId = device.userId;
 				if (userId && connections && connections[userId])
 					connections[userId].emit('GET_DEVICE_PASS', device);
 			});
 		}
+
 		callback({});
 	});
 };
