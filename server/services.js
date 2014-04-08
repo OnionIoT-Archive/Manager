@@ -19,7 +19,6 @@ var miklPusher = function() {
 	milkpush.devices(function(error, response) {
 		for (var i = 0; i < response.devices.length; i++) {
 			var device = response.devices[i];
-			
 			milkpush.note(device.iden, "Milk", "is empty", function(error, response) {
 			});
 		}

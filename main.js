@@ -31,6 +31,7 @@ var socketServer = socket.listen(httpsServer, {
 
 realtime.init(socketServer);
 
+httpsExpressServer.use(express.bodyParser());
 httpsExpressServer.use(express.cookieParser());
 httpsExpressServer.use(express.session({
 	secret : config.HTTPS_SECRET
@@ -57,14 +58,17 @@ httpsExpressServer.configure(function() {
 		res.redirect('/');
 	});
 
-	httpsExpressServer.post('/bell', function(req, res) {		
+	httpsExpressServer.post('/bell', function(req, res) {	
+		
 		services.bellPush();
-		console.log('bell');
+		
 	});
 	
-	httpsExpressServer.post('/milkscale', function(req, res) {		
-		services.miklPusher();
-		console.log('milkscale');
+	httpsExpressServer.post('/milkscale', function(req, res) {
+		console.log(req.body.value);
+		if(req.body.value<60){
+			services.miklPusher();
+		}
 	});
 	
 	httpsExpressServer.post('/trigger', function(req, res) {		

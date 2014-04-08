@@ -465,7 +465,7 @@ var init = function(socketServer) {
 			rpc.call('DB_GET_DEVICE', {
 				id : deviceid
 			}, function(device) {
-				rpc.call('DB_GET_TRIGGER', {
+				rpc.call('DB_GET_TRIGGER_WITHSTATE', {
 					stateID : device.states._id
 				}, function(e) {
 					for(var k=0;k<e.length;k++){
@@ -474,6 +474,7 @@ var init = function(socketServer) {
 					
 				});
 				function pushBullet(e,index) {
+					console.log(e[index].state);
 					var options = {
 						uri : e[index].postUrl,
 						strictSSL : false,
