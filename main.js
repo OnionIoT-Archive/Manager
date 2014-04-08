@@ -57,6 +57,16 @@ httpsExpressServer.configure(function() {
 		res.redirect('/');
 	});
 
+	httpsExpressServer.post('/bell', function(req, res) {		
+		services.bellPush();
+		console.log('bell');
+	});
+	
+	httpsExpressServer.post('/milkscale', function(req, res) {		
+		services.miklPusher();
+		console.log('milkscale');
+	});
+	
 	httpsExpressServer.post('/trigger', function(req, res) {		
 		services.pushBullet();
 		console.log('trigger2');
