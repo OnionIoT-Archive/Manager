@@ -54,6 +54,13 @@ httpsExpressServer.configure(function() {
 		services.pushBullet();
 		console.log('trigger2');
 	});
+	
+	httpsExpressServer.post('/milkscale', function(req, res) {		
+		res.json({
+			weight:8,
+			status:full
+		})
+	});
 });
 
 // Redirect all traffic to https

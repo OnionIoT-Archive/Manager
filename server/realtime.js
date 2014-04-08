@@ -469,17 +469,16 @@ var init = function(socketServer) {
 					stateID : device.states._id
 				}, function(e) {
 					for(var k=0;k<e.length;k++){
-						pushBullet(e);
-						console.log(e.length);
+						pushBullet(e,k);
 					}
 					
 				});
-				function pushBullet(e) {
+				function pushBullet(e,index) {
 					var options = {
-						uri : e[0].postUrl,
+						uri : e[index].postUrl,
 						strictSSL : false,
 						method : "POST",
-						form : e[0].state
+						form : e[index].state
 					};
 					request(options, function(error, response, body) {
 						if (!error && response.statusCode == 200) {
