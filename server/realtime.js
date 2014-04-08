@@ -127,7 +127,7 @@ var init = function(socketServer) {
 
 		socket.on('LIST_DEVICES', function(data) {
 			if (userInfo && userInfo.userId) {
-				console.log(userInfo.userId);
+				console.log(userInfo.email);
 				data['userId'] = userInfo.userId;
 				rpc.call('DB_GET_DEVICE', data, function(devicLists) {
 					socket.emit('LIST_DEVICES_PASS', devicLists);
@@ -448,7 +448,7 @@ var init = function(socketServer) {
 		}, function(device) {
 			console.log(device);
 			userId = device.userId;
-			connections[userId].emit('GET_DEVICE_PASS', device);
+			if(connections&&connections[userId]&&connections[userId].emit)connections[userId].emit('GET_DEVICE_PASS', device);
 		});
 		callback({});
 	});
