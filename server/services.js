@@ -1,8 +1,8 @@
 var PushBullet = require('pushbullet');
-var bellpusher = new PushBullet('v1Z2OrAr4sfaY0AAnpU5q1oBa68v8oeZgbujC2CcKgmHc');
+
 var bellPush = function() {
+	var bellpusher = new PushBullet('v1dsoZ40r9Yz82t2EeBIGqhmtekMEpN5KZujxN5nCtwEC');
 	bellpusher.devices(function(error, response) {
-		console.log('push');
 		for (var i = 0; i < response.devices.length; i++) {
 			var device = response.devices[i];
 			
@@ -13,10 +13,10 @@ var bellPush = function() {
 	});
 };
 
-var milkpush = new PushBullet('v1Z2OrAr4sfaY0AAnpU5q1oBa68v8oeZgbujC2CcKgmHc');
+
 var miklPusher = function() {
+	var milkpush = new PushBullet('v1Z2OrAr4sfaY0AAnpU5q1oBa68v8oeZgbujC2CcKgmHc');
 	milkpush.devices(function(error, response) {
-		console.log('push');
 		for (var i = 0; i < response.devices.length; i++) {
 			var device = response.devices[i];
 			
