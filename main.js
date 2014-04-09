@@ -43,13 +43,13 @@ httpsExpressServer.use(express.session({
 
 httpsExpressServer.configure(function() {
 	//httpsExpressServer.use(express.basicAuth('dev', 'philosophy'));
-	
-	
-	
+
 	httpsExpressServer.use('/', express.static(__dirname + '/client'));
-	httpsExpressServer.get('/milkscale', function(req, res) {		
+	httpsExpressServer.get('/milkscale', function(req, res) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "X-Requested-With");
 		res.json({
-			"weight":8
+			"weight" : 8
 		});
 	});
 	httpsExpressServer.get('/forums/:message/:timestamp/:signature', forums.static);
@@ -58,25 +58,25 @@ httpsExpressServer.configure(function() {
 		res.redirect('/');
 	});
 
-	httpsExpressServer.post('/bell', function(req, res) {	
-		
+	httpsExpressServer.post('/bell', function(req, res) {
+
 		services.bellPush();
-		
+
 	});
-	
+
 	httpsExpressServer.post('/milkscale', function(req, res) {
+
 		console.log(req.body.value);
-		if(req.body.value<60){
+		if (req.body.value < 60) {
 			services.miklPusher();
 		}
 	});
-	
-	httpsExpressServer.post('/trigger', function(req, res) {		
+
+	httpsExpressServer.post('/trigger', function(req, res) {
 		services.pushBullet();
 		console.log('trigger2');
 	});
-	
-	
+
 });
 
 // Redirect all traffic to https
