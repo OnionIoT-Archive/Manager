@@ -71,6 +71,9 @@ function($scope, $state, socket, auth, sha3) {
 	};
 }]);
 
+
+
+
 controllers.controller('TestCtrl', ['$scope', 'socket',
 function($scope, socket) {
 	$scope.signup = function() {
@@ -86,9 +89,19 @@ function($scope, $state, socket, auth) {
 	};
 
 	$scope.logout = function($event) {
-		$event.stopPropagation();
+	 
+	 var r=confirm("Are you sure you want to log out?");
+	  if(r==true)
+	  {
+	  	$event.stopPropagation();
 		$event.preventDefault();
 		auth.logout();
+	  }
+	  else
+	  {
+	  }
+		
+		
 	};
 }]);
 //TODO:shouldn't go back to login page everytime.
@@ -364,6 +377,8 @@ function($scope, socket) {
 	};
 }]);
 
+
+
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
 function($scope, $state, socket, auth, sha3) {
 
@@ -377,7 +392,7 @@ function($scope, $state, socket, auth, sha3) {
 	};
 	$scope.revert();
 
-	$scope.userUpdate = function() {
+	$scope.userUpdate = function () {
 		$scope.email = $scope.email || '';
 		var email = $scope.user.email.toLowerCase();
 		var pwHash = ($scope.password ? sha3($scope.password) : sha3($scope.oldPassword));
@@ -422,6 +437,42 @@ function($scope, $state, socket, auth, sha3) {
 
 }]);
 
+var PHONE_REGEXP = /^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/;
+
+controllers.controller('Ctrl', function($scope) {});
+
+controllers.directive('phone', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ctrl) {
+            angular.element(element).bind('blur', function() {
+                var value = this.value;
+                if(PHONE_REGEXP.test(value)) {
+                    // Valid input
+                    console.log("valid phone number");
+                    
+                    angular.element(this).next().next().css('display','none');  
+                } else {
+                    // Invalid input  
+                    alert("invalid phone number");
+                    phone:"";
+                
+                    console.log("invalid phone number");
+                    angular.element(this).next().next().css('display','block');
+                    return
+                    /* 
+                        Looks like at this point ctrl is not available,
+                        so I can't user the following method to display the error node:
+                        ctrl.$setValidity('currencyField', false); 
+                    */                    
+                }
+            });              
+        }            
+    }        
+});
+
+
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
 	socket.rpc('FORUMS_SETUP', function(forumsInfo) {
@@ -441,3 +492,5 @@ function($scope, $templateCache) {
 		}
 	};
 }]);
+
+
