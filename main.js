@@ -59,22 +59,25 @@ httpsExpressServer.configure(function() {
 	});
 
 	httpsExpressServer.post('/bell', function(req, res) {
-
+		console.log("/bell");
 		services.bellPush();
+		res.end('{}');
 
 	});
 
 	httpsExpressServer.post('/milkscale', function(req, res) {
-
+		console.log("milkscale");
 		console.log(req.body.value);
-		if (req.body.value < 60) {
+		if (req.body.value < 30) {
 			services.miklPusher();
 		}
+		res.end('{}');
 	});
 
 	httpsExpressServer.post('/trigger', function(req, res) {
 		services.pushBullet();
 		console.log('trigger2');
+		res.end('{}');
 	});
 
 });

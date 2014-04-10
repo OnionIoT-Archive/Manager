@@ -454,19 +454,13 @@ var init = function(socketServer) {
 	});
 
 	rpc.register('REALTIME_UPDATE_STATE', function(p, callback) {
-		var email;
-		var userId;
-		if (p.deviceId) {
-			updateState(p.deviceId);
-		} else if (p.update && p.update.deviceId) {
-			updateState(p.update.deviceId);
-		}
-		function updateState(deviceid) {
-			rpc.call('DB_GET_DEVICE', {
-				id : deviceid
-			}, function(device) {
-				rpc.call('DB_GET_TRIGGER_WITHSTATE', {
-					stateID : device.states._id
+		console.log('======= P =======');
+		console.log(p);
+
+
+		// ======= Temprary code for trigger ===========
+					rpc.call('DB_GET_TRIGGER_WITHSTATE', {
+deviceId: p.deviceId
 				}, function(e) {
 					for(var k=0;k<e.length;k++){
 						pushBullet(e,k);
@@ -490,7 +484,25 @@ var init = function(socketServer) {
 					});
 				}
 
-				userId = device.userId;
+
+
+		// ======= Temprary code for trigger ===========
+
+
+		var email;
+		var userId;
+		if (p.deviceId) {
+			updateState(p.deviceId);
+		} else if (p.update && p.update.deviceId) {
+			updateState(p.update.deviceId);
+		}
+		function updateState(deviceid) {
+			console.log(deviceid);
+			rpc.call('DB_GET_DEVICE', {
+				id : deviceid
+			}, function(device) {
+				console.log(device.states);
+					userId = device.userId;
 				if (userId && connections && connections[userId])
 					connections[userId].emit('GET_DEVICE_PASS', device);
 			});
