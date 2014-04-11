@@ -52,6 +52,7 @@ function($scope, $state, socket, auth, sha3) {
 		}, function() {
 			clearFields();
 			$scope.switchMode('login');
+			
 		}, function() {
 			$scope.signupFailed = true;
 		})
@@ -89,7 +90,7 @@ function($scope, $state, socket, auth) {
 	};
 
 	$scope.logout = function($event) {
-	 
+		
 	 var r=confirm("Are you sure you want to log out?");
 	  if(r==true)
 	  {
@@ -99,11 +100,14 @@ function($scope, $state, socket, auth) {
 	  }
 	  else
 	  {
+	  	$event.stopPropagation();
+	  	$event.preventDefault();
 	  }
 		
 		
 	};
 }]);
+
 //TODO:shouldn't go back to login page everytime.
 controllers.controller('DevicesListCtrl', ['$scope', '$timeout', '$state', 'socket', 'auth',
 function($scope, $timeout, $state, socket, auth) {
@@ -392,6 +396,7 @@ function($scope, $state, socket, auth, sha3) {
 	};
 	$scope.revert();
 
+   
 	$scope.userUpdate = function () {
 		$scope.email = $scope.email || '';
 		var email = $scope.user.email.toLowerCase();
@@ -492,5 +497,6 @@ function($scope, $templateCache) {
 		}
 	};
 }]);
+
 
 

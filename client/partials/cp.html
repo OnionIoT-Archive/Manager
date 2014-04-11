@@ -16,9 +16,9 @@
 			</li>
 			<li ng-class="{active: isActive('cp.profile')}">
 				<a ui-sref="cp.profile"><span class="fa fa-user"></span>User Profile
-					<button class="btn pull-right" ng-click="logout($event);"><span class="fa fa-power-off"></span></button>
-				   
+					<button class="btn pull-right" ng-click="logout($event);" stop-event='click'><span class="fa fa-power-off"></span></button>
 				</a>
+				
 				
 			</li>
 		</ul>
