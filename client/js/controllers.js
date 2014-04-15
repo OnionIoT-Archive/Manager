@@ -470,8 +470,16 @@ function($scope, $state, socket, auth, sha3) {
 				return
 			}
 		}
+		//validation of url
+		if (!$scope.user.website) {
+		    alert('Please type in valid url');
+			console.log("invalid url");
+			return
+			}else{
+		    console.log("valid url");
+		       }
 		
-		
+
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
 			oldPass : sha3($scope.oldPassword),
