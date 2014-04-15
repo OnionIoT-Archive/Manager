@@ -228,7 +228,7 @@ var init = function(socketServer) {
 			});
 		});
 
-		socket.on('ADD_STATES', function(data) {
+		socket.on('ADD_STATE', function(data) {
 			if (data && data.deviceId || data.id) {
 				console.log('add state');
 				rpc.call('DB_ADD_STATE', data, function(data) {

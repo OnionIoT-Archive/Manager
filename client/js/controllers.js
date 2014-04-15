@@ -218,6 +218,57 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			$scope.his = data;
 		});
 	});
+	
+	
+	$scope.newState = {};
+	$scope.addState = function() {
+		if (!$scope.newState.path) {
+			alert('Please input path');
+			return
+		}
+		if (!$scope.newState.value) {
+			alert('Please input value');
+			return
+		}
+		
+		//blockUI.start();
+		socket.rpc('ADD_STATE', {
+			deviceId : $stateParams.deviceId,
+			path : $scope.newState.path,
+			value : $scope.newState.value
+		}, function(e) {
+			socket.emit('GET_STATE', {
+				deviceId : $stateParams.deviceId
+			});
+		});
+	};
+	
+	
+    $scope.removeState = function(stateId){
+		//blockUI.start();
+		socket.rpc('REMOVE_STATE', {
+			_id : stateId
+		},function(e){
+			socket.emit('GET_STATE', {
+				deviceId : $stateParams.deviceId
+			});
+		});
+	};
+	socket.emit('GET_STATE', {
+		deviceId : $stateParams.deviceId
+	});
+	socket.on('GET_STATE_PASS', function(data) {
+		$scope.$apply(function() {
+			$scope.state = data;
+			blockUI.stop();
+			
+		});
+		
+	});
+	
+	
+	
+	
 	$scope.newTrigger = {};
 	$scope.updateTrigger = {};
 	$scope.addTrigger = function() {
@@ -419,6 +470,8 @@ function($scope, $state, socket, auth, sha3) {
 				return
 			}
 		}
+		
+		
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
 			oldPass : sha3($scope.oldPassword),
@@ -442,40 +495,7 @@ function($scope, $state, socket, auth, sha3) {
 
 }]);
 
-var PHONE_REGEXP = /^[(]{0,1}[0-9]{3}[)\.\- ]{0,1}[0-9]{3}[\.\- ]{0,1}[0-9]{4}$/;
 
-controllers.controller('Ctrl', function($scope) {});
-
-controllers.directive('phone', function() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, element, attrs, ctrl) {
-            angular.element(element).bind('blur', function() {
-                var value = this.value;
-                if(PHONE_REGEXP.test(value)) {
-                    // Valid input
-                    console.log("valid phone number");
-                    
-                    angular.element(this).next().next().css('display','none');  
-                } else {
-                    // Invalid input  
-                    alert("invalid phone number");
-                    phone:"";
-                
-                    console.log("invalid phone number");
-                    angular.element(this).next().next().css('display','block');
-                    return
-                    /* 
-                        Looks like at this point ctrl is not available,
-                        so I can't user the following method to display the error node:
-                        ctrl.$setValidity('currencyField', false); 
-                    */                    
-                }
-            });              
-        }            
-    }        
-});
 
 
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
@@ -497,6 +517,7 @@ function($scope, $templateCache) {
 		}
 	};
 }]);
+
 
 
 

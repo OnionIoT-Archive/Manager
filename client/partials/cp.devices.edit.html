@@ -137,12 +137,43 @@
 									<td>{{state.path}}</td>
 									<td>{{state.value}}</td>
 									<td>{{state.timeStamp}}</td>
+									
+									
+							
+									<td>
+									<button class="btn btn-blue btn-xs" ng-click="removeState(state._id)">
+										Remove
+									</button></td>
+									
+									
+									
+									
 								</tr>
+								
+								<tr>
+								<td>
+									<input required type="text" ng-model="newState.path" />
+									</td>
+									<td>
+									<input required type="text" ng-model="newState.value" />
+									</td>
+									<td>
+									<button class="btn btn-blue btn-xs" ng-click="addState()">
+										Add
+									</button></td>
+							   </tr>
+							
+							
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
+			
+			
+			
+			
+			
 			<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
 				<div class="panel panel-dark">
 					<div class="panel-heading">

@@ -67,11 +67,10 @@
 								<input type="text" class="form-control" id="company" placeholder="Company Name" ng-model='user.company'>
 							</div>
 							<div class="form-group"  >
-							
 								<label for="website">Website URL</label>
 								<input type="text" class="form-control" id="website" placeholder="Website URL" ng-model='user.website'>
 								
-  
+							
 							</div>
 						</form>
 					</div>
@@ -79,18 +78,78 @@
 						<form name="form" role="form">
 							<div class="form-group">
 								<label for="industry">Industry</label>
-								<input type="text" class="form-control" id="industry" placeholder="Industry" ng-model='user.industry'>
+									<select id="industry"  ng-model='user.industry'>
+										<option value="Accounting" >Accounting</option>
+										<option value="Architecture" >Architecture</option>
+										<option value="Arts and Entertainment" >Arts and Entertainment</option>
+										<option value="Automotive" >Automotive</option>
+										<option value="Aviation" >Aviation</option>
+										<option value="Advertising" >Advertising</option>
+										<option value="Biotechnology" >Biotechnology</option>
+										<option value="Comunnications" >Comunnications</option>
+										<option value="Construction " >Construction </option>
+										<option value="Consulting" >Consulting </option>
+										<option value="Courts" >Courts</option>
+										<option value="Defense" >Defense</option>
+										<option value="Education" >Education</option>
+										<option value="Energy" >Energy</option>
+										<option value="Engineering-Aeronautical" >Engineering-Aeronautical</option>
+										<option value="Engineering-Biochemical" >Engineering-Biochemical</option>
+										<option value="Engineering-Chemical" >Engineering-Chemical</option>
+										<option value="Engineering-Civil" >Engineering-Civil</option>
+										<option value="Engineering-Computer" >Engineering-Computer</option>
+										<option value="Engineering-Electrical" >Engineering-Electrical</option>
+										<option value="Engineering-environmental" >Engineering-environmental</option>
+										<option value="Engineering-Industrial" >Engineering-Industrial</option>
+										<option value="Engineering-Manufacturing" >Engineering-Manufacturing</option>
+										<option value="Engineering-Mechanical" >Engineering-Mechanical</option>
+										<option value="Engineering-Nuclear" >Engineering-Nuclear</option>
+										<option value="Engineering-other" >Engineering-other</option>
+										<option value="Engineering-Materials" >Engineering-Materials</option>
+										<option value="Fashion" >Fashion</option>
+										<option value="Finance/Banking" >Finance/Banking</option>
+										<option value="Food and Beverage" >Food and Beverage</option>
+										<option value="Government" >Government</option>
+										<option value="Healthcare" >Healthcare</option>
+										<option value="Hospitality" >Hospitality</option>
+										<option value="Human Resources" >Human Resources</option>
+										<option value="Insurance" >Insurance</option>
+										<option value="Law" >Law</option>
+										<option value="Manufacturing" >Manufacturing</option>
+										<option value="Marketing" >Marketing</option>
+										<option value="Metals" >Metals</option>
+										<option value="Non-profit Organization" >Non-profit Organization</option>
+										<option value="Other" >Other</option>
+										<option value="Political Action" >Political Action</option>
+										<option value="Research" >Research</option>
+										<option value="Technology-Electronics" >Technology-Electronics</option>
+										<option value="Technology-Hardware" >Technology-Hardware</option>
+									    <option value="Technology-Information Systems" >Technology-Information Systems</option>
+									    <option value="Technology-Internet/E-commerce" >Technology-Internet/E-commerce</option>
+									    <option value="Technology-Network Administrationk" >Technology-Network Administrationk</option>
+									    <option value="Technology-Other" >Technology-Other</option>
+									    <option value="Technology-Software" >Technology-Software</option>
+									    <option value="Telecommunications" >Telecommunications</option>
+									    <option value="Third Party Staffing" >Third Party Staffing</option>
+									    <option value="Transportation" >Transportation</option>
+									    <option value="Travel and Tourism" >Travel and Tourism</option>	
+									</select>
 							</div>
 							<div class="form-group">
 								<label for="address">Address</label>
 								<input type="text" class="form-control" id="address" placeholder="Physical Address" ng-model='user.address'>
 							</div>
-							<div class="form-group" ng-controller="Ctrl">
+							<div class="form-group" >
 								<form name="form" navalidate>
-								<label for="number">Phone Number</label>
-								<input phone type="tel" name="phone" data-user.phone class="form-control" id="number"  placeholder="Phone Number" ng-model='user.phone'>
+                                 
+                                 <label for="number">Phone Number</label>
+								<input type="tel" class="form-control" id="number" placeholder="Phone Number" ng-model='user.phone'>
+                                 
                                  </form>                               
 							</div>
+							
+							
+							
 							
 						</form>
 						
