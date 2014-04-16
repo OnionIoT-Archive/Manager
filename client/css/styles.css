@@ -487,6 +487,14 @@ code {
 	margin-left: -10px;
 	width: 100%;
 }
+
+.table-onion input[type="text"].stateInput{
+	height: auto;
+	border: 2px inset;
+	padding:0;
+	margin-left: 0px;
+}
+
 .table-onion .btn-onion {
 	height: 20px;
 	background-color: transparent;
@@ -663,6 +671,11 @@ form#support-contact #details {
 	background-color: #0090d9;
 	color: #fff;
 }
+
+.btn-blue.stateBtn{
+	width: 53px;
+}
+
 .btn[disabled] {
 	pointer-events: auto;
 }

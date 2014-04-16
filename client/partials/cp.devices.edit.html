@@ -141,7 +141,7 @@
 									
 							
 									<td>
-									<button class="btn btn-blue btn-xs" ng-click="removeState(state._id)">
+									<button class="btn btn-blue btn-xs stateBtn" ng-click="removeState(state._id)">
 										Remove
 									</button></td>
 									
@@ -152,13 +152,16 @@
 								
 								<tr>
 								<td>
-									<input required type="text" ng-model="newState.path" />
+									<input required type="text" ng-model="newState.path" class="stateInput" />
 									</td>
 									<td>
-									<input required type="text" ng-model="newState.value" />
+									<input required type="text" ng-model="newState.value" class="stateInput" />
 									</td>
 									<td>
-									<button class="btn btn-blue btn-xs" ng-click="addState()">
+									
+									</td>
+									<td>
+									<button class="btn btn-blue btn-xs stateBtn" ng-click="addState()">
 										Add
 									</button></td>
 							   </tr>
