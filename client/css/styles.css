@@ -434,6 +434,10 @@ code {
 .table-onion td {
 	border: 0 !important;
 }
+
+.stateDate{
+	width: 170px;
+}
 .table-onion.table-striped > tbody > tr:nth-child(odd) > td, .table-onion.table-striped > tbody > tr:nth-child(odd) > th {
 	background-color: #ecf0f2;
 }

@@ -52,7 +52,7 @@ function($scope, $state, socket, auth, sha3) {
 		}, function() {
 			clearFields();
 			$scope.switchMode('login');
-			
+
 		}, function() {
 			$scope.signupFailed = true;
 		})
@@ -72,9 +72,6 @@ function($scope, $state, socket, auth, sha3) {
 	};
 }]);
 
-
-
-
 controllers.controller('TestCtrl', ['$scope', 'socket',
 function($scope, socket) {
 	$scope.signup = function() {
@@ -90,21 +87,17 @@ function($scope, $state, socket, auth) {
 	};
 
 	$scope.logout = function($event) {
-		
-	 var r=confirm("Are you sure you want to log out?");
-	  if(r==true)
-	  {
-	  	$event.stopPropagation();
-		$event.preventDefault();
-		auth.logout();
-	  }
-	  else
-	  {
-	  	$event.stopPropagation();
-	  	$event.preventDefault();
-	  }
-		
-		
+
+		var r = confirm("Are you sure you want to log out?");
+		if (r == true) {
+			$event.stopPropagation();
+			$event.preventDefault();
+			auth.logout();
+		} else {
+			$event.stopPropagation();
+			$event.preventDefault();
+		}
+
 	};
 }]);
 
@@ -169,7 +162,10 @@ function($scope, $timeout, $state, socket, auth) {
 
 controllers.controller('DevicesEditCtrl', ['$scope', '$state', '$stateParams', 'socket', 'blockUI', 'test',
 function($scope, $state, $stateParams, socket, blockUI, test) {
-
+	//TODO:put that in service
+	var formatTime = function(timestamp) {
+		return (new Date(timestamp)).toLocaleString();
+	};
 	$scope.testOn = false;
 
 	$scope.toggleTest = function() {
@@ -196,6 +192,10 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 
 	socket.on('GET_DEVICE_PASS', function(data) {
 		$scope.$apply(function() {
+			for (var i = 0; i < data.states.length; i++) {
+				data.states[i].timeStamp = formatTime(data.states[i].timeStamp);
+			}
+			console.log($scope.device);
 			$scope.device = data;
 		});
 	});
@@ -205,9 +205,6 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 	});
 
 	socket.on('GET_HISTORY_PASS', function(data) {
-		var formatTime = function(timestamp) {
-			return (new Date(timestamp)).toLocaleString();
-		};
 
 		$scope.$apply(function() {
 			// Format the time
@@ -218,8 +215,7 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			$scope.his = data;
 		});
 	});
-	
-	
+
 	$scope.newState = {};
 	$scope.addState = function() {
 		if (!$scope.newState.path) {
@@ -230,7 +226,7 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			alert('Please input value');
 			return
 		}
-		
+
 		//blockUI.start();
 		socket.rpc('ADD_STATE', {
 			deviceId : $stateParams.deviceId,
@@ -242,13 +238,12 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			});
 		});
 	};
-	
-	
-    $scope.removeState = function(stateId){
+
+	$scope.removeState = function(stateId) {
 		//blockUI.start();
 		socket.rpc('REMOVE_STATE', {
 			_id : stateId
-		},function(e){
+		}, function(e) {
 			socket.emit('GET_STATE', {
 				deviceId : $stateParams.deviceId
 			});
@@ -259,16 +254,17 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 	});
 	socket.on('GET_STATE_PASS', function(data) {
 		$scope.$apply(function() {
+			for (var i = 0; i < data.length; i++) {
+				data[i].timeStamp = formatTime(data[i].timeStamp);
+			}
+			console.log($scope.state);
 			$scope.state = data;
 			blockUI.stop();
-			
+
 		});
-		
+
 	});
-	
-	
-	
-	
+
 	$scope.newTrigger = {};
 	$scope.updateTrigger = {};
 	$scope.addTrigger = function() {
@@ -296,12 +292,12 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			});
 		});
 	};
-	
-	$scope.removeTrigger = function(triggerId){
+
+	$scope.removeTrigger = function(triggerId) {
 		blockUI.start();
 		socket.rpc('REMOVE_TRIGGER', {
 			_id : triggerId
-		},function(e){
+		}, function(e) {
 			socket.emit('GET_TRIGGER', {
 				deviceId : $stateParams.deviceId
 			});
@@ -320,9 +316,9 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 	});
 
 	$scope.toggleEdit = function() {
-		
+
 		console.log('toggleEdit save');
-		
+
 		if ($scope.editMode) {
 			blockUI.start();
 			$scope.updateTriggers();
@@ -336,17 +332,17 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 					deviceType : $scope.device.meta.deviceType
 				}
 			}, function(data) {
-				
+
 				blockUI.stop();
 				$scope.device = data;
 			});
 		};
 		$scope.editMode = !$scope.editMode;
 	};
-	
-	$scope.updateTriggers = function(){
-		for(var i=0;i<$scope.trigger.length;i++){
-			if(!$scope.trigger[i].postUrl){
+
+	$scope.updateTriggers = function() {
+		for (var i = 0; i < $scope.trigger.length; i++) {
+			if (!$scope.trigger[i].postUrl) {
 				alert('Please type post url');
 				return
 			}
@@ -432,8 +428,6 @@ function($scope, socket) {
 	};
 }]);
 
-
-
 controllers.controller('UsersEditCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
 function($scope, $state, socket, auth, sha3) {
 
@@ -447,8 +441,7 @@ function($scope, $state, socket, auth, sha3) {
 	};
 	$scope.revert();
 
-   
-	$scope.userUpdate = function () {
+	$scope.userUpdate = function() {
 		$scope.email = $scope.email || '';
 		var email = $scope.user.email.toLowerCase();
 		var pwHash = ($scope.password ? sha3($scope.password) : sha3($scope.oldPassword));
@@ -472,13 +465,12 @@ function($scope, $state, socket, auth, sha3) {
 		}
 		//validation of url
 		if (!$scope.user.website) {
-		    alert('Please type in valid url');
+			alert('Please type in valid url');
 			console.log("invalid url");
 			return
-			}else{
-		    console.log("valid url");
-		       }
-		
+		} else {
+			console.log("valid url");
+		}
 
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
@@ -503,9 +495,6 @@ function($scope, $state, socket, auth, sha3) {
 
 }]);
 
-
-
-
 controllers.controller('SupportCtrl', ['$scope', '$location', '$state', '$sce', 'localStorageService', 'socket', 'auth', 'sha3', '$http', 'blockUI',
 function($scope, $location, $state, $sce, localStorageService, socket, auth, sha3, $http, blockUI) {
 	socket.rpc('FORUMS_SETUP', function(forumsInfo) {
@@ -525,7 +514,4 @@ function($scope, $templateCache) {
 		}
 	};
 }]);
-
-
-
 
