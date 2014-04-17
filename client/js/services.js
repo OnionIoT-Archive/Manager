@@ -44,10 +44,11 @@ function($rootScope, $state, localStorageService, socket, sha3) {
 
 	// Callbacks to check if system still logged in and log out if not
 	var check = function() {
-		if ($rootScope.loggedIn === true && $state.current.name === 'login')
+		if ($rootScope.loggedIn === true && $state.current.name === 'login') {
 			$state.go('cp.devices.list');
-		else if ($rootScope.loggedIn === false && $state.current.name !== 'login')
+		} else if ($rootScope.loggedIn === false && $state.current.name !== 'login') {
 			$state.go('login');
+		}
 	};
 
 	$rootScope.$watch('loggedIn', check);
@@ -68,6 +69,16 @@ function($rootScope, $state, localStorageService, socket, sha3) {
 			});
 		});
 	}
+	var signup = function(email, password, passCallback, failCallback) {
+		socket.rpc('SIGNUP', {
+			email : email,
+			hash : password
+		}, function() {
+			passCallback();
+		}, function() {
+			failCallback();
+		});
+	};
 
 	var login = function(email, password, passCallback, failCallback) {
 		if (!passCallback)
@@ -101,7 +112,8 @@ function($rootScope, $state, localStorageService, socket, sha3) {
 
 	return {
 		login : login,
-		logout : logout
+		logout : logout,
+		signup : signup
 	};
 }]);
 

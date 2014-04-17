@@ -3,8 +3,8 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3',
-function($scope, $state, socket, auth, sha3) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3','blockUI',
+function($scope, $state, socket, auth, sha3,blockUI) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -24,7 +24,7 @@ function($scope, $state, socket, auth, sha3) {
 
 	// Login
 	$scope.login = function() {
-
+		blockUI.start();
 		var myemail = document.querySelector('#email').value;
 		var mypassword = document.querySelector('#password').value;
 
@@ -33,8 +33,10 @@ function($scope, $state, socket, auth, sha3) {
 		var password = mypassword;
 
 		auth.login(email, password, function() {
+			blockUI.stop();
 			clearFields();
 		}, function() {
+			blockUI.stop();
 			$scope.password = '';
 			$scope.loginFailed = true;
 		});
@@ -42,20 +44,29 @@ function($scope, $state, socket, auth, sha3) {
 
 	// Sign Up
 	$scope.signUp = function() {
+		blockUI.start();
+		if (!$scope.email) {
+			alert('Please enter email address');
+			return
+		}
 		$scope.email = $scope.email || '';
 		var email = $scope.email.toLowerCase();
 		var pwHash = sha3($scope.password);
-
-		socket.rpc('SIGNUP', {
-			email : email,
-			hash : pwHash
+		auth.signup(email, pwHash, function() {
+			//re-login after user signup successfully
+			auth.login(email, $scope.password, function() {
+				clearFields();
+				blockUI.stop();
+			}, function() {
+				blockUI.stop();
+				$scope.password = '';
+				$scope.loginFailed = true;
+			});
 		}, function() {
-			clearFields();
-			$scope.switchMode('login');
-
-		}, function() {
+			blockUI.stop();
 			$scope.signupFailed = true;
-		})
+		});
+
 	};
 
 	// Password Reset
@@ -195,7 +206,7 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			for (var i = 0; i < data.states.length; i++) {
 				data.states[i].timeStamp = formatTime(data.states[i].timeStamp);
 			}
-			if(data.id ==$stateParams.deviceId){
+			if (data.id == $stateParams.deviceId) {
 				$scope.device = data;
 			}
 		});
@@ -455,21 +466,21 @@ function($scope, $state, socket, auth, sha3) {
 		var phone = $scope.user.phone;
 		var isReset;
 		$scope.isDisable = true;
-		
+
 		if (!$scope.oldPassword) {
 			isReset = false;
 			alert('Please put your password to update your profile');
 			return
-		} 
+		}
 		//validation of url
 		//remove this becuase this is optional for now.
 		// if (!$scope.user.website) {
-			// alert('Please type in valid url');
-			// return
+		// alert('Please type in valid url');
+		// return
 		// } else {
-			// console.log("valid url");
+		// console.log("valid url");
 		// }
-		
+
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
 			oldPass : sha3($scope.oldPassword),
