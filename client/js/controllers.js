@@ -195,8 +195,9 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			for (var i = 0; i < data.states.length; i++) {
 				data.states[i].timeStamp = formatTime(data.states[i].timeStamp);
 			}
-			console.log($scope.device);
-			$scope.device = data;
+			if(data.id ==$stateParams.deviceId){
+				$scope.device = data;
+			}
 		});
 	});
 
@@ -276,7 +277,7 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 			alert('Please type post url');
 			return
 		}
-		if (!$scope.newTrigger.state._id) {
+		if (!$scope.newTrigger.state) {
 			alert('Please select state');
 			return
 		}
@@ -454,24 +455,21 @@ function($scope, $state, socket, auth, sha3) {
 		var phone = $scope.user.phone;
 		var isReset;
 		$scope.isDisable = true;
+		
 		if (!$scope.oldPassword) {
 			isReset = false;
-		} else {
-			isReset = true;
-			if (!$scope.password) {
-				alert('Please put your new password');
-				return
-			}
-		}
-		//validation of url
-		if (!$scope.user.website) {
-			alert('Please type in valid url');
-			console.log("invalid url");
+			alert('Please put your password to update your profile');
 			return
-		} else {
-			console.log("valid url");
-		}
-
+		} 
+		//validation of url
+		//remove this becuase this is optional for now.
+		// if (!$scope.user.website) {
+			// alert('Please type in valid url');
+			// return
+		// } else {
+			// console.log("valid url");
+		// }
+		
 		socket.rpc('USER_UPDATE', {
 			isReset : isReset,
 			oldPass : sha3($scope.oldPassword),

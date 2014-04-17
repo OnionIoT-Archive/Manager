@@ -90,7 +90,6 @@ httpExpressServer.all('*', function(req, res, next) {
 
 		var hostname = url.parse('https://' + req.headers['host'] + req.url).hostname;
 		var path = url.parse('https://' + req.headers['host'] + req.url).path;
-		console.log(url.parse('https://' + req.headers['host'] + req.url));
 		res.redirect('https://' + hostname+path);
 
 	} else {
