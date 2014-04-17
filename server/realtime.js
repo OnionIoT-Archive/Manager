@@ -211,7 +211,7 @@ var init = function(socketServer) {
 		});
 
 		socket.on('GET_STATE', function(data) {
-			rpc.call('DB_GET_STATE', {}, function(data) {
+			rpc.call('DB_GET_STATE', data, function(data) {
 				socket.emit('GET_STATE_PASS', data);
 			});
 		});

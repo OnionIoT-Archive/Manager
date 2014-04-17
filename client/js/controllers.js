@@ -47,6 +47,7 @@ function($scope, $state, socket, auth, sha3,blockUI) {
 		blockUI.start();
 		if (!$scope.email) {
 			alert('Please enter email address');
+			blockUI.stop();
 			return
 		}
 		$scope.email = $scope.email || '';
@@ -243,19 +244,23 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 		socket.rpc('ADD_STATE', {
 			deviceId : $stateParams.deviceId,
 			path : $scope.newState.path,
-			value : $scope.newState.value
+			value : $scope.newState.value,
+			timeStamp:new Date()
 		}, function(e) {
-			socket.emit('GET_STATE', {
-				deviceId : $stateParams.deviceId
-			});
+			console.log('add state successfully');
+			// socket.emit('GET_STATE', {
+				// deviceId : $stateParams.deviceId
+			// });
 		});
 	};
 
 	$scope.removeState = function(stateId) {
-		//blockUI.start();
+		blockUI.start();
+		
 		socket.rpc('REMOVE_STATE', {
 			_id : stateId
 		}, function(e) {
+			console.log('remove state success');
 			socket.emit('GET_STATE', {
 				deviceId : $stateParams.deviceId
 			});
@@ -265,14 +270,15 @@ function($scope, $state, $stateParams, socket, blockUI, test) {
 		deviceId : $stateParams.deviceId
 	});
 	socket.on('GET_STATE_PASS', function(data) {
+		console.log(data.length);
 		$scope.$apply(function() {
+			console.log(data.length);
 			for (var i = 0; i < data.length; i++) {
 				data[i].timeStamp = formatTime(data[i].timeStamp);
 			}
-			console.log($scope.state);
-			$scope.state = data;
+			
+			$scope.device.states = data;
 			blockUI.stop();
-
 		});
 
 	});
