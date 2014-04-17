@@ -45,6 +45,7 @@ httpsExpressServer.configure(function() {
 	//httpsExpressServer.use(express.basicAuth('dev', 'philosophy'));
 
 	httpsExpressServer.use('/', express.static(__dirname + '/client'));
+	httpsExpressServer.use('/m', express.static(__dirname + '/client/mobile'));
 	httpsExpressServer.get('/milkscale', function(req, res) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "X-Requested-With");

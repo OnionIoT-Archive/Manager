@@ -59,7 +59,7 @@ function($scope, socket) {
 			path : '/gon',
 			functionId : 1,
 			verb : $scope.verb,
-			postParams : ['temp', 'altitude', 'water level']
+			postParams : []
 		});
 	};
 
