@@ -415,6 +415,11 @@ function($scope, $state, $stateParams, socket, blockUI) {
 	$scope.toggleEdit = function() {
 		console.log('toggle edit save');
 		blockUI.start();
+		if (!$scope.device.meta.name) {                      //add require for device name.    -Ran
+			alert('Please enter device name');
+			blockUI.stop();
+			return
+		}
 		socket.rpc('ADD_DEVICE', {
 			meta : {
 				name : $scope.device.meta.name,
