@@ -12,6 +12,12 @@ app.config(['$locationProvider', '$stateProvider', '$urlRouterProvider', functio
     	templateUrl: './partials/login.html',
         controller: 'LoginCtrl'
     });
+    
+     $stateProvider.state('reset', {
+    	url: '/reset/:pwHass',
+    	templateUrl: './partials/reset.html',
+        controller: 'LoginCtrl'
+    });
 
     /*** Control Panel ***/
     $stateProvider.state('cp', {

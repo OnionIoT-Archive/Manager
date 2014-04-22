@@ -1,0 +1,25 @@
+<div class="container login-container">
+	<div class="login-header">
+		<div class="onion-jumbotron">
+			<h1 class=""><span class="icon-onion"></span>&nbsp;Onion</h1>
+			<p>Please login to access the Control Panel.</p>
+		</div>
+	</div>
+	<div class="login-chevron"></div>
+	<div class="login-body">
+		<form role="form" class="login-form form-horizontal" name="loginForm">
+			<div class="form-group" id="email-group">
+				<input required type="email" id="email" class="form-control" placeholder="Email Address" ng-model="email" />
+			</div>
+			<div class="form-group" id="password-group">
+				<input required type="password" id="password" class="form-control" placeholder="New password" ng-model="password" ng-disabled="mode === 'forgot'" />
+			</div>
+			<div class="form-group">
+				<button ng-if="mode === 'login'" type="submit" class="btn btn-default btn-block" ng-click='reset()'>
+					Reset password<span class="fa fa-sign-in pull-right"></span>
+				</button>
+			</div>
+		</form>
+		<p>&copy; 2014 Onion Corporation</p>
+	</div>
+</div>

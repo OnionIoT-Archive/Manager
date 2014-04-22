@@ -107,22 +107,51 @@ var init = function(socketServer) {
 
 		socket.on('FORGOT_PASSWORD', function(data) {
 			// setup e-mail data with unicode symbols
-			var mailOptions = {
-				from : "Onion ✔ <harry@onion.io>", // sender address
-				to : data.email, // list of receivers
-				subject : "Onion:Reset Passwrd", // Subject line
-				text : "Http://www.onion.io/changethis", // plaintext body
-				html : "<b>Click <a href='#'>here</a> to reset your password</b>" // html body
-			}
-
-			// send mail with defined transport object
-			mail.smtpTransport.sendMail(mailOptions, function(error, response) {
-				if (error) {
-					console.log(error);
-				} else {
-					console.log("Message sent: " + response.message);
+			var sendMail = function(arg) {
+				var url = socket.handshake.headers.referer + "#/reset/" + arg.passHash
+				var mailOptions = {
+					from : "Onion - Reset your password <harry@onion.io>", // sender address
+					to : data.email, // list of receivers
+					subject : "Onion:Reset Passwrd", // Subject line
+					text : "Http://www.onion.io/changethis", // plaintext body
+					html : "<b>Click <a href='" + url + "'>here</a> to reset your password</b>" // html body
 				}
-			});
+
+				// send mail with defined transport object
+				mail.smtpTransport.sendMail(mailOptions, function(error, response) {
+					if (error) {
+						console.log(error);
+					} else {
+						console.log("Message sent: " + response.message);
+					}
+				});
+			}
+			rpc.call('DB_GET_USER', {
+				email : data.email
+			}, function(data) {
+				sendMail(data);
+			})
+		});
+
+		socket.on('RESET_PASSWORD', function(data) {
+			console.log(data.newPassword);
+			rpc.call('DB_GET_USER', {
+				email : data.email,
+				passHash : data.oldPassword
+			}, function(user) {
+				if (user) {
+					rpc.call('DB_UPDATE_USER', {
+						condition : {
+							email : data.email
+						},
+						update : {
+							passHash : data.newPassword
+						}
+					}, function(user) {
+						socket.emit('RESET_PASSWORD_PASS', {});
+					});
+				}
+			})
 		});
 
 		socket.on('LIST_DEVICES', function(data) {
@@ -448,7 +477,8 @@ var init = function(socketServer) {
 		}, function(device) {
 			console.log(device);
 			userId = device.userId;
-			if(connections&&connections[userId]&&connections[userId].emit)connections[userId].emit('GET_DEVICE_PASS', device);
+			if (connections && connections[userId] && connections[userId].emit)
+				connections[userId].emit('GET_DEVICE_PASS', device);
 		});
 		callback({});
 	});
@@ -457,37 +487,33 @@ var init = function(socketServer) {
 		console.log('======= P =======');
 		console.log(p);
 
+		// ======= Temprary code for trigger ===========
+		rpc.call('DB_GET_TRIGGER_WITHSTATE', {
+			deviceId : p.deviceId
+		}, function(e) {
+			for (var k = 0; k < e.length; k++) {
+				pushBullet(e, k);
+			}
+
+		});
+		function pushBullet(e, index) {
+			console.log(e[index].state);
+			var options = {
+				uri : e[index].postUrl,
+				strictSSL : false,
+				method : "POST",
+				form : e[index].state
+			};
+			request(options, function(error, response, body) {
+				if (!error && response.statusCode == 200) {
+
+				} else {
+					console.log(error);
+				};
+			});
+		}
 
 		// ======= Temprary code for trigger ===========
-					rpc.call('DB_GET_TRIGGER_WITHSTATE', {
-deviceId: p.deviceId
-				}, function(e) {
-					for(var k=0;k<e.length;k++){
-						pushBullet(e,k);
-					}
-					
-				});
-				function pushBullet(e,index) {
-					console.log(e[index].state);
-					var options = {
-						uri : e[index].postUrl,
-						strictSSL : false,
-						method : "POST",
-						form : e[index].state
-					};
-					request(options, function(error, response, body) {
-						if (!error && response.statusCode == 200) {
-							
-						} else {
-							console.log(error);
-						};
-					});
-				}
-
-
-
-		// ======= Temprary code for trigger ===========
-
 
 		var email;
 		var userId;
@@ -502,7 +528,7 @@ deviceId: p.deviceId
 				id : deviceid
 			}, function(device) {
 				console.log(device.states);
-					userId = device.userId;
+				userId = device.userId;
 				if (userId && connections && connections[userId])
 					connections[userId].emit('GET_DEVICE_PASS', device);
 			});

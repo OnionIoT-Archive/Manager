@@ -3,8 +3,8 @@
 var controllers = angular.module('manager.controllers', []);
 
 //the controller for the socket
-controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3','blockUI',
-function($scope, $state, socket, auth, sha3,blockUI) {
+controllers.controller('LoginCtrl', ['$scope', '$state', 'socket', 'auth', 'sha3','blockUI','$stateParams',
+function($scope, $state, socket, auth, sha3,blockUI,$stateParams) {
 
 	var clearFields = function() {
 		$scope.loginFailed = false;
@@ -69,7 +69,24 @@ function($scope, $state, socket, auth, sha3,blockUI) {
 		});
 
 	};
-
+	
+	$scope.forgotPassword = function(){
+		socket.emit('FORGOT_PASSWORD',{
+			email:$scope.email
+		});
+	};
+	$scope.reset = function(){
+		blockUI.start();
+		socket.rpc('RESET_PASSWORD',{
+			email:$scope.email,
+			oldPassword:$stateParams.pwHass,
+			newPassword:sha3($scope.password)
+		},function(){
+			blockUI.stop();
+			$state.go('login');
+		});
+	}
+	
 	// Password Reset
 	$scope.passwordReset = function() {
 		$scope.email = $scope.email || '';

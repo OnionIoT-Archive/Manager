@@ -46,7 +46,10 @@ function($rootScope, $state, localStorageService, socket, sha3) {
 	var check = function() {
 		if ($rootScope.loggedIn === true && $state.current.name === 'login') {
 			$state.go('cp.devices.list');
-		} else if ($rootScope.loggedIn === false && $state.current.name !== 'login') {
+		}else if ($rootScope.loggedIn === false && $state.current.name == 'reset') {
+			$state.go('reset');
+		} 
+		else if ($rootScope.loggedIn === false && $state.current.name !== 'login') {
 			$state.go('login');
 		}
 	};
