@@ -1,0 +1,24 @@
+{
+  "name": "manager",
+  "version": "0.0.1",
+  "authors": [
+    "Sultan Saadat <sultansaadat@gmail.com>"
+  ],
+  "description": "client side bower components",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-ui-bootstrap": "~0.10.0",
+    "angular-ui-router": "~0.2.10",
+    "angular": "~1.2.16",
+    "socket.io": "~0.9.15",
+    "angular-sanitize": "~1.2.16"
+  }
+}
