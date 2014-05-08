@@ -35,7 +35,7 @@ var httpServer = http.createServer(httpExpressServer);
 var httpsServer = https.createServer(sslOptions, httpsExpressServer);
 
 var socketServer = socket.listen(httpsServer, {
-  log: false
+  log: true
 });
 
 realtime.init(socketServer);
@@ -108,4 +108,4 @@ httpExpressServer.all('*', function(req, res, next) {
 });
 
 httpServer.listen(config.HTTP_PORT);
-// httpsServer.listen(config.HTTPS_PORT);
+httpsServer.listen(config.HTTPS_PORT);
