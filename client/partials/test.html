@@ -1,130 +1,130 @@
 <style>
-	.testPage {
-		margin-bottom:10px;
-		width:200px;
-		color:black;
-		background:lightblue
-	}
+.testPage {
+    margin-bottom:10px;
+    width:200px;
+    color:black;
+    background:lightblue
+}
 </style>
 <fieldset>
-	<legend>
-		Authentication:
-	</legend>
-	<button class="btn btn-primary testPage" ng-click="signup()">
-		SIGNUP
-	</button>
-	<button class="btn btn-primary testPage" ng-click="login()">
-		LOGIN
-	</button>
-	<button class="btn btn-primary testPage" ng-click="logout()">
-		LOGOUT
-	</button>
-	<br />
-	<button class="btn btn-primary testPage" ng-click="check_session()">
-		CHECK_SESSION
-	</button>
-	<button class="btn btn-primary testPage" ng-click="forgor_password()">
-		FORGOT_PASSWORD
-	</button>
+    <legend>
+        Authentication:
+    </legend>
+    <button class="btn btn-primary testPage" ng-click="signup()">
+        SIGNUP
+    </button>
+    <button class="btn btn-primary testPage" ng-click="login()">
+        LOGIN
+    </button>
+    <button class="btn btn-primary testPage" ng-click="logout()">
+        LOGOUT
+    </button>
+    <br />
+    <button class="btn btn-primary testPage" ng-click="check_session()">
+        CHECK_SESSION
+    </button>
+    <button class="btn btn-primary testPage" ng-click="forgor_password()">
+        FORGOT_PASSWORD
+    </button>
 </fieldset>
 <fieldset>
-	<legend>
-		Devices:
-	</legend>
-	<button class="btn btn-primary testPage" ng-click="get_device_list()">
-		GET_DEVICE_LIST
-	</button>
-	<br />
-	<button class="btn btn-primary testPage" ng-click="get_device()">
-		GET_DEVICE
-	</button>
-	<button class="btn btn-primary testPage" ng-click="add_device()">
-		ADD_DEVICE
-	</button>
-	<button class="btn btn-primary testPage" ng-click="update_device()">
-		DB_UPDATE_DEVICE
-	</button>
-	<br />
-	<button class="btn btn-primary testPage" ng-click="remove_device()">
-		REMOVE_DEVICE
-	</button>
+    <legend>
+        Devices:
+    </legend>
+    <button class="btn btn-primary testPage" ng-click="get_device_list()">
+        GET_DEVICE_LIST
+    </button>
+    <br />
+    <button class="btn btn-primary testPage" ng-click="get_device()">
+        GET_DEVICE
+    </button>
+    <button class="btn btn-primary testPage" ng-click="add_device()">
+        ADD_DEVICE
+    </button>
+    <button class="btn btn-primary testPage" ng-click="update_device()">
+        DB_UPDATE_DEVICE
+    </button>
+    <br />
+    <button class="btn btn-primary testPage" ng-click="remove_device()">
+        REMOVE_DEVICE
+    </button>
 </fieldset>
 <fieldset>
-	<legend>
-		Individual device:
-	</legend>
-	<input id="deviceid" ng-model='deviceId' placeholder="device id" />
-	<input id="deviceid" ng-model='verb' placeholder="verb" value="GET" />
-	<button class="btn btn-primary testPage" ng-click="add_procedures()">
-		ADD_PROCEDURES
-	</button>
-	<br />
-	<input  ng-model='path' placeholder="path" value="path" />
-	<input  ng-model='value' placeholder="value" value="value" />
-	<button class="btn btn-primary testPage" ng-click="add_states()">
-		ADD_STATES
-	</button>
-	<button class="btn btn-primary testPage" ng-click="updateState()">
-		updateState
-	</button>
-	<select ng-model="state" ng-options="s.path for s in states" ng-change="selectState()">
-		<option value="">-- click get state button first --</option>
-	</select>
-	<button class="btn btn-primary testPage" ng-click="removeState()">
-		removeState
-	</button>
+    <legend>
+        Individual device:
+    </legend>
+    <input id="deviceid" ng-model='deviceId' placeholder="device id" />
+    <input id="deviceid" ng-model='verb' placeholder="verb" value="GET" />
+    <button class="btn btn-primary testPage" ng-click="add_procedures()">
+        ADD_PROCEDURES
+    </button>
+    <br />
+    <input ng-model='path' placeholder="path" value="path" />
+    <input ng-model='value' placeholder="value" value="value" />
+    <button class="btn btn-primary testPage" ng-click="add_states()">
+        ADD_STATES
+    </button>
+    <button class="btn btn-primary testPage" ng-click="updateState()">
+        updateState
+    </button>
+    <select ng-model="state" ng-options="s.path for s in states" ng-change="selectState()">
+        <option value="">-- click get state button first --</option>
+    </select>
+    <button class="btn btn-primary testPage" ng-click="removeState()">
+        removeState
+    </button>
 
-	<button class="btn btn-primary testPage" ng-click="new_key()">
-		New_key
-	</button>
-	<button class="btn btn-primary testPage" ng-click="add_history()">
-		Add_history
-	</button>
-	<button class="btn btn-primary testPage" ng-click="get_history()">
-		Get_history
-	</button>
+    <button class="btn btn-primary testPage" ng-click="new_key()">
+        New_key
+    </button>
+    <button class="btn btn-primary testPage" ng-click="add_history()">
+        Add_history
+    </button>
+    <button class="btn btn-primary testPage" ng-click="get_history()">
+        Get_history
+    </button>
 
-	<button class="btn btn-primary testPage" ng-click="get_procedure()">
-		Get_procedure
-	</button>
-	
-	<button class="btn btn-primary testPage" ng-click="get_states()">
-		Get_states
-	</button>
+    <button class="btn btn-primary testPage" ng-click="get_procedure()">
+        Get_procedure
+    </button>
+
+    <button class="btn btn-primary testPage" ng-click="get_states()">
+        Get_states
+    </button>
 </fieldset>
 <button class="btn btn-primary testPage" ng-click="realtimeupdate()">
-	realtimeupdate
+    realtimeupdate
 </button>
 <br />
 <fieldset>
-	<legend>
-		Trigger:
-	</legend>
-	<input id="triggerId" name="triggerId"  ng-model='triggerId' placeholder="triggerId" value="triggerId" />
-	<input  ng-model='triggerCondition' placeholder="triggerCondition" value="triggerCondition" />
-	<input  ng-model='triggerValue' placeholder="triggerValue" value="triggerValue"/>
-	<input  ng-model='triggerPostUrl' placeholder="triggerPostUrl" value="http://onion.io"/>
-	<input  ng-model='triggerStateId' placeholder="triggerStateId" value="triggerStateId"/>
-	<button class="btn btn-primary testPage" ng-click="addTrigger()">
-		addTrigger
-	</button>
-	<button class="btn btn-primary testPage" ng-click="removeTrigger()">
-		removeTrigger
-	</button>
-	<button class="btn btn-primary testPage" ng-click="getTrigger()">
-		getTrigger
-	</button>
-	<select ng-model="trigger" ng-options="s.postUrl for s in triggers" ng-change="selecttrigger()">
-		<option value="">-- click get trigger button first --</option>
-	</select>
-	<button class="btn btn-primary testPage" ng-click="updateTrigger()">
-		updateTrigger
-	</button>
+    <legend>
+        Trigger:
+    </legend>
+    <input id="triggerId" name="triggerId" ng-model='triggerId' placeholder="triggerId" value="triggerId" />
+    <input ng-model='triggerCondition' placeholder="triggerCondition" value="triggerCondition" />
+    <input ng-model='triggerValue' placeholder="triggerValue" value="triggerValue" />
+    <input ng-model='triggerPostUrl' placeholder="triggerPostUrl" value="http://onion.io" />
+    <input ng-model='triggerStateId' placeholder="triggerStateId" value="triggerStateId" />
+    <button class="btn btn-primary testPage" ng-click="addTrigger()">
+        addTrigger
+    </button>
+    <button class="btn btn-primary testPage" ng-click="removeTrigger()">
+        removeTrigger
+    </button>
+    <button class="btn btn-primary testPage" ng-click="getTrigger()">
+        getTrigger
+    </button>
+    <select ng-model="trigger" ng-options="s.postUrl for s in triggers" ng-change="selecttrigger()">
+        <option value="">-- click get trigger button first --</option>
+    </select>
+    <button class="btn btn-primary testPage" ng-click="updateTrigger()">
+        updateTrigger
+    </button>
 
-	<button class="btn btn-primary testPage" ng-click="fireTrigger()">
-		trigger
-	</button>
-	<button class="btn btn-primary testPage" ng-click="testServer()">
-		testServer
-	</button>
+    <button class="btn btn-primary testPage" ng-click="fireTrigger()">
+        trigger
+    </button>
+    <button class="btn btn-primary testPage" ng-click="testServer()">
+        testServer
+    </button>
 </fieldset>
