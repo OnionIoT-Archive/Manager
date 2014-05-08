@@ -55,7 +55,7 @@ httpsExpressServer.configure(function() {
 
   httpsExpressServer.use('/', express.static(__dirname + '/client'));
   httpsExpressServer.use('/m', express.static(__dirname + '/client/mobile'));
-  // httpsExpressServer.use('/bower_components', express.static(__dirname + '/bower_components'));
+  httpsExpressServer.use('/bower_components', express.static(__dirname + '/bower_components'));
   httpsExpressServer.get('/milkscale', function(req, res) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
