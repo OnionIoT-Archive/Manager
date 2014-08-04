@@ -8,12 +8,6 @@ If the server doesn't already have Node.JS, install with:
 sudo apt-get install nodejs
 ```
 
-Set up Bower with NPM:
-
-```
-npm install -g bower
-```
-
 Install all node components:
 
 ```
